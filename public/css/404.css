@@ -1,0 +1,96 @@
+@import "https://fonts.googleapis.com/css?family=Roboto+Mono:100";
+body {
+  background: #ffffff;
+  margin: 0;
+  font-family: "Roboto Mono", monospace;
+}
+
+.box-container {
+  position: absolute;
+  background: #212121;
+  color: #ffffff;
+  border-radius: 1em;
+  width: 950px;
+  height: 300px;
+  margin-left: -475px;
+  margin-top: -150px;
+  left: 50%;
+  top: 40%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space {
+  padding: 0 0.7em;
+}
+
+.box {
+  font-size: 70px;
+  font-weight: 600;
+  border-radius: 5px;
+  position: relative;
+  text-align: center;
+  height: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.click {
+  font-size: 30px;
+  font-weight: 600;
+  position: absolute;
+  width: 400px;
+  height: 80px;
+  margin-left: -200px;
+  left: 50%;
+  top: 70%;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 1em;
+  transition: 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hover-click:hover {
+  background: #d0d0d0;
+  cursor: pointer;
+}
+
+.ani-button {
+  animation-name: pulse;
+  animation-timing-function: cubic-bezier(0.09, 0.79, 0.74, 0.34);
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pulse {
+  from {
+    background: #fff6ed;
+  }
+  to {
+    background: #737373;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .box {
+    font-size: 40px;
+  }
+
+  .box-container {
+    width: 100%;
+    height: 100%;
+    margin-left: -150px;
+    margin-top: -70px;
+  }
+}
