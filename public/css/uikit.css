@@ -7,6 +7,16 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  * 3. Style
  */
+
+:root{
+  --backgroundprimary : #D61C4E;
+  --backgroundsecondary : #293462;
+  --foregroundsuccess : #54B435;
+  --backgroundsuccess : #38E54D;
+  --light1 : #FEB139;
+  --light2 : #FFF80A;
+}
+
 html {
   /* 1 */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -32,7 +42,7 @@ body {
  */
 a,
 .uk-link {
-  color: #1e87f0;
+  color: var(--foregroundprimary);
   text-decoration: none;
   cursor: pointer;
 }
@@ -475,7 +485,7 @@ a.uk-link-heading,
 a.uk-link-heading:hover,
 .uk-link-heading a:hover,
 .uk-link-toggle:hover .uk-link-heading {
-  color: #1e87f0;
+  color: var(--foregroundprimary);
   text-decoration: none;
 }
 /* Reset
@@ -778,10 +788,10 @@ a.uk-link-reset,
   color: #333 !important;
 }
 .uk-list-primary > ::before {
-  color: #1e87f0 !important;
+  color: var(--foregroundprimary) !important;
 }
 .uk-list-secondary > ::before {
-  color: #222 !important;
+  color: var(--backgroundsecondary) !important;
 }
 /* Image bullet modifier
  ========================================================================== */
@@ -1471,7 +1481,7 @@ button.uk-icon:not(:disabled) {
   outline: none;
   background-color: #fff;
   color: #666;
-  border-color: #1e87f0;
+  border-color: var(--foregroundprimary);
 }
 /* Disabled */
 .uk-input:disabled,
@@ -1549,8 +1559,8 @@ textarea.uk-form-large,
  */
 .uk-form-success,
 .uk-form-success:focus {
-  color: #32d296;
-  border-color: #32d296;
+  color: var(--foregroundsuccess);
+  border-color: var(--foregroundsuccess);
 }
 /*
  * Blank
@@ -1670,7 +1680,7 @@ select.uk-form-width-xsmall {
 .uk-checkbox:focus {
   background-color: rgba(0, 0, 0, 0);
   outline: none;
-  border-color: #1e87f0;
+  border-color: var(--foregroundprimary);
 }
 /*
  * Checked
@@ -1678,7 +1688,7 @@ select.uk-form-width-xsmall {
 .uk-radio:checked,
 .uk-checkbox:checked,
 .uk-checkbox:indeterminate {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   border-color: transparent;
 }
 /* Focus */
@@ -1966,7 +1976,7 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-button-primary {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   color: #fff;
   border: 1px solid transparent;
 }
@@ -1985,13 +1995,13 @@ select.uk-form-width-xsmall {
  * Secondary
  */
 .uk-button-secondary {
-  background-color: #222;
+  background-color: var(--backgroundsecondary);
   color: #fff;
   border: 1px solid transparent;
 }
 /* Hover */
 .uk-button-secondary:hover {
-  background-color: #151515;
+  background-color: var(--backgroundsecondary);
   color: #fff;
 }
 /* OnClick + Active */
@@ -2183,11 +2193,11 @@ select.uk-form-width-xsmall {
  *    https://bugzilla.mozilla.org/show_bug.cgi?id=662351
  */
 .uk-progress::-webkit-progress-value {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   transition: width 0.6s ease;
 }
 .uk-progress::-moz-progress-bar {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   /* 1 */
   transition: width 0.6s ease;
 }
@@ -2279,13 +2289,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-section-primary {
-  background: #1e87f0;
+  background: var(--foregroundprimary);
 }
 /*
  * Secondary
  */
 .uk-section-secondary {
-  background: #222;
+  background: var(--backgroundsecondary);
 }
 /* Overlap modifier
  ========================================================================== */
@@ -2537,13 +2547,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-tile-primary {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
 }
 /*
  * Secondary
  */
 .uk-tile-secondary {
-  background-color: #222;
+  background-color: var(--backgroundsecondary);
 }
 /* ========================================================================
    Component: Card
@@ -2617,7 +2627,7 @@ select.uk-form-width-xsmall {
   height: 22px;
   padding: 0 10px;
   /* 3 */
-  background: #1e87f0;
+  background: var(--foregroundprimary);
   color: #fff;
   font-size: 0.875rem;
   /* 4 */
@@ -2668,7 +2678,7 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-card-primary {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
@@ -2676,14 +2686,14 @@ select.uk-form-width-xsmall {
   color: #fff;
 }
 .uk-card-primary.uk-card-hover:hover {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /*
  * Secondary
  */
 .uk-card-secondary {
-  background-color: #222;
+  background-color: var(--backgroundsecondary);
   color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
@@ -2691,7 +2701,7 @@ select.uk-form-width-xsmall {
   color: #fff;
 }
 .uk-card-secondary.uk-card-hover:hover {
-  background-color: #222;
+  background-color: var(--backgroundsecondary);
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /* Size modifier
@@ -2891,7 +2901,7 @@ select.uk-form-width-xsmall {
  */
 .uk-marker {
   padding: 5px;
-  background: #222;
+  background: var(--backgroundsecondary);
   color: #fff;
   border-radius: 500px;
 }
@@ -2949,14 +2959,14 @@ select.uk-form-width-xsmall {
  */
 .uk-alert-primary {
   background: #d8eafc;
-  color: #1e87f0;
+  color: var(--foregroundprimary);
 }
 /*
  * Success
  */
 .uk-alert-success {
   background: #edfbf6;
-  color: #32d296;
+  color: var(--foregroundsuccess);
 }
 /*
  * Warning
@@ -3025,7 +3035,7 @@ select.uk-form-width-xsmall {
   border-radius: 500px;
   vertical-align: middle;
   /* 1 */
-  background: #1e87f0;
+  background: var(--foregroundprimary);
   color: #fff !important;
   font-size: 11px;
   /* 2 */
@@ -3046,7 +3056,7 @@ select.uk-form-width-xsmall {
 .uk-label {
   display: inline-block;
   padding: 0 10px;
-  background: #1e87f0;
+  background: var(--foregroundprimary);
   line-height: 1.5;
   font-size: 0.875rem;
   color: #fff;
@@ -3061,7 +3071,7 @@ select.uk-form-width-xsmall {
  * Success
  */
 .uk-label-success {
-  background-color: #32d296;
+  background-color: var(--foregroundsuccess);
   color: #fff;
 }
 /*
@@ -3351,7 +3361,7 @@ select.uk-form-width-xsmall {
 /* Focus */
 .uk-search-default .uk-search-input:focus {
   background-color: rgba(0, 0, 0, 0);
-  border-color: #1e87f0;
+  border-color: var(--foregroundprimary);
 }
 /*
  * Icon
@@ -4090,7 +4100,7 @@ select.uk-form-width-xsmall {
   box-sizing: border-box;
   width: 270px;
   padding: 20px 20px;
-  background: #222;
+  background: var(--backgroundsecondary);
   /* 3 */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -4415,13 +4425,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-notification-message-primary {
-  color: #1e87f0;
+  color: var(--foregroundprimary);
 }
 /*
  * Success
  */
 .uk-notification-message-success {
-  color: #32d296;
+  color: var(--foregroundsuccess);
 }
 /*
  * Warning
@@ -5706,7 +5716,7 @@ ul.uk-nav-sub {
 }
 /* Active */
 .uk-subnav-pill > .uk-active > a {
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
   color: #fff;
 }
 /* Disabled
@@ -5894,7 +5904,7 @@ ul.uk-nav-sub {
 /* Active */
 .uk-tab > .uk-active > a {
   color: #333;
-  border-color: #1e87f0;
+  border-color: var(--foregroundprimary);
 }
 /* Disabled */
 .uk-tab > .uk-disabled > a {
@@ -7327,13 +7337,13 @@ ul.uk-nav-sub {
   color: #333 !important;
 }
 .uk-text-primary {
-  color: #1e87f0 !important;
+  color: var(--foregroundprimary) !important;
 }
 .uk-text-secondary {
-  color: #222 !important;
+  color: var(--backgroundsecondary) !important;
 }
 .uk-text-success {
-  color: #32d296 !important;
+  color: var(--foregroundsuccess) !important;
 }
 .uk-text-warning {
   color: #faa05a !important;
@@ -7357,7 +7367,7 @@ ul.uk-nav-sub {
   /* 3 */
   display: inline-block;
   /* 4 */
-  background-color: #1e87f0;
+  background-color: var(--foregroundprimary);
 }
 /* Alignment modifiers
  ========================================================================== */
@@ -7656,10 +7666,10 @@ iframe[data-uk-cover] {
   background-color: #f8f8f8;
 }
 .uk-background-primary {
-  background-color: #1e87f0;
+  background-color: var(--backgroundprimary);
 }
 .uk-background-secondary {
-  background-color: #222;
+  background-color: var(--backgroundsecondary);
 }
 /* Size
  ========================================================================== */

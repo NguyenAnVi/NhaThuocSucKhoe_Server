@@ -14,9 +14,12 @@ class CreateSaleoffTable extends Migration
             $table->string('name');
             $table->double('percent')->default(0);
             $table->integer('amount')->default(0);
+            $table->string('contenturl')->default('');
             $table->datetime('starttime')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->datetime('endtime')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('endtime')->nullable();
             $table->string('imageurl')->default('');
+            $table->integer('status')->default(1);
+
         });
     }
     public function down()

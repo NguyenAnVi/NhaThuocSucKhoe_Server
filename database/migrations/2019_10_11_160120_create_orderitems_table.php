@@ -14,7 +14,8 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->string('product_name');
             $table->integer('price');
-            $table->integer('qty'); // So luong hang
+            $table->integer('discount'); // so tien bot
+            $table->integer('quantity'); // So luong hang
             $table->timestamps();
         });
     }

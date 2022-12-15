@@ -14,16 +14,13 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->getMethod() == 'GET') {
-            if(!Auth::user()){
-                return view('user.auth.login');
-            }
-            else{
-                $data = ([
-                    'general_message'=>'Bạn đã đăng nhập với tên '.Auth::user()->name,
-                    'general_message_type'=>'warning'
+            if(Auth::user()){
+                
+                return redirect()->route('home')->withErrors([
+                    'warning' => 'Bạn đã đăng nhập với tên '.Auth::user()->name,
                 ]);
-                return view('home', $data);
             }
+            return view('user.auth.login');
         }
 
         $request->validate([

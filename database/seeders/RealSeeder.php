@@ -5,16 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class RealSeeder extends Seeder
 {
     public function run()
     {
         DB::table('admins')->insert([
-            [
-                'name' => 'ROOT',
-                'phone' => 'ROOT',
-                'password' => bcrypt('root'),
-            ],
             [
                 'name' => 'Admin01',
                 'phone' => '01',
@@ -136,64 +131,72 @@ class DatabaseSeeder extends Seeder
 
         DB::table('saleoffs')->insert([
             [
-                'name' => 'NONE',
-                'amount' => 0,
-                'percent' => 0,
-                'starttime' => '2022-10-04 15:43:00',
-                'endtime' => '2022-10-04 15:43:00',
-                'imageurl' => ''
-            ],
-            [
                 'name' => 'Siêu deal vui khỏe - Dành cho sản phẩm Chăm sóc cá nhân',
                 'amount' => '55000',
                 'percent' => 0,
+                'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/1.webp'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/1.png'
             ],
             [
                 'name' => 'Siêu deal vui khỏe - Dành cho các sản phẩm chăm sóc sắc đẹp',
                 'amount' => 0,
                 'percent' => '5',
+                'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/2.webp'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/2.png'
             ],
             [
                 'name' => 'KM khi mua Solga',
                 'amount' => 0,
                 'percent' => '30',
+                'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/3.webp'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/3.png'
             ],
             [
                 'name' => 'Tri ân khách hàng',
                 'amount' => 0,
                 'percent' => '30',
+                'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
-                'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/4.jpg'
+                'endtime' => null,
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/4.png'
             ],
             [
                 'name' => 'Black Friday',
                 'amount' => '50000',
                 'percent' => 0,
+                'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/5.jpg'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/5.png'
             ],
         ]);
 
-        try{
-            rrmdir("storage_path('app/public/saleoff')");
-        } catch (\Exception $e){
-            error_log('cantnotdeletefolder'.$e->getMessage());
-        }
+        DB::table('shipping')->insert([
+            [
+                'name' => 'Giao hàng tiết kiệm',
+                'min_weight' => 100,
+                'max_weight' => 50000,
+                'fee' => 1600,
+            ],
+            [
+                'name' => 'Giao hàng tiết kiệm',
+                'min_weight' => 100,
+                'max_weight' => 50000,
+                'fee' => 1600,
+            ],
+            
+        ]);
+
         copyr(storage_path('app/public/backup/saleoff'), storage_path('app/public/saleoff'));
 
         DB::unprepared(
-            "INSERT INTO nhathuocsuckhoedb.categories
+            "INSERT INTO nhathuocsuckhoe.categories
                 (id,name,parent_id,detail,status)
             VALUES
                 ('1', 'Dược phẩm', '0', '', '1'),
@@ -253,7 +256,7 @@ class DatabaseSeeder extends Seeder
                 ('55', 'TestKit', '8', '', '1'),
                 ('56', 'Khác', '8', '', '1');
 
-            INSERT INTO nhathuocsuckhoedb.products
+            INSERT INTO nhathuocsuckhoe.products
                 ( name , detail , price , images , saleoff_id, category_id, stock , sold)
             VALUES
                 ('Băng cá nhân che phủ vết thương Urgo Optiskin 10cm x 7cm (3 miếng)', '<p><strong>Th&agrave;nh phần</strong><br>Bao gồm một lớp mỏng polyurethane phủ keo acrylic c&oacute; t&iacute;nh dung nạp qua da cao v&agrave; lớp gạc thấm h&uacute;t kh&ocirc;ng dệt c&oacute; khả năng thấm h&uacute;t cao, được bao phủ bởi một lớp vảo vệ polyethylene kh&ocirc;ng d&iacute;nh. Chất keo được bảo vệ bởi hai c&aacute;nh c&oacute; r&atilde;nh v&agrave; băng được bao bởi một lớp film trong suốt gi&uacute;p băng vết thương dễ d&agrave;ng hơn. Băng được khử tr&ugrave;ng bằng ethylene oxide.</p><p><strong>Ưu điểm</strong><br>Optiskin l&agrave; loại băng gạc b&aacute;m d&iacute;nh v&ocirc; tr&ugrave;ng c&oacute; t&iacute;nh b&aacute;n thấm.<br>- Kh&aacute;ng khuẩn v&agrave; ngăn ngừa nhiễm tr&ugrave;ng từ b&ecirc;n ngo&agrave;i.<br>- B&aacute;n thấm, cho kh&iacute; v&agrave; hơi nước đi qua, do đ&oacute; ngăn ngừa nguy cơ hăm da v&agrave; cho ph&eacute;p lưu băng d&agrave;i ng&agrave;y.<br>- Kh&ocirc;ng thấm nước gi&uacute;p bệnh nh&acirc;n c&oacute; thể tắm rửa, vệ sinh.<br>- Mềm mại, co gi&atilde;n c&oacute; thể băng bất cứ chỗ n&agrave;o tr&ecirc;n c&oacute; thể m&agrave; vẫn cử động b&igrave;nh thường.<br>- Trong suốt, gi&uacute;p dễ d&agrave;ng theo d&otilde;i mức độ thấm h&uacute;t của băng.<br>- Băng ph&ugrave; hợp với cả da nhạy cảm.</p><p><strong>C&ocirc;ng dụng</strong><br>Optiskin l&agrave; băng gạc sử dụng để bao phủ l&ecirc;n tất cả c&aacute;c vết thương ngo&agrave;i da (vết kh&acirc;u, vết trầy xước), hoặc c&aacute;c loại dụng cụ (que d&ograve;, ống dẫn...). Do Optiskin cho ph&eacute;p bệnh nh&acirc;n c&oacute; thể tắm rửa, vệ sinh n&ecirc;n băng đặc biệt ph&ugrave; hợp cho c&aacute;c liệu ph&aacute;p tắm ng&acirc;m hay n&oacute;i chung nhanh ch&oacute;ng bắt đầu lại c&aacute;c hoạt động sau phẫu thuật.</p><p><strong>Hướng dẫn sử dụng</strong><br>1. Chuẩn bị da: Cạo l&ocirc;ng nếu cẩn thiết đảm bảo băng d&iacute;nh chắc hơn. Cầm m&agrave;u vết thương. S&aacute;t tr&ugrave;ng to&agrave;n bộ v&ugrave;ng vết thương hoặc v&ugrave;ng d&aacute;n băng. Lau da thật kh&ocirc;.<br>2. D&aacute;n băng: Lấy băng optiskin ra khỏi bao giấy. Giữ hai c&aacute;nh giấy bảo vệ bằng ng&oacute;n c&aacute;i v&agrave; ng&oacute;n trỏ, hướng mặt keo v&agrave; &aacute;p gạc xuống vết thương. &Aacute;p mặt keo xuống rồi k&eacute;o hai c&aacute;nh giấy ra hai ph&iacute;a. Ấn nhẹ l&ecirc;n băng để &aacute;p keo cho d&iacute;nh. Lấy bỏ hai c&aacute;nh trong suốt ở ph&iacute;a ngo&agrave;i băng, bắt đầu từ khe giữa. Vuốt nhẹ từ giữa băng ra ngo&agrave;i để d&iacute;nh chắc hơn nữa.<br>3. Bỏ băng: Gỡ một m&eacute;p băng rồi nhẹ nh&agrave;ng k&eacute;o thẳng ra ngo&agrave;i để l&agrave;m căng v&agrave; tr&oacute;c keo trong l&uacute;c tay kia giữ cạnh băng b&ecirc;n kia để tạo đối lực. Gỡ như vậy bệnh nh&acirc;n sẽ kh&ocirc;ng đau v&agrave; da &iacute;t bị k&iacute;ch th&iacute;ch d&ugrave; phải thay băng nhiều lần.</p><p><em>Lưu &yacute;:</em><br>- C&oacute; thể lưu băng đến 7 ng&agrave;y.<br>- Trước khi sử dụng, kiểm tra t&igrave;nh trạng nguy&ecirc;n vẹn của bao b&igrave; băng để đảm bảo băng v&ocirc; tr&ugrave;ng.<br>- Tr&aacute;nh k&eacute;o căng khi d&aacute;n băng.<br>- Kh&ocirc;ng sử dụng băng cho c&aacute;c vết thương hoặc c&aacute;c vết thương bị nhiễm tr&ugrave;ng, đang ra m&aacute;u hoặc tiết dịch nhiều.<br>- Theo d&otilde;i thường xuy&ecirc;n vết thương v&agrave; v&ugrave;ng da xung quanh để ph&aacute;t hiện ngay c&aacute;c dấu hiệu nhiễm tr&ugrave;ng như: đau, đỏ, ph&ugrave; nề, c&oacute; m&ugrave;i h&ocirc;i hoặc mưng mủ bất thường.<br>- Kh&ocirc;ng d&ugrave;ng Optiskin để bao l&ecirc;n c&aacute;c ống th&ocirc;ng tĩnh mạch trung t&acirc;m. Sử dụng một lần, kh&ocirc;ng tiệt tr&ugrave;ng để sử dụng lại.</p><p><strong>Đ&oacute;ng g&oacute;i:</strong> Hộp 3 miếng, k&iacute;ch thước 10 cm x 7 cm</p><p><strong>Xuất xứ thương hiệu:</strong> Th&aacute;i Lan</p><p><strong>Sản xuất tại:</strong> Th&aacute;i Lan<br>&emsp;</p>', '50000', '[\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/1\\/1Bng-c-nhn-che-ph-vt-thng-Urgo-Optiskin-10cm-x-7cm-3-ming-1665077397.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/1\\/2Bng-c-nhn-che-ph-vt-thng-Urgo-Optiskin-10cm-x-7cm-3-ming-1665077397.webp\"]', '1', 23 , 50 , 20),
@@ -270,11 +273,6 @@ class DatabaseSeeder extends Seeder
                 ('Bộ sản phẩm size nhỏ du lịch Pharmacist Formulators Sữa rửa mặt dưỡng ẩm- Kem dưỡng ẩm chống nắng - Serum dưỡng ẩm', '<p><strong>Sữa rửa mặt dưỡng ẩm - Moisturising Cleansing Milk</strong></p><p><strong>Th&agrave;nh phần&nbsp;</strong><br>Aqua, Glycerin, Lauryl glucoside, Cetearyl alcohol, Glyceryl stearate, Palmitic acid, Stearic acid, Phenoxyethanol, Propylene glycol&hellip;</p><p><strong>C&ocirc;ng dụng:&nbsp;</strong>Gi&uacute;p làm sạch bã nhờn và bụi b&acirc;̉n tr&ecirc;n da, giữ &acirc;̉m cho da, giúp da săn chắc.</p><p><strong>Hướng dẫn sử dụng:&nbsp;</strong>Cho một &iacute;t sữa rửa mặt v&agrave;o l&ograve;ng b&agrave;n tay hoặc b&ocirc;ng thấm. Thoa l&ecirc;n da mặt rồi massage nhẹ nh&agrave;ng l&ecirc;n mặt cho đến khi da sạch ho&agrave;n to&agrave;n. Sau đ&oacute; rửa sạch bằng nước ấm. Sản phẩm an to&agrave;n cho da nhạy cảm.</p><p><br></p><p><strong>Kem dưỡng ẩm chống nắng SPF 50+ chứa Axit Hyaluronic - Moisturising Cream SPF50+</strong></p><p><strong>Th&agrave;nh phần&nbsp;</strong></p><p>Aqua, Homosalate, Ethylhexyl salicylate, Dibutyl adipate, Butyl methoxydibenzoylmethane, Glycerin, Titanium dioxide (nano), Methylene bis-benzotriazolyl tetramethylbutylphenol (nano), Caprylyl caprylate/caprate 2,00&hellip;</p><p><strong>C&ocirc;ng dụng:&nbsp;</strong>Gi&uacute;p giữ ẩm cho da, bảo v&ecirc;̣ da dưới tác hại của tia UV.</p><p><strong>Hướng dẫn sử dụng:&nbsp;</strong>Sản phẩm kem dưỡng ẩm kết hợp chống nắng SPF 50+, an to&agrave;n cho da nhạy cảm. Thoa kem đều khắp da mặt, tr&aacute;nh v&ugrave;ng mắt.</p><p><br></p><p><strong>Serum cấp ẩm chứa Axit Hyaluronic 40% - Moisturising Serum</strong></p><p><strong>Th&agrave;nh phần&nbsp;</strong></p><p>Aqua, Glycerin, Dimethicone, Dimethicone crosspolymer, Cyclopentasiloxane, Caprylyl glycol, Tocopheryl acetate, Sodium hyaluronate, Isohexadecane&hellip;</p><p><strong>C&ocirc;ng dụng:&nbsp;</strong>Gi&uacute;p giữ ẩm cho da, l&agrave;m tăng độ đ&agrave;n hồi, giảm nếp nhăn, làm sáng da, giúp da m&ecirc;̀m mịn.</p><p><strong>Hướng dẫn sử dụng:&nbsp;</strong>Thoa đều serum khắp da mặt v&agrave; v&ugrave;ng cổ trước khi sử dụng kem dưỡng ẩm. Sản phẩm an to&agrave;n cho da nhạy cảm.</p><p><strong>Bảo quản:&nbsp;</strong>Nơi kh&ocirc; r&aacute;o tho&aacute;ng m&aacute;t. Lu&ocirc;n đ&oacute;ng nắp sau khi sử dụng. Kh&ocirc;ng bảo quản nơi c&oacute; nhiệt độ qu&aacute; cao hoặc qu&aacute; thấp, tr&aacute;nh &aacute;nh s&aacute;ng trực tiếp.</p><p><br></p><p><strong>Lưu &yacute; an to&agrave;n:&nbsp;</strong>Trong trường hợp phản ứng do qu&aacute; mẫn cảm, ngưng sử dụng v&agrave; hỏi &yacute; kiến dược sĩ hoặc b&aacute;c sĩ. Để xa tầm tay trẻ em. Chỉ d&ugrave;ng ngo&agrave;i da.Lưu &yacute; an to&agrave;n: Trong trường hợp phản ứng do qu&aacute; mẫn cảm, ngưng sử dụng v&agrave; hỏi &yacute; kiến dược sĩ hoặc b&aacute;c sĩ. Để xa tầm tay trẻ em. Chỉ d&ugrave;ng ngo&agrave;i da.</p><p><strong>Sản xuất tại:&nbsp;</strong>Italia (&Yacute;)</p><p><strong>Sản xuất bởi:</strong> UNIFARCO SPA</p><p><strong>Ph&acirc;n phối độc quyền:&nbsp;</strong>C&ocirc;ng ty cổ phần dược phẩm Pharmacity</p><p><strong>Số giấy XNQC:</strong> 1035/2022/XNQC-YTHCM</p>', '845000', '[\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/1B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/2B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/3B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/4B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/5B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\",\"http:\\/\\/127.0.0.1:8000\\/storage\\/products\\/12\\/6B-sn-phm-size-nh-du-lch-Pharmacist-Formulators-Sa-ra-mt-dng-m--Kem-dng-m-chng-nng---Serum-dng-m-1665079693.webp\"]', '5', 27, 1, 56);
         ");
 
-        try{
-            rrmdir("storage_path('app/public/products')");
-        } catch (\Exception $e){
-            error_log('cantnotdeletefolder'.$e->getMessage());
-        }
         copyr(storage_path('app/public/backup/products'), storage_path('app/public/products'));
     }
 }
