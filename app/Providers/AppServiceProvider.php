@@ -27,5 +27,10 @@ class AppServiceProvider extends ServiceProvider
         Paginator::defaultView('partials/pagination');
  
         Paginator::defaultSimpleView('partials/simple-pagination');
+
+        view()->composer('user.partials.lang', function ($view) {
+            $view->with('current_locale', app()->getLocale());
+            $view->with('available_locales', config('app.available_locales'));
+        }); 
     }
 }

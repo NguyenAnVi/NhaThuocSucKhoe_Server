@@ -8,15 +8,19 @@ use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\OrderController;
 
 // Guest
-Route::match(['get'], '/', function(){return redirect('home');});
-Route::match(['get'], '/home', [HomeController::class, 'gethomepage'])->name('home');
+// Route::match(['get'], '/', function(){return redirect('home');});
+// Route::match(['get'], '/home', [HomeController::class, 'gethomepage'])->name('home');
+// Route::match(['get'], '/{locale?}', [HomeController::class, 'gethomepage'])->name('home');
+Route::match(['get'], '/', [HomeController::class, 'gethomepage'])->name('home');
+
+
 // Route::match(['get'], '/search/{keyword}', [SearchController::class, 'search'])->name('search');
 // Route::match(['get'], '/product/{id}', [ProductController::class, 'getproductpage'])->name('viewproduct');
 Route::match(['get'], '/show/{type}/{id}', [HomeController::class, 'show']);
 
 // User_Auth
 Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
-Route::match(['post'], '/logout', [LoginController::class, 'logout'])->name('logout');
+Route::match(['post', 'get'], '/logout', [LoginController::class, 'logout'])->name('logout');
 Route::match(['get', 'post'], '/register', [LoginController::class, 'register'])->name('register');
 
 Route::match(['post'],'add-cart', [CartController::class,'save_cart'])->name('addCart');
@@ -38,8 +42,11 @@ Route::match(['get'], '/orders', [OrderController::class, 'index'])->name('order
 Route::match(['get'], '/order/detail/{id}', [OrderController::class, 'detail']);
 Route::match(['post'], '/order/detail', [OrderController::class, 'cancel'])->name('cancelOrder');
 
+// Localization
+Route::match('get', '/language/{locate}', [HomeController::class, 'setlocate']);
 
 
+Route::match(['get'], '/testing/tested', [HomeController::class, 'test']);
 
 
 Route::fallback([HomeController::class, 'notFound']);

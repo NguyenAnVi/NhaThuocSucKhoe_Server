@@ -7,35 +7,21 @@
 @section('content')
 <div class="uk-flex uk-flex-column">
   {{-- saleoff banner --}}
-  <div class="uk-flex uk-height-1-1 uk-flex-wrap uk-margin-bottom">
-    {{-- slideshow --}}
-    <div id="slideshow" class="uk-width-2-3@l uk-height-medium" style="overflow: hidden">
-      <div class="uk-position-relative uk-visible-toggle uk-light  uk-height-1-1" tabindex="1" uk-slideshow="animation: pull; autoplay:true; "  >
-        <ul class="uk-slideshow-items">
-          @foreach ($saleoffs as $item)
-          @if($item->imageurl!="")
-            <li>
-              <img class=" uk-padding-small uk-comment-avatar uk-object-cover uk-width-1-1 uk-height-medium" src="{!!$item->imageurl!!}">
-            </li>
-          @endif
-          @endforeach
-        </ul>
-        <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-        <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
-      </div>
-    </div>
-    {{-- listview --}}
-    <div class="uk-width-1-3@l uk-height-1-1 uk-overflow-auto uk-height-medium">
-      <div class="uk-flex uk-flex-column uk-width-1-1">
+  <div id="slideshow" class="uk-width-1-1" style="overflow: hidden">
+    <div class="uk-position-relative uk-visible-toggle uk-light uk-width-1-1" tabindex="1" uk-slideshow="ratio:3:1; animation: pull; autoplay:true; "  >
+      <ul class="uk-slideshow-items">
         @foreach ($saleoffs as $item)
-          @if($item->imageurl!="")
-            <div class="uk-card uk-card-default">
-              <img class="uk-width-1-1 uk-padding-small uk-padding-remove-verti" src="{!!$item->imageurl!!}">
-            </div>
-          @endif
-          @endforeach
-      </div>
+        @if($item->imageurl!="")
+          <li>
+            <img class="uk-object-cover uk-comment-avatar uk-width-1-1" src="{!!$item->imageurl!!}">
+          </li>
+        @endif
+        @endforeach
+      </ul>
+      <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+      <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
     </div>
+
   </div>
 
   {{-- categories --}}

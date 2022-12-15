@@ -1,10 +1,4 @@
 <div id="message_field" class="uk-container uk-padding-horizontal">
-@if(isset($general_message))
-    <div class="uk-margin-top uk-alert-@if(isset($general_message_type)){{$general_message_type}}@endif" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        <p><?=$general_message?></p>
-    </div>
-@endif
 
 @error('danger')
 <div class="uk-margin-top uk-alert-danger" uk-alert>
@@ -18,6 +12,7 @@
     <a class="uk-alert-close" uk-close></a>
     <p>{{ $message }}</p>
 </div>
+
 @enderror
 
 @error('warning')
@@ -27,5 +22,12 @@
 </div>
 @enderror
 
+@foreach ($errors->all() as $key => $error)
+{{$key.'  '.$error}}
+    <script>
+        Uikit.notification({{$error}}, {status : {!! $key !!} })
+    </script>
+@endforeach
+    
 </div>
 

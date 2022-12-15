@@ -7,12 +7,14 @@ use App\Models\Category;
 use App\Http\Controllers\User\Resources\ProductController;
 use App\Http\Controllers\User\Resources\SaleoffController;
 use App\Models\Product;
-use App\Models\SaleOff;
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-	public function gethomepage(){
+	public function gethomepage($locale = null){
+		// if (isset($locale) && in_array($locale, config('app.available_locales'))) {
+		// 		app()->setLocale($locale);
+		// }
+			
 		$saleoff_pro = Product::where('saleoff_id', '!=', '1')->get();
 		$pro_cat_list = [];
 		foreach($saleoff_pro as $item){
@@ -58,6 +60,23 @@ class HomeController extends Controller
 		};
 
 		return;
+	}
+
+	public function setlocate($locate){
+		if (! in_array($locate, ['en', 'vi'])) {
+			abort(400);
+		}	
+
+		app()->setLocale((string)$locate);
+		session()->put('locale', $locate);
+
+		return redirect()->back()->withErrors([
+			'success' => __('general.auth.set_locate_success'),
+		]);
+	}
+
+	public function test(){
+		return view('tested');
 	}
 
 	public function notFound(){

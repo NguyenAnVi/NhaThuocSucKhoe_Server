@@ -14,6 +14,11 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'author' => [
+        'name' => 'Nguyễn An Vĩ',
+        'email' => 'vib1910178@student.ctu.edu.vn',
+        'phone' => '0939963285',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -94,6 +99,11 @@ return [
     */
 
     'fallback_locale' => 'en',
+
+    'available_locales' => [
+        'English' => 'en',
+        'Vietnamese' => 'vi',
+    ],
 
     /*
     |--------------------------------------------------------------------------
