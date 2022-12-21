@@ -11,21 +11,21 @@
 	<title>{{ config('app.name', 'Nhà thuốc Sức Khỏe') }}</title>
 
 	{{-- Favicon --}}
-	<link rel="icon" type="image/x-icon" href="{{asset('logo/favicon.png')}}">
+	<link rel="icon" type="image/x-icon" href="{{asset('storage/images/logo/favicon.png')}}">
 
 	<!-- Styles -->
 	<link href="{{ asset('css/uikit.css') }}" rel="stylesheet">
 	<style>
 		* { /* Firefox */
-			scrollbar-width: auto;
-			scrollbar-color: #1e87f0  #ffffff;
-			cursor: url("{{asset('logo/cursor.cur')}}"), auto;
+			scrollbar-width: 0px;
+			scrollbar-color: var(--foregroundprimary)  #ffffff;
+			cursor: url("{{asset('storage/images/cursor.cur')}}"), auto;
 		}
-		*::-webkit-scrollbar {width: 15px;}/* Chrome, Edge, and Safari */
+		*::-webkit-scrollbar {width: 0px;}/* Chrome, Edge, and Safari */
 		*::-webkit-scrollbar-track {background: rgb(236, 236, 236);}
 		*::-webkit-scrollbar-thumb {
 			background-color: #ffffff;
-			border: 10px solid #1e87f0;
+			border: 10px solid var(--foregroundprimary);
 		}
 		label[for]{
 			user-select: none;
@@ -34,23 +34,33 @@
 		-webkit-user-select: none;
 		-o-user-select: none;
 		}
+
+		body{
+			background-image:url('{{asset('storage/images/background.jpg')}}');
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+		
 	</style>
 	@yield('css')
 
+
 	<script src="{{ asset('js/uikit.js') }}"></script>
 	<script src="{{ asset('js/uikit-icons.js') }}"></script>
+	<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
 </head>
 <body>
 	<div id="app">
 		<div class="uk-background-primary uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical  uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
 			<nav class="uk-flex uk-flex-between  uk-container">
-				<div>Hotline: 0939.963.285</div>
+				<div>Hotline đặt hàng (Miễn phí): 0939.963.285</div>
 				<div>@includeIf('user.partials.lang')</div>
 			</nav>
 			<nav class="uk-navbar uk-navbar-transparent uk-container">
 					<div class="uk-nav-overlay uk-navbar-left">
-						<img src="{{asset('logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
-						<a class="uk-navbar-item uk-logo" href="{{route('home')}}">{{ config('app.name', 'Laravel') }}</a>
+						<img src="{{asset('storage/images/logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
+						<a class="uk-navbar-item uk-logo" href="{{route('home')}}">{{ config('app.name') }}</a>
 						@includeIf('user.partials.category')
 					</div>
 					<div class="uk-nav-overlay uk-navbar-right">
@@ -74,8 +84,9 @@
 		</div>
 		
 		<main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
-			@includeIf('admin.partials.generalmessage')
-			<div class="uk-padding-small uk-container">
+
+			
+			<div class="">
 				@yield('content')
 			</div>
 		</main>
@@ -99,5 +110,17 @@
 	</div>
 
 </body>
+
+
 @yield('js')
+
+@if($errors->any())
+<script>
+	$(document).ready(function(){
+		{!! implode('', $errors->all("UIkit.notification(':message', {pos: 'bottom-right'});")) !!}    
+	});
+</script>
+@endif
+
+	
 </html>

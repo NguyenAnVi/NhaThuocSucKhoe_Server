@@ -5,14 +5,12 @@
     @guest
       @if (Route::has('login'))
         <li>
-          <a href="{{ route('login') }}">{{ __('general.auth.login') }}</a>
+          <a id="login-button" data-route="{{ route('login') }}">@lang('auth.login')</a>
         </li>
+        <div id="login-div" uk-modal></div>
+        
       @endif
-      @if (Route::has('register'))
-        <li>
-          <a href="{{ route('register') }}">{{ __('general.auth.register') }}</a>
-        </li>
-      @endif
+     
     @else
       <li class="uk-nav-header">
         {{__(Auth::user()->name)}}
@@ -33,3 +31,20 @@
     @endguest
   </ul>
 </div>
+
+<script>
+
+  $('#login-button').on('click',function(){
+    $route = $(this).data('route');
+    $.ajax({
+      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+      type: 'get',
+      url: $route,
+      success:function(obj){
+        $('#login-div').html((JSON.parse(obj)));
+        UIkit.modal('#group1').show();
+      }
+    });
+  });
+
+</script>

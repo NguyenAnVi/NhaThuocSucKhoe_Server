@@ -20,8 +20,9 @@ Route::match(['get'], '/show/{type}/{id}', [HomeController::class, 'show']);
 
 // User_Auth
 Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
+Route::match(['get'], '/checkphone', [LoginController::class, 'checkphone'])->name('checkphone');
 Route::match(['post', 'get'], '/logout', [LoginController::class, 'logout'])->name('logout');
-Route::match(['get', 'post'], '/register', [LoginController::class, 'register'])->name('register');
+Route::match(['post'], '/register', [LoginController::class, 'register'])->name('register');
 
 Route::match(['post'],'add-cart', [CartController::class,'save_cart'])->name('addCart');
 Route::match(['get'],'show-cart', [CartController::class,'show_cart'])->name('showCart');

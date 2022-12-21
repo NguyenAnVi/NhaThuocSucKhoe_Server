@@ -51,6 +51,7 @@ class HomeController extends Controller
 				break;
 			case 'category':
 				//
+				return view('tested');
 				break;
 			case 'saleoff':
 				//
@@ -76,7 +77,13 @@ class HomeController extends Controller
 	}
 
 	public function test(){
-		return view('tested');
+		// return view('tested');
+		return redirect()->back()->withErrors([
+			'bird'=>'Im a bird!',
+			'bird'=>'Im a birdy!',
+
+			'dog' => 'woof woof',
+		]);
 	}
 
 	public function notFound(){

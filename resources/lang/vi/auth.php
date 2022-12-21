@@ -15,5 +15,19 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'login' => 'Đăng nhập',
+    'logout' => 'Đăng xuất',
+    'register' => 'Đăng ký',
+    'confirm' => 'Xác nhận',
+    'error' => 'Có lỗi xảy ra',
+    
+    'msg' => [
+        'login_success' => 'Đăng nhập thành công',  
+        'type_phone' => 'Nhập số điện thoại',
+        'type_name' => 'Họ và tên',
+        'type_password' => 'Nhập mật khẩu',
+        'type_newpassword' => 'Nhập mật khẩu mới',
+        'type_newpasswordconfirm' => 'Nhập lại mật khẩu',
+        
+    ],
 ];

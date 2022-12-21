@@ -1,6 +1,5 @@
-<div data-type="product" data-id="{{$item->id}}" 
-    class="category-{{$item->category_id}} uk-padding-small uk-padding-remove-left uk-padding-remove-top">
-  <div class="uk-card uk-card-secondary uk-border-rounded uk-overflow-hidden">
+<div data-type="product" data-id="{{$item->id}}" class="category-{{$item->category_id}}">
+  <div class="uk-border-rounded uk-card uk-overflow-hidden  vi-frame vi-gap">
     <div class="product-image uk-padding-small">
       <img style="aspect-ratio:1/1;" class="uk-object-cover" src="{{getImageAt($item->images, 0)}}" alt="">
     </div>

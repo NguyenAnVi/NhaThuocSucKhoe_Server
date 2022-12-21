@@ -24,6 +24,29 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        switch (strtoupper(PHP_OS)) {
+            case 'WINNT':
+                # code...
+                error_log('Trying to start MySQL service on Windows');
+                try {
+                    system('cmd /c mysqlservice.LNK');
+                    error_log('Successfully started MySQL server');
+        
+                } catch (\Throwable $th) {
+                    error_log('Can not start mysql with Window');
+                }
+                break;
+            case 'LINUX':
+                # code...
+                error_log('Detect Linux OS - cannot start MYSQL Server autom');
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+        
         Paginator::defaultView('partials/pagination');
  
         Paginator::defaultSimpleView('partials/simple-pagination');

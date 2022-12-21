@@ -5,126 +5,101 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RealSeeder extends Seeder
+class Testing extends Seeder
 {
     public function run()
     {
         DB::table('admins')->insert([
             [
                 'name' => 'Admin01',
-                'phone' => '01',
-                'password' => bcrypt('01'),
+                'phone' => '0111111111',
+                'password' => bcrypt('123456'),
             ],
             [
                 'name' => 'Admin02',
-                'phone' => '02',
-                'password' => bcrypt('02'),
+                'phone' => '0222222222',
+                'password' => bcrypt('123456'),
+
             ],
             [
                 'name' => 'Admin03',
-                'phone' => '03',
-                'password' => bcrypt('03'),
-            ],
-            [
-                'name' => 'Admin04',
-                'phone' => '04',
-                'password' => bcrypt('04'),
-            ],
-            [
-                'name' => 'Admin05',
-                'phone' => '05',
-                'password' => bcrypt('05'),
-            ],
-            [
-                'name' => 'Admin06',
-                'phone' => '06',
-                'password' => bcrypt('06'),
+                'phone' => '0333333333',
+                'password' => bcrypt('123456'),
+
             ],
         ]);
 
         DB::table('users')->insert([
             [
                 'name' => 'User01',
-                'phone' => '1',
-                'password' => bcrypt('1'),
-                'address' => 'Vinh Phu, Thoai Son, An Giang',
+                'phone' => '0111111111',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User02',
-                'phone' => '2',
-                'password' => bcrypt('1'),
-                'address' => 'Long Kien, Cho Moi, An Giang',
+                'phone' => '0222222222',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User03',
-                'phone' => '3',
-                'password' => bcrypt('1'),
-                'address' => 'Phuong 1, Vi Thanh, Hau Giang',
+                'phone' => '0333333333',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User04',
-                'phone' => '4',
-                'password' => bcrypt('1'),
-                'address' => 'Phu Thanh, Tan Phu, TPHCM',
+                'phone' => '0444444444',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User05',
-                'phone' => '5',
-                'password' => bcrypt('1'),
-                'address' => 'Phu Trung, Tan Phu, TPHCM',
+                'phone' => '0555555555',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User06',
-                'phone' => '6',
-                'password' => bcrypt('1'),
-                'address' => '112A1 Hao Nam O Cho Dua Ward,Ho Chi Minh City',
+                'phone' => '0666666666',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User07',
-                'phone' => '7',
-                'password' => bcrypt('1'),
-                'address' => '5th Flr. 63-65 Ham Nghi Nguyen Thai Binh Ward,Ho Chi Minh City',
+                'phone' => '0777777777',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User08',
-                'phone' => '8',
-                'password' => bcrypt('1'),
-                'address' => '132 Dao Duy Tu Ward 6 Dist.10,Ho Chi Minh City',
+                'phone' => '0888888888',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User09',
-                'phone' => '9',
-                'password' => bcrypt('1'),
-                'address' => '778/12 Nguyen Kiem Ward 4,Ho Chi Minh City',
+                'phone' => '0999999999',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User10',
-                'phone' => '10',
-                'password' => bcrypt('1'),
-                'address' => '20/33 Le Thanh Tong Street,Thanh Hoa',
+                'phone' => '0101010101',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User11',
-                'phone' => '11',
-                'password' => bcrypt('1'),
-                'address' => '110 Hoa Cuc Street Ward 7,Can Tho',
+                'phone' => '1111111111',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
             [
                 'name' => 'User12',
-                'phone' => '12',
-                'password' => bcrypt('1'),
-                'address' => 'Highway 14 Group 1 Quarter 4,Binh Phuoc',
+                'phone' => '1212121212',
+                'password' => bcrypt('123456'),
                 'point' => 0,
             ],
         ]);
@@ -137,7 +112,7 @@ class RealSeeder extends Seeder
                 'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/1.png'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/1.jpg'
             ],
             [
                 'name' => 'Siêu deal vui khỏe - Dành cho các sản phẩm chăm sóc sắc đẹp',
@@ -146,7 +121,7 @@ class RealSeeder extends Seeder
                 'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/2.png'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/2.jpg'
             ],
             [
                 'name' => 'KM khi mua Solga',
@@ -155,7 +130,7 @@ class RealSeeder extends Seeder
                 'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/3.png'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/3.jpg'
             ],
             [
                 'name' => 'Tri ân khách hàng',
@@ -164,7 +139,7 @@ class RealSeeder extends Seeder
                 'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => null,
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/4.png'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/4.jpg'
             ],
             [
                 'name' => 'Black Friday',
@@ -173,7 +148,7 @@ class RealSeeder extends Seeder
                 'contenturl' => '',
                 'starttime' => '2022-10-04 15:43:00',
                 'endtime' => '2022-10-31 15:42:00',
-                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/5.png'
+                'imageurl' => 'http://127.0.0.1:8000/storage/saleoff/banners/5.jpg'
             ],
         ]);
 
@@ -197,64 +172,64 @@ class RealSeeder extends Seeder
 
         DB::unprepared(
             "INSERT INTO nhathuocsuckhoe.categories
-                (id,name,parent_id,detail,status)
+                (id,name,parent_id,detail,imageurl,status)
             VALUES
-                ('1', 'Dược phẩm', '0', '', '1'),
-                ('2', 'Chăm sóc sức khỏe', '0', '', '1'),
-                ('3', 'Chăm sóc cá nhân', '0', '', '1'),
-                ('4', 'Sản phẩm tiện lợi', '0', '', '1'),
-                ('5', 'Thực phẩm chức năng', '0', '', '1'),
-                ('6', 'Mẹ và Bé', '0', '', '1'),
-                ('7', 'Chăm sóc sắc đẹp', '0', '', '1'),
-                ('8', 'Thiết bị y tế', '0', '', '1'),
-                ('9', 'Khuyến Mãi HOT💥', '0', '', '1'),
-                ('10', 'Thuốc không kê đơn', '1', '', '1'),
-                ('11', 'Thuốc kê đơn', '1', '', '1'),
-                ('12', 'Thực phẩm dinh dưỡng', '2', '', '1'),
-                ('13', 'Dụng cụ sơ cứu', '2', '', '1'),
-                ('14', 'Kế hoạch gia đình', '2', '', '1'),
-                ('15', 'Chăm sóc mắt/tai/mũi', '2', '', '1'),
-                ('16', 'Chăm sóc chân', '2', '', '1'),
-                ('17', 'Khẩu trang y tế', '2', '', '1'),
-                ('18', 'Chống muỗi', '2', '', '1'),
-                ('19', 'Dầu tràm, dầu massage', '2', '', '1'),
-                ('20', 'Sản phẩm phòng tắm', '3', '', '1'),
-                ('21', 'Sản phẩm khử mùi', '3', '', '1'),
-                ('22', 'Chăm sóc tóc', '3', '', '1'),
-                ('23', 'Vệ sinh phụ nữ', '3', '', '1'),
-                ('24', 'Chăm sóc nam giới', '3', '', '1'),
-                ('25', 'Chăm sóc răng miệng', '3', '', '1'),
-                ('26', 'Chăm sóc cơ thể', '3', '', '1'),
-                ('27', 'Hàng tổng hợp', '4', '', '1'),
-                ('28', 'Hàng bách hóa', '4', '', '1'),
-                ('29', 'Nhóm dạ dày', '5', '', '1'),
-                ('30', 'Nhóm tim mạch', '5', '', '1'),
-                ('31', 'Nhóm đường huyết', '5', '', '1'),
-                ('32', 'Nhóm hô hấp', '5', '', '1'),
-                ('33', 'Nhóm thần kinh', '5', '', '1'),
-                ('34', 'Nhóm xương khớp', '5', '', '1'),
-                ('35', 'Giảm cân', '5', '', '1'),
-                ('36', 'Chăm sóc sắc đẹp', '5', '', '1'),
-                ('37', 'Chăm sóc sức khỏe nam và nữ', '5', '', '1'),
-                ('38', 'Nhóm Mắt/Tai/Mũi', '5', '', '1'),
-                ('39', 'Vitamin tổng hợp và khoáng chất', '5', '', '1'),
-                ('40', 'Chăm sóc tóc', '5', '', '1'),
-                ('41', 'Nhóm dành cho Gan', '5', '', '1'),
-                ('42', 'Nhóm khác', '5', '', '1'),
-                ('43', 'Chăm sóc em bé', '6', '', '1'),
-                ('44', 'Dành cho trẻ em', '5', '', '1'),
-                ('45', 'Sản phẩm dành cho mẹ', '5', '', '1'),
-                ('46', 'Dành cho phụ nữ mang thai', '5', '', '1'),
-                ('47', 'Chăm sóc mặt', '7', '', '1'),
-                ('48', 'Sản phẩm chống nắng', '7', '', '1'),
-                ('49', 'Dụng cụ làm đẹp', '7', '', '1'),
-                ('50', 'Dược - Mỹ phẩm', '7', '', '1'),
-                ('51', 'Nhiệt kế', '8', '', '0'),
-                ('52', 'Máy đo huyết áp', '8', '', '1'),
-                ('53', 'Máy đo đường huyết', '8', '', '1'),
-                ('54', 'Máy xông khí dung', '8', '', '1'),
-                ('55', 'TestKit', '8', '', '1'),
-                ('56', 'Khác', '8', '', '1');
+                ('1', 'Dược phẩm', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('2', 'Chăm sóc sức khỏe', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('3', 'Chăm sóc cá nhân', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('4', 'Sản phẩm tiện lợi', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('5', 'Thực phẩm chức năng', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('6', 'Mẹ và Bé', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('7', 'Chăm sóc sắc đẹp', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('8', 'Thiết bị y tế', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('9', 'Khuyến Mãi HOT💥', '0', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('10', 'Thuốc không kê đơn', '1', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('11', 'Thuốc kê đơn', '1', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('12', 'Thực phẩm dinh dưỡng', '2', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('13', 'Dụng cụ sơ cứu', '2', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('14', 'Kế hoạch gia đình', '2', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('15', 'Chăm sóc mắt/tai/mũi', '2', '', 'http://127.0.0.1:8000/storage/category/duocpham.webp', '1'),
+                ('16', 'Chăm sóc chân', '2', '', '', '1'),
+                ('17', 'Khẩu trang y tế', '2', '', '', '1'),
+                ('18', 'Chống muỗi', '2', '', '', '1'),
+                ('19', 'Dầu tràm, dầu massage', '2', '', '', '1'),
+                ('20', 'Sản phẩm phòng tắm', '3', '', '', '1'),
+                ('21', 'Sản phẩm khử mùi', '3', '', '', '1'),
+                ('22', 'Chăm sóc tóc', '3', '', '', '1'),
+                ('23', 'Vệ sinh phụ nữ', '3', '', '', '1'),
+                ('24', 'Chăm sóc nam giới', '3', '', '', '1'),
+                ('25', 'Chăm sóc răng miệng', '3', '', '', '1'),
+                ('26', 'Chăm sóc cơ thể', '3', '', '', '1'),
+                ('27', 'Hàng tổng hợp', '4', '', '', '1'),
+                ('28', 'Hàng bách hóa', '4', '', '', '1'),
+                ('29', 'Nhóm dạ dày', '5', '', '', '1'),
+                ('30', 'Nhóm tim mạch', '5', '', '', '1'),
+                ('31', 'Nhóm đường huyết', '5', '', '', '1'),
+                ('32', 'Nhóm hô hấp', '5', '', '', '1'),
+                ('33', 'Nhóm thần kinh', '5', '', '', '1'),
+                ('34', 'Nhóm xương khớp', '5', '', '', '1'),
+                ('35', 'Giảm cân', '5', '', '', '1'),
+                ('36', 'Chăm sóc sắc đẹp', '5', '', '', '1'),
+                ('37', 'Chăm sóc sức khỏe nam và nữ', '5', '', '', '1'),
+                ('38', 'Nhóm Mắt/Tai/Mũi', '5', '', '', '1'),
+                ('39', 'Vitamin tổng hợp và khoáng chất', '5', '', '', '1'),
+                ('40', 'Chăm sóc tóc', '5', '', '', '1'),
+                ('41', 'Nhóm dành cho Gan', '5', '', '', '1'),
+                ('42', 'Nhóm khác', '5', '', '', '1'),
+                ('43', 'Chăm sóc em bé', '6', '', '', '1'),
+                ('44', 'Dành cho trẻ em', '5', '', '', '1'),
+                ('45', 'Sản phẩm dành cho mẹ', '5', '', '', '1'),
+                ('46', 'Dành cho phụ nữ mang thai', '5', '', '', '1'),
+                ('47', 'Chăm sóc mặt', '7', '', '', '1'),
+                ('48', 'Sản phẩm chống nắng', '7', '', '', '1'),
+                ('49', 'Dụng cụ làm đẹp', '7', '', '', '1'),
+                ('50', 'Dược - Mỹ phẩm', '7', '', '', '1'),
+                ('51', 'Nhiệt kế', '8', '', '', '0'),
+                ('52', 'Máy đo huyết áp', '8', '', '', '1'),
+                ('53', 'Máy đo đường huyết', '8', '', '', '1'),
+                ('54', 'Máy xông khí dung', '8', '', '', '1'),
+                ('55', 'TestKit', '8', '', '', '1'),
+                ('56', 'Khác', '8', '', '', '1');
 
             INSERT INTO nhathuocsuckhoe.products
                 ( name , detail , price , images , saleoff_id, category_id, stock , sold)

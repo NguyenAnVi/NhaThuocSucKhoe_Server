@@ -10,6 +10,12 @@
 
 :root{
   --backgroundprimary : #D61C4E;
+  --foregroundprimary : #D61C4E;
+  --foregroundprimary-hovering : #9b1539;
+  --foregroundprimary-focusing : var(--foregroundprimary-hovering);
+  --foregroundprimary-clicking : #b21841;
+
+
   --backgroundsecondary : #293462;
   --foregroundsuccess : #54B435;
   --backgroundsuccess : #38E54D;
@@ -1982,13 +1988,13 @@ select.uk-form-width-xsmall {
 }
 /* Hover */
 .uk-button-primary:hover {
-  background-color: #0f7ae5;
+  background-color: var(--foregroundprimary-hovering);
   color: #fff;
 }
 /* OnClick + Active */
 .uk-button-primary:active,
 .uk-button-primary.uk-active {
-  background-color: #0e6dcd;
+  background-color: var(--foregroundprimary-clicking);
   color: #fff;
 }
 /*

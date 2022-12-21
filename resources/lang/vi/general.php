@@ -2,15 +2,11 @@
 
 return [
    'language' => [
+        'set_language_success' => 'Đổi ngôn ngữ thành công',
         'vi' => 'Tiếng Việt',
         'en' => 'Tiếng Anh',
     ],
-    'auth' => [
-        'login' => 'Đăng nhập',
-        'logout' => 'Đăng xuất',
-        'register' => 'Đăng ký',
-        'set_locate_success' => 'Đổi ngôn ngữ thành công'
-    ],
+    'back' => 'Trở lại',
 
     
 ];

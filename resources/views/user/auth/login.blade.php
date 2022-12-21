@@ -35,11 +35,11 @@
                 </form>
                 <div class="uk-margin">
                     <button class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="login-form">Đăng nhập</button>
-                    <button class="uk-button uk-button-secondary uk-width-expand@m" type="submit" form="register-form"
-                            onclick="event.preventDefault(); document.getElementById('register-form').submit();">Đăng ký</button>                            
+                    {{-- <button class="uk-button uk-button-secondary uk-width-expand@m" type="submit" form="register-form"
+                            onclick="event.preventDefault(); document.getElementById('register-form').submit();">Đăng ký</button>                             --}}
                 </div>
-                <form id="register-form" action="{{ route('register') }}" method="GET" style="display: none;">
-                </form>
+                {{-- <form id="register-form" action="{{ route('register') }}" method="GET" style="display: none;">
+                </form> --}}
             </div>
         </div>
     </div>
