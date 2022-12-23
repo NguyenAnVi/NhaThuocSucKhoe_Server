@@ -11,40 +11,16 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
-    // public function login(Request $request)
-    // {
-    //     if ($request->getMethod() == 'GET') {
-    //         if(Auth::user()){
-                
-    //             return redirect()->route('home')->withErrors([
-    //                 'warning' => 'Bạn đã đăng nhập với tên '.Auth::user()->name,
-    //             ]);
-    //         }
-    //         return view('user.auth.login');
-    //     }
-
-    //     $request->validate([
-    //         'phone' => 'required',
-    //         'password' => 'required'
-    //     ]);
-    //     $credentials = $request->only(['phone', 'password']);
-    //     if (Auth::attempt($credentials)) {
-    //         return redirect()->route('home');
-    //     } else {
-    //         return redirect()->back()->withInput()->withErrors(([
-    //             'approve' => 'Số điện thoại hoặc mật khẩu sai'
-    //         ]));
-    //     }
-    // }
-
     public function login(Request $request)
     {
-        error_log('called login');
-        if (( $request->ajax() !== NULL ) && ($request->getMethod() == 'GET')) {
-            return Response(json_encode(view('user.partials.login_get')->render()));
+        if ($request->getMethod() == 'GET') {
+            if(Auth::user()){
+                return redirect()->route('home')->withErrors('Bạn đã đăng nhập với tên '.Auth::user()->name);
+            }
+            return view('user.auth.login');
         }
 
-        else if (( $request->ajax() !== NULL ) && ($request->getMethod() == 'POST')) 
+        else 
         {
             $request->validate([
                 'phone' => 'required',
@@ -52,15 +28,9 @@ class LoginController extends Controller
             ]);
             $credentials = $request->only(['phone', 'password']);
             if (Auth::attempt($credentials)) {
-                // return redirect()->route('home');
-                return Response(json_encode(['status'=>0]));
+                return redirect()->route('home')->withErrors(trans('auth.msg.loginsuccess'));
             } else {
-                return Response(json_encode([
-                    'error' => [
-                        'warning' => 'Số điện thoại hoặc mật khẩu sai'
-                    ],
-                    'status' => 1
-                ]));
+                return back()->withErrors('Số điện thoại hoặc mật khẩu sai');
             }
         }
     }

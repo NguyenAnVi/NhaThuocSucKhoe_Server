@@ -4363,12 +4363,16 @@ select.uk-form-width-xsmall {
 .uk-notification {
   /* 1 */
   position: fixed;
-  top: 10px;
+  top: 120px;
   left: 10px;
-  z-index: 1040;
+  z-index: 1039;
   /* 2 */
   box-sizing: border-box;
-  width: 350px;
+  width: 500px;
+
+  border-radius: 10px;
+  
+
 }
 /* Position modifiers
 ========================================================================== */
@@ -4380,7 +4384,7 @@ select.uk-form-width-xsmall {
 .uk-notification-top-center,
 .uk-notification-bottom-center {
   left: 50%;
-  margin-left: -175px;
+  margin-left: -250px;
 }
 .uk-notification-bottom-left,
 .uk-notification-bottom-right,
@@ -4402,10 +4406,13 @@ select.uk-form-width-xsmall {
 /* Message
 ========================================================================== */
 .uk-notification-message {
+  border-radius: 10px;
+  box-shadow: 1px 0px 7px rgb(171, 171, 171);
+
   position: relative;
   padding: 15px;
   background: #f8f8f8;
-  color: #666;
+  color: var(--foregroundprimary-clicking);
   font-size: 1.25rem;
   line-height: 1.4;
   cursor: pointer;

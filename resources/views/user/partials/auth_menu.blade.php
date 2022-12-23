@@ -1,36 +1,33 @@
 {{-- Authentication Links --}}
-<a href=""><span uk-icon="icon:user"></span></a>  
+@guest
+    {{-- <button id="login-button" data-route="{{ route('login') }}" class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button">@lang('auth.login')</button> --}}
+    <button onclick="window.location.href='{{route('login') }}';" class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button">@lang('auth.login')</button>
+    <div id="login-div" uk-modal></div>
+@else
+<button class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button"><span uk-icon="icon:user"></span></button>
 <div class="uk-navbar-dropdown" uk-dropdown="pos: bottom-right; mode:click; animation: uk-animation-slide-top-small">
   <ul class="uk-nav uk-navbar-dropdown-nav">
-    @guest
-      @if (Route::has('login'))
-        <li>
-          <a id="login-button" data-route="{{ route('login') }}">@lang('auth.login')</a>
-        </li>
-        <div id="login-div" uk-modal></div>
-        
-      @endif
-     
-    @else
-      <li class="uk-nav-header">
-        {{__(Auth::user()->name)}}
-      </li>
-      <li class="uk-nav-divider"></li>
-      <li>
-        <a href="{{ route('orders') }}">
-          @lang('button.myorders')
-        </a>
-        <a href="{{ route('logout') }}"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          @lang('general.auth.logout')
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          @csrf
-        </form>
-      </li>
-    @endguest
+    <li class="uk-nav-header">
+      {{__(Auth::user()->name)}}
+    </li>
+    <li class="uk-nav-divider"></li>
+    <li>
+      <a href="{{ route('orders') }}">
+        @lang('button.myorders')
+      </a>
+      <a href="{{ route('logout') }}"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        @lang('general.auth.logout')
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+    </li>
   </ul>
 </div>
+
+
+@endguest
 
 <script>
 

@@ -3,10 +3,26 @@
 @section('css')
     <style>
       .vi-frame {
-        border:1.5px solid var(--foregroundprimary);
+        /* border:1.5px solid var(--foregroundprimary); */
+        border:1.5px solid #e5e5e5;
         border-radius: 5px;
         background-color: white;
-        
+        box-shadow: none;
+        transform: translateY(5px);
+        transition: 500ms all ease;
+
+        //prevent from selecting text
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+      }
+      .vi-frame:hover{
+        transform: translateY(0px);
+        box-shadow: 0px 5px 0px var(--foregroundprimary);
+      }
+      .vi-frame:active{
+        transform: translateY(5px);
+        box-shadow: 0px 0px 10px transparent;
       }
       .vi-backdrop{
         background-color: rgba(255, 255, 255,0.7);
@@ -48,6 +64,8 @@
         <ul class="uk-slider-items uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-6@m">
           @each ('user.partials.category_card',$categories,'item', 'user.partials.feature_updating')
         </ul>
+
+        <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
       </div>
     </div>
   </div>
@@ -70,16 +88,18 @@
  
 
   {{-- saleoff_products --}}
-  <div class="uk-container uk-flex uk-height-1-1 uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-card-hover uk-padding-small  uk-margin-bottom">
-    <div id="title" class="uk-flex uk-flex-between uk-card-title">
-      <div class="uk-width-expand">💥 Khuyến mãi có hạn 💥</div>
-      <div><button class="uk-button uk-button-text" onclick="allcategories();">Xem thêm</button><span uk-icon="chevron-right"></span></div>
+  <div class="uk-container uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin-bottom vi-backdrop">
+    <div id="title" class="uk-flex uk-flex-between uk-card-title uk-padding-small uk-padding-remove-vertical">
+      <div class="uk-width-expand">💥@lang('general.saleoff')💥</div>
+      <div><button class="uk-button uk-button-text" onclick="allsaleoff();">@lang('general.learnmore')</button><span uk-icon="chevron-right"></span></div>
     </div>
+
     <hr>
-    <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-horizontal">
-      <div uk-filter="target: .js-filter">
+    <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-vertical">
+
+       <div uk-filter="target: .js-filter">
         <ul class="uk-subnav uk-subnav-pill">
-          <li uk-filter-control><a href="#">Tất cả</a></li>
+          <li uk-filter-control><a href="#">@lang('general.filter.all')</a></li>
           @foreach($productable_categories as $item)
             <li uk-filter-control=".category-{{$item->id}}"><a href="#">{{$item->name}}</a></li>
           @endforeach
@@ -90,8 +110,10 @@
         </div>
     
       </div>
+
     </div>
   </div>
+
 </div>
 @endsection
 

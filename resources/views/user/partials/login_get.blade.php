@@ -15,7 +15,7 @@
     });
   });
 </script>
-<form id="group1_form_register" action="{{route('register')}}" method="post"></form>
+
 
 
 <div id="group1" uk-modal>
@@ -28,14 +28,19 @@
         
           <ul class="uk-slider-items uk-grid">
             
-            <li id="group1_page1" class="uk-width-1-1">
-              <div class="uk-panel">
-                <h4 class="uk-text-center">@lang('auth.login') / @lang('auth.register')</h4>
-                  <div class="uk-width-1-1">
+            <li id="group1_page1" class="uk-width-1-1 uk-flex uk-flex-column">
+              <div class="uk-panel uk-height-1-1 uk-flex uk-flex-stretch uk-flex-column">
+                <div>
+                  <div>
+                    <h4 class="uk-text-center">@lang('auth.login') / @lang('auth.register')</h4>
+                  </div>
+                  <div>
                     <input name="phone" data-trigger="a#group1_button" id="group1_input_phone" onchange="$('#group1_input_newphone').val($(this).val())" type="text" placeholder="@lang('auth.msg.type_phone')" class="uk-input uk-width-expand">
                   </div>
-
+                </div>
+                <div>
                   <a id="group1_button" class="uk-width-1-1 uk-button uk-button-primary" data-route="{{ route('checkphone') }}">@lang('auth.confirm')</a>
+                </div>
 
               </div>
             </li>
@@ -57,21 +62,22 @@
 
             <li id="group1_page3" class="uk-width-1-1">
               <div class="uk-panel">
-                  <a onclick="UIkit.slider('#group1_slider').show(0)"><h4 class="uk-text-center"><span uk-icon="icon:arrow-left; ratio:1.5;"></span>@lang('general.back')</h4></a>
-                  <div id="group1_inputgroup_newname" class="uk-width-1-1 uk-flex">
-                    <input name="newname" data-trigger="a#group1_submit_register" id="group1_input_newname" type="name" placeholder="@lang('auth.msg.type_name')" class="uk-input uk-width-expand">
-                    <input name="newphone" id="group1_input_newphone" type="hidden" >
-                  </div>
+                <form id="group1_form_register" action="{{route('register')}}" method="post"></form>
+                <a onclick="UIkit.slider('#group1_slider').show(0)"><h4 class="uk-text-center"><span uk-icon="icon:arrow-left; ratio:1.5;"></span>@lang('general.back')</h4></a>
+                <div id="group1_inputgroup_newname" class="uk-width-1-1 uk-flex">
+                  <input name="newname" data-trigger="a#group1_submit_register" id="group1_input_newname" type="name" placeholder="@lang('auth.msg.type_name')" class="uk-input uk-width-expand">
+                  <input name="newphone" id="group1_input_newphone" type="hidden" >
+                </div>
 
-                  <div id="group1_inputgroup_newpassword" class="uk-width-1-1 uk-flex">
-                    <input name="newpassword" data-trigger="a#group1_submit_register" id="group1_input_newpassword" type="password" placeholder="@lang('auth.msg.type_newpassword')"  class="uk-input uk-width-expand">
-                  </div>
+                <div id="group1_inputgroup_newpassword" class="uk-width-1-1 uk-flex">
+                  <input name="newpassword" data-trigger="a#group1_submit_register" id="group1_input_newpassword" type="password" placeholder="@lang('auth.msg.type_newpassword')"  class="uk-input uk-width-expand">
+                </div>
 
-                  <div id="group1_inputgroup_passwordconfirm" class="uk-width-1-1 uk-flex">
-                    <input name="newpasswordconfirm" data-trigger="a#group1_submit_register" id="group1_input_newpasswordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')"  class="uk-input uk-width-expand">
-                  </div>
+                <div id="group1_inputgroup_passwordconfirm" class="uk-width-1-1 uk-flex">
+                  <input name="newpasswordconfirm" data-trigger="a#group1_submit_register" id="group1_input_newpasswordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')"  class="uk-input uk-width-expand">
+                </div>
 
-                  <a id="group1_submit_register" onclick="$('#group1_form_register').submit()"  class="uk-width-1-1 uk-button uk-button-primary" >@lang('auth.register')</a>
+                <a id="group1_submit_register" onclick="$('#group1_form_register').submit()"  class="uk-width-1-1 uk-button uk-button-primary" >@lang('auth.register')</a>
               </div>
             </li>
 

@@ -1,46 +1,117 @@
 @extends('user.layouts.app')
+@section('css')
+<style>
+.login {
+  overflow: hidden;
+  background-color: var(--foregroundprimary);
+  padding: 40px 30px 30px 30px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: -webkit-transform 300ms, box-shadow 300ms;
+  -moz-transition: -moz-transform 300ms, box-shadow 300ms;
+  transition: transform 300ms, box-shadow 300ms;
+  box-shadow: 0px 5px 10px rgba(169, 169, 169, 0.367);
+}
+.login::before, .login::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-top-left-radius: 40%;
+  border-top-right-radius: 45%;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 40%;
+  z-index: -1;
+}
+.login::before {
+  left: 40%;
+  bottom: -130%;
+  background-color: rgb(255, 166, 175);
+  -webkit-animation: wawes 6s infinite linear;
+  -moz-animation: wawes 6s infinite linear;
+  animation: wawes 6s infinite linear;
+}
+.login::after {
+  left: 35%;
+  bottom: -125%;
+  background-color: rgba(255, 133, 155, 0.428);
+  -webkit-animation: wawes 7s infinite;
+  -moz-animation: wawes 7s infinite;
+  animation: wawes 7s infinite;
+}
+.login > input {
+  display: block;
+  border-radius: 5px;
+  font-size: 16px;
+  background: white ;
+  width: 100%;
+  border: 0;
+  padding: 10px 10px;
+  margin: 15px -10px;
+}
+.login>button{
+  background-color: white;
+  color: #000;
+}
+.login>p{
+  color: white;
+}
+.login>p>a{
+  padding: 3px;
+  background-color: white;
+  border-radius: 5px;
+  color:var(--foregroundprimary);
+}
+@-webkit-keyframes wawes {
+  from {
+    -webkit-transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes wawes {
+  from {
+    -moz-transform: rotate(0);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@keyframes wawes {
+  from {
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -ms-transform: rotate(0);
+    -o-transform: rotate(0);
+    transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+</style>
+@endsection
 @section('content')
-    <div class="uk-child-width-expand@s uk-text-center uk-align-center uk-padding" uk-grid="" style="width: 900px;">
-        <div class="uk-card uk-card-default uk-card-body uk-grid-margin uk-margin" uk-grid>
-            <div class="uk-width-1-3 uk-padding">
-                <img class="" width="140" height="120" src="{{asset('logo/LOGO.png')}}" alt="">
-                <h2>Đăng nhập</h2>
-            </div>
-            <div class="uk-width-2-3 uk-padding">
-                @error('approve')
-                    <div class="uk-alert-danger" uk-alert>
-                        <a class="uk-alert-close" uk-close></a>
-                        <p>{{ $message }}</p>
-                    </div>
-                @enderror
-                <form id="login-form" class="uk-panel uk-panel-box uk-form" method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('phone') uk-form-danger @enderror" value="{{ old('phone') }}" type="text" name="phone" value="@if(isset($phone)){{$request->input('phone')}}{{$request->input('general_message')}}@endif" placeholder="Nhập số điện thoại">
-                        @error('phone')
-                            <div class="uk-text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="uk-form-row uk-margin">
-                        <input class="uk-input uk-width-1-1 uk-form-large @error('password') uk-form-danger @enderror" value="{{ old('password') }}" type="password" name="password" placeholder="Nhập mật khẩu">
-                        @error('password')
-                            <div class="uk-text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    {{-- <div class="uk-form-row uk-text-small"> --}}
-                        {{-- <label class="uk-float-left"><input type="checkbox"> Remember Me</label> --}}
-                        {{-- <a class="uk-float-right uk-link uk-link-muted" href="#">Forgot Password?</a> --}}
-                    {{-- </div> --}}
-                </form>
-                <div class="uk-margin">
-                    <button class="uk-button uk-button-primary uk-button-large uk-width-expand@m" type="submit" form="login-form">Đăng nhập</button>
-                    {{-- <button class="uk-button uk-button-secondary uk-width-expand@m" type="submit" form="register-form"
-                            onclick="event.preventDefault(); document.getElementById('register-form').submit();">Đăng ký</button>                             --}}
-                </div>
-                {{-- <form id="register-form" action="{{ route('register') }}" method="GET" style="display: none;">
-                </form> --}}
-            </div>
-        </div>
-    </div>
+<form class="login" action="" method="POST">
+  @csrf
+  <input name="phone" type="text" placeholder="@lang('auth.msg.type_phone')">
+  <input name="password" type="password" placeholder="@lang('auth.msg.type_password')">
+  <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.login')</button>
+  <p class="uk-text-right">@lang('auth.msg.donthaveaccount') <a href="{{route('register')}}">@lang('auth.register')</a></p>
+</form>
+
+
 @endsection
