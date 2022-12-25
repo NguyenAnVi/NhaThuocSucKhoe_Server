@@ -88,13 +88,12 @@ class HomeController extends Controller
 	}
 
 	public function test(){
-		// return view('tested');
-		return redirect()->back()->withErrors([
-			'bird'=>'Im a bird!',
-			'bird'=>'Im a birdy!',
+		return view('tested');
+		// return view('tested')->withErrors([
+		// 	'bird'=>'Im a bird!',
+		// 	'bird2'=>'Im a birdy!',
 
-			'dog' => 'woof woof',
-		]);
+		// ]);
 	}
 
 	public function notFound(){

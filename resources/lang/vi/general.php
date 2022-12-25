@@ -17,6 +17,7 @@ return [
     'search' => 'Tìm kiếm', 
     'cart' => 'Giỏ hàng',
     'checkout' => 'Kiểm tra giỏ hàng',
-
+    'learnmore' => 'Xem thêm',
+    'updating' => 'Đang cập nhật',
     
 ];

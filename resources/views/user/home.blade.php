@@ -80,7 +80,7 @@
     <hr>
     <div id="content" class="uk-card-body uk-padding-small uk-padding-remove-vertical">
       <div class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l">
-        @each ('user.partials.product_card',$products,'item', 'user.partials.product_card_is_empty')
+        @each ('user.partials.product_card',$products,'item', 'user.partials.feature_updating')
       </div>
       
     </div>
@@ -106,7 +106,7 @@
         </ul>
     
         <div class="uk-flex uk-flex-wrap js-filter uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l uk-text-center">
-          @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.product_card_is_empty')
+          @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.feature_updating')
         </div>
     
       </div>
