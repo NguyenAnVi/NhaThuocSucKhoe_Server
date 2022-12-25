@@ -3,11 +3,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderStatusTable extends Migration
+class CreateOrderDetailsTable extends Migration
 {
     public function up()
     {
-        Schema::create('ordersstatuses', function (Blueprint $table) {
+        Schema::create('orderdetails', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('receiver_name');
@@ -26,6 +26,6 @@ class CreateOrderStatusTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('ordersstatuses');
+        Schema::dropIfExists('orderdetails');
     }
 }
