@@ -9,25 +9,26 @@ class First extends Seeder
 {
     public function run()
     {
-        DB::table('admins')->insert([
+        DB::table('users')->insert([
             [
                 'name' => 'ROOT',
                 'phone' => 'ROOT',
                 'password' => bcrypt('root'),
+                'role' => 'ADMIN',
             ],
         ]);
 
-        DB::table('saleoffs')->insert([
-            [
-                'name' => 'NONE',
-                'amount' => 0,
-                'percent' => 0,
-                'contenturl' => '',
-                'starttime' => '2022-10-04 15:43:00',
-                'endtime' => null,
-                'imageurl' => ''
-            ],
-        ]);
+        // DB::table('saleoffs')->insert([
+        //     [
+        //         'name' => 'NONE',
+        //         'amount' => 0,
+        //         'percent' => 0,
+        //         'contenturl' => '',
+        //         'starttime' => '2022-10-04 15:43:00',
+        //         'endtime' => null,
+        //         'imageurl' => ''
+        //     ],
+        // ]);
 
         try{
             rrmdir("storage_path('app/public/saleoff')");

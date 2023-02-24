@@ -2,6 +2,7 @@
 
 return [
    'language' => [
+        'set_language_success' => 'Khiêm khùng',
         'vi' => 'Vietnamese',
         'en' => 'English',
     ],
@@ -9,8 +10,7 @@ return [
         'login' => 'Login',
         'logout' => 'Logout',
         'register' => 'Register',
-        'set_locate_success' => 'Successfully changed language'
     ],
 
-    
+    'check' => 'Check',
 ];

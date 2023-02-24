@@ -29,9 +29,7 @@ class AppServiceProvider extends ServiceProvider
                 # code...
                 error_log('Trying to start MySQL service on Windows');
                 try {
-                    system('cmd /c mysqlservice.LNK');
-                    error_log('Successfully started MySQL server');
-        
+                    system('cmd /c net start mysql');
                 } catch (\Throwable $th) {
                     error_log('Can not start mysql with Window');
                 }

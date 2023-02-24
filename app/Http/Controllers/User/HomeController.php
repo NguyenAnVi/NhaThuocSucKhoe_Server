@@ -3,43 +3,43 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-// use App\Models\Category;
 use App\Http\Controllers\User\Resources\CategoryController;
 use App\Http\Controllers\User\Resources\ProductController;
-use App\Http\Controllers\User\Resources\SaleoffController;
+use App\Http\Controllers\User\Resources\BannerController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
 	public function gethomepage($locale = null){
-		// if (isset($locale) && in_array($locale, config('app.available_locales'))) {
-		// 		app()->setLocale($locale);
-		// }
+		if (isset($locale) && in_array($locale, config('app.available_locales'))) {
+				app()->setLocale($locale);
+		}
 		
 		// Lay cac san pham co CTKM
-		$saleoff_pro = Product::where('saleoff_id', '!=', '1')->get();
+		// $saleoff_pro = Product::where('saleoff_id', '!=', '1')->get();
 
 		// Lay cac danh muc lien quan cac san pham tren ^
-		$pro_cat_list = [];
-		foreach($saleoff_pro as $item){
-			if(!in_array($item->category_id, $pro_cat_list)){
-				$pro_cat_list = array_merge($pro_cat_list, [$item->category_id]);
-			}
+		// $pro_cat_list = [];
+		// foreach($saleoff_pro as $item){
+		// 	if(!in_array($item->category_id, $pro_cat_list)){
+		// 		$pro_cat_list = array_merge($pro_cat_list, [$item->category_id]);
+		// 	}
 				
-		}
-		$pro_cat = [];
-		foreach ($pro_cat_list as $item) {
-			$pro_cat = array_merge($pro_cat, [CategoryController::getCategory($item)]);
-		}
+		// }
+		// $pro_cat = [];
+		// foreach ($pro_cat_list as $item) {
+		// 	$pro_cat = array_merge($pro_cat, [CategoryController::getCategory($item)]);
+		// }
 
 		$data = ([
-			'saleoffs' => SaleoffController::getSaleoffs(),
+			'banners' => BannerController::getBanners(),
+			// 'saleoffs' => SaleoffController::getSaleoffs(),
 			'categories' => CategoryController::getCategories(),
 			'products' => ProductController::getProducts(25),
 			
-			'saleoff_products' => $saleoff_pro,
-			'productable_categories' => $pro_cat,
+			// 'saleoff_products' => $saleoff_pro,
+			// 'productable_categories' => $pro_cat,
 		]);
 		return view('user.home', $data);
 	}

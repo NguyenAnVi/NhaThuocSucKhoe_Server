@@ -8,19 +8,28 @@
  * 3. Style
  */
 
+ :root{
+  --rose-quartz: #A89BB9ff;
+  --ultra-violet: #504980ff;
+  --lavender-web: #D6D6F1ff;
+  --old-rose: #B67E7Eff;
+  --slate-gray: #5D7884ff;
+}
+
 :root{
-  --backgroundprimary : #D61C4E;
-  --foregroundprimary : #D61C4E;
-  --foregroundprimary-hovering : #9b1539;
-  --foregroundprimary-focusing : var(--foregroundprimary-hovering);
-  --foregroundprimary-clicking : #b21841;
+  --background-white : #F6DFEB;
+  --backgroundprimary : #6a1f47;
+  --foregroundprimary : #504980ff;
+  --foregroundprimary-hovering : #D6D6F1ff;
+  --foregroundprimary-focusing : rgb(149, 149, 201);
+  --foregroundprimary-clicking : #D6D6F1ff;
 
 
   --backgroundsecondary : #293462;
-  --foregroundsuccess : #54B435;
-  --backgroundsuccess : #38E54D;
-  --light1 : #FEB139;
-  --light2 : #FFF80A;
+  --foregroundsuccess : #26c485;
+  --backgroundsuccess : #7ae6bb;
+  --light1 : #a29ebb;
+  --light2 : #b69fbb;
 }
 
 html {

@@ -18,9 +18,8 @@ class CreateAddressTable extends Migration
             $table->unsignedBigInteger('user_id'); 
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('receiver');
-            $table->string('phone',10); 
+            $table->string('phone',10);
             $table->string('address')->nullable();
-            $table->string('detail_address')->nullable();
             $table->integer('default')->default(0); //dat lam dia chi mac dinh
         });
     }

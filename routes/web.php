@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\Auth\LoginController;
+use App\Http\Controllers\User\Auth\AuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
@@ -17,10 +17,11 @@ Route::get('/getcategoriesmenu', [HomeController::class,'getcategoriesmenu'])->n
 Route::match(['get'], '/show/{type}/{id}', [HomeController::class, 'show']);
 
 // User_Auth
-Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
-Route::match(['get', 'post'], '/register', [LoginController::class, 'register'])->name('register');
-Route::match(['get'], '/checkphone', [LoginController::class, 'checkphone'])->name('checkphone');
-Route::match(['post', 'get'], '/logout', [LoginController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+Route::match(['get', 'post'], '/register', [AuthController::class, 'register'])->name('register');
+Route::match('get','phone-auth', [AuthController::class, 'index']);
+Route::match(['get'], '/checkphone', [AuthController::class, 'checkphone'])->name('checkphone');
+Route::match(['post', 'get'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware('auth:web')->group(function(){

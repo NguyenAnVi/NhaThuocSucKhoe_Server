@@ -33,7 +33,7 @@
 		}
 
 		body{
-			background-color: #f9e6dd;
+			background-color: var(--background-white);
 		}
 		.uk-button, input{
 			border-radius: 5px !important;
@@ -47,15 +47,15 @@
 	@yield('css')
 </head>
 <body>
-	<div id="app">
-		<div class="vi-background-black uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical  uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-			<nav class="uk-flex uk-flex-between   uk-container">
+	<div id="app" class="">
+		<div class="vi-background-black uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
+			<nav class="uk-flex uk-flex-between uk-container">
 				<div>@lang('general.hotline'): 0939.963.285</div>
 				<div>@includeIf('user.partials.lang')</div>
 			</nav>
 		</div>
-		<div class="uk-background-primary uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical  uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-			<nav class="uk-navbar uk-navbar-transparent uk-container">
+		<div class="uk-background-primary uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
+			<nav class="uk-navbar uk-container uk-navbar-transparent uk-container">
 					<div class="uk-navbar-left">
 						<img src="{{asset('storage/images/logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
 						<a class="uk-navbar-item uk-logo" href="{{route('home')}}">{{ config('app.name') }}</a>
@@ -82,14 +82,14 @@
 		<main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
 
 			
-			<div class="">
+			<div class="uk-container">
 				@yield('content')
 			</div>
 		</main>
 
-		<footer class="uk-section uk-section-xsmall uk-section-primary">
-			<div class="uk-container">
-				<div class="uk-grid uk-text-center uk-text-left@s uk-flex-middle" data-uk-grid>
+		<footer class="uk-section uk-section-xsmall uk-background-primary">
+			<div class="uk-container uk-padding-large uk-padding-remove-vertical">
+				<div class="uk-grid uk-text-center uk-text-left@s uk-flex-middle uk-padding-large uk-padding-remove-vertical" data-uk-grid>
 					<div class="uk-text-small uk-text-muted uk-width-1-3@s">
 						{{config('app.author.email')}}
 					</div>
@@ -105,29 +105,7 @@
 		</footer>
 	</div>
 </body>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyA3lpduJWPTiuOlzx0n4VG51RllHGVKjyc",
-    authDomain: "nhathuoc-suckhoe.firebaseapp.com",
-    projectId: "nhathuoc-suckhoe",
-    storageBucket: "nhathuoc-suckhoe.appspot.com",
-    messagingSenderId: "1034800999726",
-    appId: "1:1034800999726:web:3fa0a48b9cdc9510af1ebf",
-    measurementId: "G-YVNZ51VL2W"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 
 @yield('js')
 <script>

@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name'); 
             $table->string('phone')->unique();
             $table->string('password');
-            $table->integer('point')->default(0);
+            $table->string('role')->default('CUSTOMER');
         });
     }
 

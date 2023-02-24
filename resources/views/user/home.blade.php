@@ -28,6 +28,9 @@
         background-color: rgba(255, 255, 255,0.7);
         backdrop-filter: blur(2px);
       }
+      .vi-border-rounded{
+        border-radius: 15px;
+      }
       .vi-gap{
         margin:5px; padding:5px;
       }
@@ -35,15 +38,15 @@
 @endsection
 
 @section('content')
-<div class="uk-flex uk-flex-column uk-container">
-  {{-- saleoff banner --}}
-  <div class="uk-position-relative uk-visible-toggle uk-width-1-1 uk-margin-bottom" tabindex="1" uk-slideshow="ratio:3:1; animation: pull; autoplay:true; "  >
+<div class="uk-flex uk-flex-column uk-padding">
+  {{-- banner --}}
+  <div class="vi-border-rounded uk-overflow-hidden uk-position-relative uk-visible-toggle uk-width-1-1" tabindex="1" uk-slideshow="ratio:3:1; animation: pull; autoplay:true; "  >
     <ul class="uk-slideshow-items">
-      @foreach ($saleoffs as $item)
+      @foreach ($banners as $item)
       @if($item->imageurl!="")
-        <li onclick="window.location.href='{{$item->contenturl}}'">
+        <a href="{{$item->link}}"><li onclick="window.location.href=''">
           <img  src="{!!$item->imageurl!!}" uk-cover>
-        </li>
+        </li></a>
       @endif
       @endforeach
     </ul>
@@ -52,7 +55,7 @@
   </div>
 
   {{-- categories --}}
-  <div class="uk-container uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin-bottom vi-backdrop">
+  <div class="uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin vi-border-rounded">
     <div id="title" class="uk-flex uk-flex-between uk-card-title uk-padding-small uk-padding-remove-vertical">
       <div class="uk-width-expand">@lang('general.categories')</div>
       <div><button class="uk-button uk-button-text" onclick="allcategories();">@lang('general.learnmore')</button><span uk-icon="chevron-right"></span></div>
@@ -71,7 +74,7 @@
   </div>
 
   {{-- features --}}
-  <div class="uk-container uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin-bottom vi-backdrop">
+  <div class="uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin vi-border-rounded uk-margin-remove-top">
     <div id="title" class="uk-flex uk-flex-between uk-card-title uk-padding-small uk-padding-remove-vertical">
       <div class="uk-width-expand">@lang('general.features')</div>
       <div></div>
@@ -88,7 +91,7 @@
  
 
   {{-- saleoff_products --}}
-  <div class="uk-container uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin-bottom vi-backdrop">
+  <div class="uk-flex uk-flex-column uk-child-width-1-1 uk-card uk-card-default uk-padding-small uk-margin vi-border-rounded uk-margin-remove-top">
     <div id="title" class="uk-flex uk-flex-between uk-card-title uk-padding-small uk-padding-remove-vertical">
       <div class="uk-width-expand">💥@lang('general.saleoff')💥</div>
       <div><button class="uk-button uk-button-text" onclick="allsaleoff();">@lang('general.learnmore')</button><span uk-icon="chevron-right"></span></div>
@@ -100,13 +103,13 @@
        <div uk-filter="target: .js-filter">
         <ul class="uk-subnav uk-subnav-pill">
           <li uk-filter-control><a href="#">@lang('general.filter.all')</a></li>
-          @foreach($productable_categories as $item)
-            <li uk-filter-control=".category-{{$item->id}}"><a href="#">{{$item->name}}</a></li>
-          @endforeach
+            {{-- @foreach($productable_categories as $item)
+              <li uk-filter-control=".category-{{$item->id}}"><a href="#">{{$item->name}}</a></li>
+            @endforeach --}}
         </ul>
     
         <div class="uk-flex uk-flex-wrap js-filter uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l uk-text-center">
-          @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.feature_updating')
+          {{-- @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.feature_updating') --}}
         </div>
     
       </div>

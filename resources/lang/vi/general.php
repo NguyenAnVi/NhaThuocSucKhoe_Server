@@ -19,5 +19,6 @@ return [
     'checkout' => 'Kiểm tra giỏ hàng',
     'learnmore' => 'Xem thêm',
     'updating' => 'Đang cập nhật',
+    'check' => 'Kiểm tra',
     
 ];

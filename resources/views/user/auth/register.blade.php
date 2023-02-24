@@ -47,25 +47,19 @@
   -moz-animation: wawes 7s infinite;
   animation: wawes 7s infinite;
 }
-.form-register > input {
-  display: block;
-  border-radius: 5px;
-  font-size: 16px;
-  background: white ;
-  width: 100%;
-  border: 0;
-  padding: 10px 10px;
-  margin: 15px -10px;
-}
-.form-register>button{
+.form-register button{
   background-color: white;
   color: #000;
 }
-.form-register>button:hover{
+.form-register button:hover{
   background-color: rgb(79, 92, 150);
   color: rgb(255, 255, 255);
 }
-.form-register>button:active{
+.form-register button[disabled]:hover{
+  background-color: rgb(151, 151, 151);
+  color: rgb(255, 255, 255);
+}
+.form-register button:active{
   background-color: white;
   color: #000;
 }
@@ -113,14 +107,88 @@
 </style>
 @endsection
 @section('content')
-<form class="form-register" action="" method="POST">
-  @csrf
-  <input name="phone" type="text" placeholder="@lang('auth.msg.type_phone')">
-  <input name="password" type="password" placeholder="@lang('auth.msg.type_newpassword')">
-  <input name="passwordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')">
-  <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.register')</button>
-  <p class="uk-text-right">@lang('auth.msg.alreadyhaveaccount') <a href="{{route('login')}}">@lang('auth.login')</a></p>
-</form>
 
+  <form id="p1" class="form-register" style="display: none;">
+    <div class="uk-margin-bottom">
+      <div class="uk-width-1-1 uk-flex">
+      
+        <input class="uk-input uk-width-expand" id="phone-number" type="text" placeholder="@lang('auth.msg.type_phone')">
+        <button id="phone-number-check-button" class="uk-width-small uk-button" type="button">@lang('general.check')</button>
+        
+      </div>
+      <div class="uk-width-1-1" id="phone-number-check-result"></div>
 
+    </div>
+    
+
+    <div class="uk-margin-bottom" id="recaptcha-container"></div>
+    <button type="button" id="sendotp-button"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-bottom" onclick="module.sendOTP();">Send OTP</button>
+  </form>
+
+  <form id="p2" class="form-register" style="display: none;">
+    <input class="uk-input uk-margin-bottom" type="text" id="verification"  placeholder="Verification code">
+    <button type="button" class="uk-form-icon uk-form-icon-flip uk-button uk-button-primary uk-width-1-1 uk-margin-bottom" onclick="module.verifyOTP()">Verify code</button>
+  </form>
+
+  <form id="p3" class="form-register" action="POST" style="display: none;">
+    @csrf
+    <input name="phone" type="hidden">
+    <input class="uk-input uk-margin-bottom" name="password" type="password" placeholder="@lang('auth.msg.type_newpassword')">
+    <input class="uk-input uk-margin-bottom" name="passwordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')">
+    <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.register')</button>
+    <p class="uk-text-right">@lang('auth.msg.alreadyhaveaccount') <a href="{{route('login')}}">@lang('auth.login')</a></p>
+  </form>
+@endsection
+@section('js')
+<script type="text/javascript">
+  var module = {};
+</script>
+<script type="module">
+  import {sendOTP, verifyOTP, renderCaptcha} from '{{asset('js/phoneauth.js')}}';
+  module.sendOTP = sendOTP;
+  module.verifyOTP = verifyOTP;
+  module.renderCaptcha = renderCaptcha;
+</script>
+<script>
+  window.onload = function () {
+    $('#sendotp-button').attr('disabled', 'true');
+    module.renderCaptcha();
+    showP1();
+  };
+  function showP1(){
+    $('#p2').hide();
+    $('#p3').hide();
+    $('#p1').show();
+  }
+  function showP2(){
+    $('#p1').hide();
+    $('#p3').hide();
+    $('#p2').show();
+  }
+  function showP3(){
+    $('#p1').hide();
+    $('#p2').hide();
+    $('#p3').show();
+  }
+
+  $('#phone-number-check-button').on('click', function(){
+    $.ajax({
+      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+      type: 'get',
+      url: '{{route("checkphone")}}',
+      data: {
+        'phone' : $('#phone-number').val(),
+      },
+      success:function(obj){ 
+        result = JSON.parse(obj);
+        $('#phone-number-check-result').html(result.result);
+        if(result.status == 1){
+          $('#sendotp-button').removeAttr('disabled');
+        } else {
+          $('#sendotp-button').attr('disabled', 'true');
+        }
+      }
+    });
+  });
+</script>
 @endsection
