@@ -17,17 +17,18 @@
 }
 
 :root{
-  --background-white : #F6DFEB;
-  --backgroundprimary : #6a1f47;
-  --foregroundprimary : #504980ff;
-  --foregroundprimary-hovering : #D6D6F1ff;
-  --foregroundprimary-focusing : rgb(149, 149, 201);
-  --foregroundprimary-clicking : #D6D6F1ff;
+  
+  --background-primary  :#F6DFEB;
+  
+  --foreground-primary :  #6a1f47;
+  --foreground-primary-hovering : #000000;
+  --foreground-primary-focusing : #4c1a35;
+  --foreground-primary-clicking : #5d2543;
 
 
-  --backgroundsecondary : #293462;
-  --foregroundsuccess : #26c485;
-  --backgroundsuccess : #7ae6bb;
+  --background-secondary : #293462;
+  --foreground-success : #26c485;
+  --background-success : #7ae6bb;
   --light1 : #a29ebb;
   --light2 : #b69fbb;
 }
@@ -57,7 +58,7 @@ body {
  */
 a,
 .uk-link {
-  color: var(--foregroundprimary);
+  color: var(--foreground-primary);
   text-decoration: none;
   cursor: pointer;
 }
@@ -500,7 +501,7 @@ a.uk-link-heading,
 a.uk-link-heading:hover,
 .uk-link-heading a:hover,
 .uk-link-toggle:hover .uk-link-heading {
-  color: var(--foregroundprimary);
+  color: var(--foreground-primary);
   text-decoration: none;
 }
 /* Reset
@@ -803,10 +804,10 @@ a.uk-link-reset,
   color: #333 !important;
 }
 .uk-list-primary > ::before {
-  color: var(--foregroundprimary) !important;
+  color: var(--foreground-primary) !important;
 }
 .uk-list-secondary > ::before {
-  color: var(--backgroundsecondary) !important;
+  color: var(--background-secondary) !important;
 }
 /* Image bullet modifier
  ========================================================================== */
@@ -1353,7 +1354,8 @@ button.uk-icon:not(:disabled) {
   /* 2 */
   margin: 0;
   /* 3 */
-  border-radius: 0;
+  border-radius: 5px !important;
+  
   /* 4 */
   font: inherit;
 }
@@ -1496,7 +1498,7 @@ button.uk-icon:not(:disabled) {
   outline: none;
   background-color: #fff;
   color: #666;
-  border-color: var(--foregroundprimary);
+  border-color: var(--foreground-primary);
 }
 /* Disabled */
 .uk-input:disabled,
@@ -1574,8 +1576,8 @@ textarea.uk-form-large,
  */
 .uk-form-success,
 .uk-form-success:focus {
-  color: var(--foregroundsuccess);
-  border-color: var(--foregroundsuccess);
+  color: var(--foreground-success);
+  border-color: var(--foreground-success);
 }
 /*
  * Blank
@@ -1695,7 +1697,7 @@ select.uk-form-width-xsmall {
 .uk-checkbox:focus {
   background-color: rgba(0, 0, 0, 0);
   outline: none;
-  border-color: var(--foregroundprimary);
+  border-color: var(--foreground-primary);
 }
 /*
  * Checked
@@ -1703,7 +1705,7 @@ select.uk-form-width-xsmall {
 .uk-radio:checked,
 .uk-checkbox:checked,
 .uk-checkbox:indeterminate {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   border-color: transparent;
 }
 /* Focus */
@@ -1931,11 +1933,11 @@ select.uk-form-width-xsmall {
   text-transform: none;
   /* 6 */
   -webkit-appearance: none;
-  border-radius: 0;
+  border-radius: 5px !important;
   /* 7 */
   display: inline-block;
   box-sizing: border-box;
-  padding: 0 30px;
+  padding: 0 20px;
   vertical-align: middle;
   font-size: 0.875rem;
   /* 8 */
@@ -1945,8 +1947,7 @@ select.uk-form-width-xsmall {
   /* 10 */
   text-decoration: none;
   text-transform: uppercase;
-  transition: 0.1s ease-in-out;
-  transition-property: color, background-color, border-color;
+  transition: all 0.5s ease-in-out;
 }
 .uk-button:not(:disabled) {
   cursor: pointer;
@@ -1991,32 +1992,32 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-button-primary {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   color: #fff;
-  border: 1px solid transparent;
+  border: 1px solid var(--background-primary);
 }
 /* Hover */
 .uk-button-primary:hover {
-  background-color: var(--foregroundprimary-hovering);
+  background-color: var(--foreground-primary-hovering);
   color: #fff;
 }
 /* OnClick + Active */
 .uk-button-primary:active,
 .uk-button-primary.uk-active {
-  background-color: var(--foregroundprimary-clicking);
+  background-color: var(--foreground-primary-clicking);
   color: #fff;
 }
 /*
  * Secondary
  */
 .uk-button-secondary {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
   color: #fff;
   border: 1px solid transparent;
 }
 /* Hover */
 .uk-button-secondary:hover {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
   color: #fff;
 }
 /* OnClick + Active */
@@ -2208,11 +2209,11 @@ select.uk-form-width-xsmall {
  *    https://bugzilla.mozilla.org/show_bug.cgi?id=662351
  */
 .uk-progress::-webkit-progress-value {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   transition: width 0.6s ease;
 }
 .uk-progress::-moz-progress-bar {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   /* 1 */
   transition: width 0.6s ease;
 }
@@ -2304,13 +2305,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-section-primary {
-  background: var(--foregroundprimary);
+  background: var(--foreground-primary);
 }
 /*
  * Secondary
  */
 .uk-section-secondary {
-  background: var(--backgroundsecondary);
+  background: var(--background-secondary);
 }
 /* Overlap modifier
  ========================================================================== */
@@ -2562,13 +2563,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-tile-primary {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
 }
 /*
  * Secondary
  */
 .uk-tile-secondary {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
 }
 /* ========================================================================
    Component: Card
@@ -2642,7 +2643,7 @@ select.uk-form-width-xsmall {
   height: 22px;
   padding: 0 10px;
   /* 3 */
-  background: var(--foregroundprimary);
+  background: var(--foreground-primary);
   color: #fff;
   font-size: 0.875rem;
   /* 4 */
@@ -2693,7 +2694,7 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-card-primary {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
@@ -2701,14 +2702,14 @@ select.uk-form-width-xsmall {
   color: #fff;
 }
 .uk-card-primary.uk-card-hover:hover {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /*
  * Secondary
  */
 .uk-card-secondary {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
   color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
@@ -2716,7 +2717,7 @@ select.uk-form-width-xsmall {
   color: #fff;
 }
 .uk-card-secondary.uk-card-hover:hover {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 }
 /* Size modifier
@@ -2916,7 +2917,7 @@ select.uk-form-width-xsmall {
  */
 .uk-marker {
   padding: 5px;
-  background: var(--backgroundsecondary);
+  background: var(--background-secondary);
   color: #fff;
   border-radius: 500px;
 }
@@ -2973,15 +2974,15 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-alert-primary {
-  background: #d8eafc;
-  color: var(--foregroundprimary);
+  background: var(--background-primary);
+  color: var(--foreground-primary);
 }
 /*
  * Success
  */
 .uk-alert-success {
   background: #edfbf6;
-  color: var(--foregroundsuccess);
+  color: var(--foreground-success);
 }
 /*
  * Warning
@@ -3050,7 +3051,7 @@ select.uk-form-width-xsmall {
   border-radius: 500px;
   vertical-align: middle;
   /* 1 */
-  background: var(--foregroundprimary);
+  background: var(--foreground-primary);
   color: #fff !important;
   font-size: 11px;
   /* 2 */
@@ -3071,7 +3072,7 @@ select.uk-form-width-xsmall {
 .uk-label {
   display: inline-block;
   padding: 0 10px;
-  background: var(--foregroundprimary);
+  background: var(--foreground-primary);
   line-height: 1.5;
   font-size: 0.875rem;
   color: #fff;
@@ -3086,7 +3087,7 @@ select.uk-form-width-xsmall {
  * Success
  */
 .uk-label-success {
-  background-color: var(--foregroundsuccess);
+  background-color: var(--foreground-success);
   color: #fff;
 }
 /*
@@ -3296,7 +3297,7 @@ select.uk-form-width-xsmall {
   /* 2 */
   margin: 0;
   /* 3 */
-  border-radius: 0;
+  border-radius: 5px !important;
   /* 4 */
   font: inherit;
   /* 5 */
@@ -3376,7 +3377,7 @@ select.uk-form-width-xsmall {
 /* Focus */
 .uk-search-default .uk-search-input:focus {
   background-color: rgba(0, 0, 0, 0);
-  border-color: var(--foregroundprimary);
+  border-color: var(--foreground-primary);
 }
 /*
  * Icon
@@ -4115,7 +4116,7 @@ select.uk-form-width-xsmall {
   box-sizing: border-box;
   width: 270px;
   padding: 20px 20px;
-  background: var(--backgroundsecondary);
+  background: var(--background-secondary);
   /* 3 */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -4421,7 +4422,7 @@ select.uk-form-width-xsmall {
   position: relative;
   padding: 15px;
   background: #f8f8f8;
-  color: var(--foregroundprimary-clicking);
+  color: var(--foreground-primary-clicking);
   font-size: 1.25rem;
   line-height: 1.4;
   cursor: pointer;
@@ -4447,13 +4448,13 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-notification-message-primary {
-  color: var(--foregroundprimary);
+  color: var(--foreground-primary);
 }
 /*
  * Success
  */
 .uk-notification-message-success {
-  color: var(--foregroundsuccess);
+  color: var(--foreground-success);
 }
 /*
  * Warning
@@ -5738,7 +5739,7 @@ ul.uk-nav-sub {
 }
 /* Active */
 .uk-subnav-pill > .uk-active > a {
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
   color: #fff;
 }
 /* Disabled
@@ -5926,7 +5927,7 @@ ul.uk-nav-sub {
 /* Active */
 .uk-tab > .uk-active > a {
   color: #333;
-  border-color: var(--foregroundprimary);
+  border-color: var(--foreground-primary);
 }
 /* Disabled */
 .uk-tab > .uk-disabled > a {
@@ -7359,13 +7360,16 @@ ul.uk-nav-sub {
   color: #333 !important;
 }
 .uk-text-primary {
-  color: var(--foregroundprimary) !important;
+  color: var(--foreground-primary) !important;
+}
+.uk-text-background-primary {
+  color: var(--background-primary) !important;
 }
 .uk-text-secondary {
-  color: var(--backgroundsecondary) !important;
+  color: var(--background-secondary) !important;
 }
 .uk-text-success {
-  color: var(--foregroundsuccess) !important;
+  color: var(--foreground-success) !important;
 }
 .uk-text-warning {
   color: #faa05a !important;
@@ -7389,7 +7393,7 @@ ul.uk-nav-sub {
   /* 3 */
   display: inline-block;
   /* 4 */
-  background-color: var(--foregroundprimary);
+  background-color: var(--foreground-primary);
 }
 /* Alignment modifiers
  ========================================================================== */
@@ -7688,10 +7692,13 @@ iframe[data-uk-cover] {
   background-color: #f8f8f8;
 }
 .uk-background-primary {
-  background-color: var(--backgroundprimary);
+  background-color: var(--background-primary);
+}
+.uk-foreground-primary {
+  background-color: var(--foreground-primary);
 }
 .uk-background-secondary {
-  background-color: var(--backgroundsecondary);
+  background-color: var(--background-secondary);
 }
 /* Size
  ========================================================================== */
@@ -8195,6 +8202,9 @@ iframe[data-uk-cover] {
 }
 .uk-border-rounded {
   border-radius: 5px;
+}
+.uk-border-rounded-10 {
+  border-radius: 10px;
 }
 /*
  * Fix `overflow: hidden` to be ignored with border-radius and CSS transforms in Webkit

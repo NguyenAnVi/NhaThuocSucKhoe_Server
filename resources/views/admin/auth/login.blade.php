@@ -41,3 +41,19 @@
         </div>
     </div>
 @endsection
+
+    
+    {{-- @push('js')
+<script src="{{ asset('assets') }}/js/jquery.min.js"></script>
+<script>
+$(function() {
+
+var text_val = $(".input-group input").val();
+if (text_val === "") {
+  $(".input-group").removeClass('is-filled');
+} else {
+  $(".input-group").addClass('is-filled');
+}
+});
+</script>
+@endpush--}}

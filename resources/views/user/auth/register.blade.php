@@ -2,141 +2,58 @@
 @section('css')
 <style>
 .form-register {
+  display:block;
   overflow: hidden;
-  background-color: var(--backgroundsecondary);
-  padding: 40px 30px 30px 30px;
-  border-radius: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  -webkit-transition: -webkit-transform 300ms, box-shadow 300ms;
-  -moz-transition: -moz-transform 300ms, box-shadow 300ms;
-  transition: transform 300ms, box-shadow 300ms;
   box-shadow: 0px 5px 10px rgba(169, 169, 169, 0.367);
-}
-.form-register::before, .form-register::after {
-  content: "";
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-top-left-radius: 40%;
-  border-top-right-radius: 45%;
-  border-bottom-left-radius: 35%;
-  border-bottom-right-radius: 40%;
-  z-index: -1;
-}
-.form-register::before {
-  left: 40%;
-  bottom: -130%;
-  background-color: rgb(255, 166, 175);
-  -webkit-animation: wawes 6s infinite linear;
-  -moz-animation: wawes 6s infinite linear;
-  animation: wawes 6s infinite linear;
-}
-.form-register::after {
-  left: 35%;
-  bottom: -125%;
-  background-color: rgba(255, 133, 155, 0.428);
-  -webkit-animation: wawes 7s infinite;
-  -moz-animation: wawes 7s infinite;
-  animation: wawes 7s infinite;
-}
-.form-register button{
-  background-color: white;
-  color: #000;
-}
-.form-register button:hover{
-  background-color: rgb(79, 92, 150);
-  color: rgb(255, 255, 255);
-}
-.form-register button[disabled]:hover{
-  background-color: rgb(151, 151, 151);
-  color: rgb(255, 255, 255);
-}
-.form-register button:active{
-  background-color: white;
-  color: #000;
-}
-.form-register>p{
-  color: white;
-}
-.form-register>p>a{
-  padding: 3px;
-  background-color: white;
-  border-radius: 5px;
-  color:var(--backgroundsecondary);
-}
-@-webkit-keyframes wawes {
-  from {
-    -webkit-transform: rotate(0);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@-moz-keyframes wawes {
-  from {
-    -moz-transform: rotate(0);
-  }
-  to {
-    -moz-transform: rotate(360deg);
-  }
-}
-@keyframes wawes {
-  from {
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -ms-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
 }
 </style>
 @endsection
 @section('content')
 
-  <form id="p1" class="form-register" style="display: none;">
-    <div class="uk-margin-bottom">
-      <div class="uk-width-1-1 uk-flex">
-      
-        <input class="uk-input uk-width-expand" id="phone-number" type="text" placeholder="@lang('auth.msg.type_phone')">
-        <button id="phone-number-check-button" class="uk-width-small uk-button" type="button">@lang('general.check')</button>
-        
-      </div>
-      <div class="uk-width-1-1" id="phone-number-check-result"></div>
+  <form id="p1" class="form-register uk-width-1-2@m uk-align-center uk-foreground-primary uk-border-rounded-10 uk-margin-large-top uk-margin-large-bottom uk-padding uk-padding-remove-bottom" style="display: none;">
+    <h3 class="uk-text-center uk-text-background-primary uk-article-title uk-margin-small uk-margin-bottom">@lang('auth.register')</h3>
 
+    <div class="uk-margin-bottom">
+      <div class="uk-width-1-1">
+        <input class="uk-input uk-search-input uk-width-expand uk-margin-" id="phone-number" type="text" placeholder="@lang('auth.msg.type_phone')">
+      </div>
     </div>
+    <div class="uk-margin-bottom uk-width-expand">
+      <button id="phone-number-check-button" class="uk-width-expand uk-button uk-button-primary" type="button">@lang('general.check')</button>
+    </div>
+    <div class="uk-margin-bottom" id="phone-number-check-result"></div>
     
 
-    <div class="uk-margin-bottom" id="recaptcha-container"></div>
+    <div class="uk-margin-bottom uk-flex uk-flex-center" id="recaptcha-container"></div>
     <button type="button" id="sendotp-button"  class="uk-button uk-button-primary uk-width-1-1 uk-margin-bottom" onclick="module.sendOTP();">Send OTP</button>
+    <div style="height: 5em" class="uk-flex uk-flex-center uk-flex-right">
+      <span class="uk-text-background-primary">@lang('auth.msg.alreadyhaveaccount')</span><a class="uk-link uk-text-background-primary" href="{{route('login')}}">&nbsp; @lang('auth.login')</a>
+    </div>
   </form>
 
-  <form id="p2" class="form-register" style="display: none;">
-    <input class="uk-input uk-margin-bottom" type="text" id="verification"  placeholder="Verification code">
-    <button type="button" class="uk-form-icon uk-form-icon-flip uk-button uk-button-primary uk-width-1-1 uk-margin-bottom" onclick="module.verifyOTP()">Verify code</button>
+  <form id="p2" class="form-register uk-width-1-2@m uk-align-center uk-foreground-primary uk-border-rounded-10 uk-margin-large-top uk-margin-large-bottom uk-padding uk-padding-remove-bottom" style="display: none;">
+    <h3 class="uk-text-center uk-text-background-primary uk-article-title uk-margin-small uk-margin-bottom">@lang('auth.register')</h3>
+
+    <input class="uk-input uk-margin-bottom" type="text" id="verification"  placeholder="@lang('auth.verification_code')">
+    <button type="button" class=" uk-button uk-button-primary uk-width-1-1 uk-margin-bottom uk-flex uk-flex-center" onclick="module.verifyOTP()">
+      Verify code &nbsp;
+      <div id="countdown-button" class="uk-inline uk-flex-middle" uk-countdown="">
+            <span style="font-size:1em" class="uk-countdown-number uk-countdown-seconds"></span>
+      </div>
+      &nbsp; (@lang('general.time.second'))
+    </button>
   </form>
 
-  <form id="p3" class="form-register" action="POST" style="display: none;">
+  <form id="p3" class="form-register uk-width-1-2@m uk-align-center uk-foreground-primary uk-border-rounded-10 uk-margin-large-top uk-margin-large-bottom uk-padding uk-padding-remove-bottom" action="POST" style="display: none;">
     @csrf
-    <input name="phone" type="hidden">
-    <input class="uk-input uk-margin-bottom" name="password" type="password" placeholder="@lang('auth.msg.type_newpassword')">
-    <input class="uk-input uk-margin-bottom" name="passwordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')">
-    <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.register')</button>
-    <p class="uk-text-right">@lang('auth.msg.alreadyhaveaccount') <a href="{{route('login')}}">@lang('auth.login')</a></p>
+    <div class="uk-margin-bottom">
+      <h3 class="uk-text-center uk-text-background-primary uk-article-title uk-margin-small uk-margin-bottom">@lang('auth.register')</h3>
+      <input name="phone" type="hidden">
+      <input class="uk-input uk-margin-bottom" name="password" type="password" placeholder="@lang('auth.msg.type_newpassword')">
+      <input class="uk-input uk-margin-bottom" name="passwordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')">
+      <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.register')</button>
+    </div>
+    
   </form>
 @endsection
 @section('js')

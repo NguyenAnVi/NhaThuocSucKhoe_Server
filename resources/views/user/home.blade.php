@@ -38,9 +38,9 @@
 @endsection
 
 @section('content')
-<div class="uk-flex uk-flex-column uk-padding">
+<div class="uk-flex uk-flex-column uk-margin-top">
   {{-- banner --}}
-  <div class="vi-border-rounded uk-overflow-hidden uk-position-relative uk-visible-toggle uk-width-1-1" tabindex="1" uk-slideshow="ratio:3:1; animation: pull; autoplay:true; "  >
+  <div class="vi-border-rounded uk-overflow-hidden uk-position-relative uk-visible-toggle uk-width-1-1 uk-box-shadow-medium" tabindex="1" uk-slideshow="ratio:3:1; animation: pull; autoplay:true; "  >
     <ul class="uk-slideshow-items">
       @foreach ($banners as $item)
       @if($item->imageurl!="")

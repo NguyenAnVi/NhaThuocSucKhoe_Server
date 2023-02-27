@@ -1,10 +1,10 @@
 {{-- Authentication Links --}}
 @guest
     {{-- <button id="login-button" data-route="{{ route('login') }}" class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button">@lang('auth.login')</button> --}}
-    <button onclick="window.location.href='{{route('login') }}';" class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button">@lang('auth.login')</button>
+    <button onclick="window.location.href='{{route('login') }}';" class="uk-button uk-button-primary uk-padding-remove-vertical uk-padding-small" type="button">@lang('auth.login')</button>
     <div id="login-div" uk-modal></div>
 @else
-<button class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small" type="button"><span uk-icon="icon:user"></span></button>
+<button class="uk-button uk-button-primary uk-padding-remove-vertical uk-padding-small" type="button"><span uk-icon="icon:user"></span></button>
 <div class="uk-navbar-dropdown" uk-dropdown="pos: bottom-right; mode:click; animation: uk-animation-slide-top-small">
   <ul class="uk-nav uk-navbar-dropdown-nav">
     <li class="uk-nav-header">

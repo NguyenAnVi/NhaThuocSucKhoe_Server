@@ -60,19 +60,19 @@ class AuthController extends Controller
             if(strlen($phone)==10){
                 $user = User::where('phone',$phone)->first();
                 if($user){
-                $result = '<div class="uk-text-italic uk-text-danger uk-padding-small uk-padding-remove-horizontal">'.trans('general.msg.phonenumberisused').'❌'.'</div>';
+                $result = '<div class="uk-text-italic uk-text-danger ">'.trans('general.msg.phonenumberisused').'❌'.'</div>';
                 $status = 0;
                 }else{
-                    $result = '<div class="uk-text-italic uk-text-success uk-padding-small uk-padding-remove-horizontal">'.trans('general.msg.phonenumberavailable').'✅'.'</div>';
+                    $result = '<div class="uk-text-italic uk-text-success ">'.trans('general.msg.phonenumberavailable').'✅'.'</div>';
                     $status = 1;
                 } 
             } else {
-                $result = '<div class="uk-text-italic uk-text-danger uk-padding-small uk-padding-remove-horizontal">'.trans('general.msg.invalidphonenumber').'❌'.'</div>';
+                $result = '<div class="uk-text-italic uk-text-danger ">'.trans('general.msg.invalidphonenumber').'❌'.'</div>';
                 $status = 0;
             }
             
         }else{
-            $result = '<div class="uk-text-italic uk-text-danger uk-padding-small uk-padding-remove-horizontal">'.trans('general.msg.erroroccurred').'❌'.'</div>';
+            $result = '<div class="uk-text-italic uk-text-danger ">'.trans('general.msg.erroroccurred').'❌'.'</div>';
             $status = 1;
         }
         return Response(json_encode(['result'=>$result, 'status' =>$status]));

@@ -21,24 +21,33 @@
 		}
 		label[for]{
 			user-select: none;
-		-moz-user-select: none;
-		-khtml-user-select: none;
-		-webkit-user-select: none;
-		-o-user-select: none;
+			-moz-user-select: none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+			-o-user-select: none;
 		}
 
 		.vi-background-black{
 			background-color:black;
 			color: white;
 		}
+		.text-background-primary{
+			color: var(--background-primary);
+		}
 
 		body{
-			background-color: var(--background-white);
-		}
-		.uk-button, input{
-			border-radius: 5px !important;
+			background-color: var(--background-primary);
 		}
 		.uk-modal-dialog { border-radius: 25px !important;}
+		.footer-content > * {
+			font-size: 0.8em;
+		}
+		.footer-content > p > a, .footer-content, .footer-content > *{
+			color: white ;
+		}
+		.footer-content > p {
+			margin: 6px 0px;
+		}
 	</style>
 	
 	<script src="{{ asset('js/uikit.js') }}"></script>
@@ -48,14 +57,14 @@
 </head>
 <body>
 	<div id="app" class="">
-		<div class="vi-background-black uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-			<nav class="uk-flex uk-flex-between uk-container">
+		<div class="vi-background-black uk-light uk-position-z-index" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
+			<nav class="uk-flex uk-flex-between uk-container uk-padding-large uk-padding-remove-vertical">
 				<div>@lang('general.hotline'): 0939.963.285</div>
 				<div>@includeIf('user.partials.lang')</div>
 			</nav>
 		</div>
-		<div class="uk-background-primary uk-light uk-position-z-index uk-padding-large uk-padding-remove-vertical uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-			<nav class="uk-navbar uk-container uk-navbar-transparent uk-container">
+		<div class="uk-foreground-primary uk-light uk-position-z-index uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
+			<nav class="uk-navbar uk-container uk-container uk-padding-large uk-padding-remove-vertical">
 					<div class="uk-navbar-left">
 						<img src="{{asset('storage/images/logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
 						<a class="uk-navbar-item uk-logo" href="{{route('home')}}">{{ config('app.name') }}</a>
@@ -63,43 +72,102 @@
 						<div id="categories-menu" uk-dropdown="mode: click; animation: uk-animation-slide-top-small; animate-out:true; bg-scroll:false"></div>
 					</div>
 					<div class="uk-navbar-right">
-  					{{-- <ul class="uk-navbar-nav">  --}}
-							{{-- <li> --}}
-								@includeIf('user.partials.searchbar')
-							{{-- </li> --}}
-							{{-- <li> --}}
-								@includeIf('user.partials.cart')
-							{{-- </li> --}}
-							{{-- <li> --}}
-								@includeIf('user.partials.auth_menu')
-							{{-- </li> --}}
-						{{-- </ul> --}}
+								<x-navbar.searchbar></x-navbar.searchbar>
+								<x-navbar.cart></x-navbar.cart>
+								<x-navbar.auth></x-navbar.auth>
 					</div>
-					
 			</nav>
 		</div>
 		
 		<main class="" uk-height-viewport="offset-bottom:true ; offset-top:true">
 
 			
-			<div class="uk-container">
+			<div class="uk-container uk-padding-large uk-padding-remove-vertical">
 				@yield('content')
 			</div>
 		</main>
 
-		<footer class="uk-section uk-section-xsmall uk-background-primary">
-			<div class="uk-container uk-padding-large uk-padding-remove-vertical">
-				<div class="uk-grid uk-text-center uk-text-left@s uk-flex-middle uk-padding-large uk-padding-remove-vertical" data-uk-grid>
-					<div class="uk-text-small uk-text-muted uk-width-1-3@s">
-						{{config('app.author.email')}}
+		<footer class=" uk-foreground-primary" uk-height-viewport="expand: true">
+			<div class="uk-container uk-padding-large">
+				<div class="uk-grid uk-text-center uk-text-left@s" data-uk-grid>
+					<div class="uk-width-1-5@s footer-content">
+						<h5 class="uk-text-background-primary uk-text-bold">CHĂM SÓC KHÁCH HÀNG</h5>
+						<p><a class="uk-button-link" href="">Trung Tâm Trợ Giúp</a></p>
+						<p><a class="uk-button-link" href="">Bubu Blog</a></p>
+						<p><a class="uk-button-link" href="">Bubu Mall</a></p>
+						<p><a class="uk-button-link" href="">Hướng Dẫn Mua Hàng</a></p>
+						<p><a class="uk-button-link" href="">Hướng Dẫn Bán Hàng</a></p>
+						<p><a class="uk-button-link" href="">Vận chuyển</a></p>
+						<p><a class="uk-button-link" href="">Trả hàng, hoàn tiền</a></p>
+						<p><a class="uk-button-link" href="">Chăm sóc Khách hàng</a></p>
+						<p><a class="uk-button-link" href="">Chính sách bảo hành</a></p>
 					</div>
-					<div class="uk-text-center uk-width-1-3@s">
-						<a target="_blank" href="https://github.com/NguyenAnVi/CT271_NLCS"
-						class="uk-icon-button" data-uk-icon="github"></a>
+					<div class="uk-width-1-5@s footer-content">
+						<h5 class="uk-text-background-primary uk-text-bold">VỀ BUBU PHARMA</h5>
+						<p><a class="uk-button-link" href="">Giới thiệu về Bubu</a></p>
+						<p><a class="uk-button-link" href="">Tuyển dụng</a></p>
+						<p><a class="uk-button-link" href="">Điều khoản</a></p>
+						<p><a class="uk-button-link" href="">Chính sách bảo mật</a></p>
+						<p><a class="uk-button-link" href="">Chính hãng</a></p>
+						<p><a class="uk-button-link" href="">Chương trình tiếp thị liên kết</a></p>
+						<p><a class="uk-button-link" href="">Liên hệ với truyền thông</a></p>
 					</div>
-					<div class="uk-text-small uk-text-muted uk-text-center uk-text-right@s uk-width-1-3@s">
-						Built with <a target="_blank" href="http://getuikit.com"><span data-uk-icon="uikit"></span></a>
+					<div class="uk-width-1-5@s footer-content">
+						<h5 class="uk-text-background-primary uk-text-bold">THANH TOÁN</h5>
+						<p></p>
+						<div class="uk-flex uk-flex-wrap uk-child-width-1-4 ">
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/visa.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/tragop.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/mastercard.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/ae.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/jcb.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/payment/cod.png')}}" alt="" srcset=""></div>
+						</div>
+
+						<h5 class="uk-text-background-primary uk-text-bold">VẬN CHUYỂN</h5>
+						<p></p>
+						<div class="uk-flex uk-flex-wrap uk-child-width-1-4 ">
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/beexpress.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/bestexpress.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/ghn.jfif')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/ghtk.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/grab.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/jt.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/ninjavan.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/vietnampost.png')}}" alt="" srcset=""></div>
+							<div class="uk-background-primary uk-border-rounded" style="margin: 2px 2px;padding:5px 2px; text-align:center"><img class="" src="{{asset('storage/images/shipping/viettelpost.png')}}" alt="" srcset=""></div>
+						</div>
 					</div>
+					<div class="uk-width-1-5@s footer-content">
+						<h5 class="uk-text-background-primary uk-text-bold">THEO DÕI CHÚNG TÔI</h5>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="facebook"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">Facebook</a></p>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="instagram"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">Instagram</a></p>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="pinterest"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">Pinterest</a></p>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="reddit"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">Reddit</a></p>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="tiktok"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">TikTok</a></p>
+						<p><a href="" class="uk-icon-button uk-background-primary uk-text-primary" uk-icon="youtube"></a>&nbsp;&nbsp;<a class="uk-button-link text-background-primary" href="">YouTube</a></p>
+					</div>
+					<div class="uk-width-1-5@s footer-content">
+						<h5 class="uk-text-background-primary uk-text-bold">ĐA NỀN TẢNG</h5>
+						<p></p>
+						<div class="uk-flex uk-flex-wrap">
+							<div class="uk-width-1-2" style="border-radius: 5px; padding: 5px 5px; background-color:white; margin:0 5px 0 0">
+								<img src="{{asset('storage/images/qr/rr.png')}}" alt="">
+							</div>
+							<div class="uk-width-expand">
+								<div style="border-radius: 5px; padding: 5px 5px; background-color:white; background-color:white; margin:0 0 5px 0"><img src="{{asset('storage/images/platform/appstore.png')}}" alt=""></div>
+								<div style="border-radius: 5px; padding: 5px 5px; background-color:white; background-color:white; margin:0 0 5px 0"><img src="{{asset('storage/images/platform/googleplaystore.png')}}" alt=""></div>
+								<div style="border-radius: 5px; padding: 5px 5px; background-color:white; background-color:white; margin:0 0 5px 0"><img src="{{asset('storage/images/platform/appgallery.png')}}" alt=""></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="uk-text-center footer-content">
+					<p class="top">Trường Đại học Cần Thơ (Can Tho University)</p>
+					<p>Khu II, đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ.</p>
+					<p class="bottom">Điện thoại: (84-292) 3832663 - (84-292) 3838474; Fax: (84-292) 3838474; Email: dhct@ctu.edu.vn.</p>
+			
 				</div>
 			</div>
 		</footer>

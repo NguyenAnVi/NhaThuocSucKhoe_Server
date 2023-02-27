@@ -1,7 +1,10 @@
 <?php
 
 return [
-   'language' => [
+    'hotline' => 'Hotline (free)',
+    'search' => 'Search',
+    'cart' => 'Cart',
+    'language' => [
         'set_language_success' => 'Khiêm khùng',
         'vi' => 'Vietnamese',
         'en' => 'English',
@@ -13,4 +16,5 @@ return [
     ],
 
     'check' => 'Check',
+    'time' => 'time'
 ];

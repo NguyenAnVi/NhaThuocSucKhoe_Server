@@ -13,6 +13,13 @@ return [
     |
     */
 
+    'login' => 'Login',
+    'register' => 'Register',
+    'msg' => [
+        'login_required' => 'Login required',
+        'type_phone'=> 'Type your phone',
+        'type_password' => 'Type password'
+    ],
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
