@@ -13,7 +13,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->getMethod() == 'GET') {
+            
             if(!Auth::guard('admin')->user()){
+                app()->setLocale('en');
                 return view('admin.auth.login');
             }
             else{

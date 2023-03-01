@@ -4,9 +4,6 @@ namespace App;
 
 use App\Models\Admin;
 use App\Csrf;
-// use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class SessionGuard
 {

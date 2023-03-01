@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\Resources\CategoryController;
 use App\Http\Controllers\User\Resources\ProductController;
 use App\Http\Controllers\User\Resources\BannerController;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -89,14 +88,14 @@ class HomeController extends Controller
 
 	public function test(){
 		return view('tested');
-		// return view('tested')->withErrors([
-		// 	'bird'=>'Im a bird!',
-		// 	'bird2'=>'Im a birdy!',
-
-		// ]);
 	}
 
 	public function notFound(){
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
+						
+		http_response_code(404);
 		return view('user.errors.404');
 	}
 }

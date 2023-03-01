@@ -9,31 +9,6 @@
     <title>404</title>
 </head>
 <body>
-    <div class="box-container">
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="space"></span>
-        <span class="box"> </span>
-        <span class="space"></span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="space"></span>
-        <span class="box"> </span>
-        <span class="box"></span>
-        <span class="box"></span>
-        <span class="space"></span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-        <span class="box"> </span>
-    </div>
-    <div class="click hover-click">again</div>
+    404
 </body>
-<script src="{{asset('js/jquery-3.6.1.min.js') }}"></script>
-<script src="{{asset('js/404.js')}}"></script>
 </html>

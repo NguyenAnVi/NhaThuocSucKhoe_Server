@@ -13,14 +13,24 @@ return [
     |
     */
 
-    'login' => 'Login',
-    'register' => 'Register',
-    'msg' => [
-        'login_required' => 'Login required',
-        'type_phone'=> 'Type your phone',
-        'type_password' => 'Type password'
-    ],
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'login' => 'Login',
+    'login_required' => 'Login required',
+    'logout' => 'Logout',
+    'register' => 'Register',
+    'confirm' => 'Confirm',
+    'error' => 'Error occurred',
+    
+    'msg' => [
+        'alreadyhaveaccount' => 'Already have account? ',
+        'donthaveaccount' => 'Dont have account? ',
+        'loginsuccess' => 'Login successfully',  
+        'type_phone' => 'Type phone number',
+        'type_name' => 'Type name',
+        'type_password' => 'Type password',
+        'type_newpassword' => 'Type new password',
+        'type_newpasswordconfirm' => 'Confirm your new password',
+        
+    ],
 ];

@@ -44,11 +44,13 @@
     </button>
   </form>
 
-  <form id="p3" class="form-register uk-width-1-2@m uk-align-center uk-foreground-primary uk-border-rounded-10 uk-margin-large-top uk-margin-large-bottom uk-padding uk-padding-remove-bottom" action="POST" style="display: none;">
+  <form id="p3" class="form-register uk-width-1-2@m uk-align-center uk-foreground-primary uk-border-rounded-10 uk-margin-large-top uk-margin-large-bottom uk-padding uk-padding-remove-bottom" 
+        action="" method="POST" style="display: none;">
     @csrf
     <div class="uk-margin-bottom">
       <h3 class="uk-text-center uk-text-background-primary uk-article-title uk-margin-small uk-margin-bottom">@lang('auth.register')</h3>
-      <input name="phone" type="hidden">
+      <input name="phone" id="newphonenumber" type="hidden">
+      <input class="uk-input uk-margin-bottom" type="text" name="name" placeholder="@lang('auth.msg.type_name')">
       <input class="uk-input uk-margin-bottom" name="password" type="password" placeholder="@lang('auth.msg.type_newpassword')">
       <input class="uk-input uk-margin-bottom" name="passwordconfirm" type="password" placeholder="@lang('auth.msg.type_newpasswordconfirm')">
       <button class="uk-button uk-button-primary uk-width-1-1" >@lang('auth.register')</button>
@@ -101,6 +103,7 @@
         $('#phone-number-check-result').html(result.result);
         if(result.status == 1){
           $('#sendotp-button').removeAttr('disabled');
+          $('#newphonenumber').val($('#phone-number').val());
         } else {
           $('#sendotp-button').attr('disabled', 'true');
         }

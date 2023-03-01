@@ -26,7 +26,10 @@
   --foreground-primary-clicking : #5d2543;
 
 
-  --background-secondary : #293462;
+  --background-secondary : #e5eaff;
+  --foreground-secondary : #405193;
+  --foreground-secondary-hovering : #4e67cc;
+
   --foreground-success : #26c485;
   --background-success : #7ae6bb;
   --light1 : #a29ebb;
@@ -36,7 +39,7 @@
 html {
   /* 1 */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
   line-height: 1.5;
   /* 2 */
@@ -2011,13 +2014,13 @@ select.uk-form-width-xsmall {
  * Secondary
  */
 .uk-button-secondary {
-  background-color: var(--background-secondary);
+  background-color: var(--foreground-secondary);
   color: #fff;
-  border: 1px solid transparent;
+  border: 1px solid #fff;
 }
 /* Hover */
 .uk-button-secondary:hover {
-  background-color: var(--background-secondary);
+  background-color: #140d60;
   color: #fff;
 }
 /* OnClick + Active */
@@ -7699,6 +7702,9 @@ iframe[data-uk-cover] {
 }
 .uk-background-secondary {
   background-color: var(--background-secondary);
+}
+.uk-foreground-secondary {
+  background-color: var(--foreground-secondary);
 }
 /* Size
  ========================================================================== */

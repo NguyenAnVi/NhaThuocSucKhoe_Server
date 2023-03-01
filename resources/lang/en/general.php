@@ -14,6 +14,7 @@ return [
         'logout' => 'Logout',
         'register' => 'Register',
     ],
+    'greeting' => 'Welcome',
 
     'check' => 'Check',
     'time' => 'time'

@@ -83,7 +83,7 @@ class AuthController extends Controller
         if($request->getMethod() == 'GET') {
             return view('user.auth.register');
         }
-        
+        return $this->postRegister($request);
     }
 
     public function postRegister(Request $request)

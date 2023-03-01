@@ -6,8 +6,9 @@
 </style>
 @endsection
 @section('content')
-	<div class="uk-padding uk-background-secondary">
-	</div>
+  <x-localization.alang></x-localization.alang>
+
 	
 	
 @endsection
+

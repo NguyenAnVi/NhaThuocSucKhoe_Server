@@ -4,11 +4,12 @@ return [
    'language' => [
         'set_language_success' => 'Đổi ngôn ngữ thành công',
         'vi' => 'Tiếng Việt',
-        'en' => 'Tiếng Anh',
+        'en' => 'English',
     ],
     'filter' => [
         'all' => 'Tất cả',
     ],
+    'greeting' => 'Xin chào',
     'back' => 'Trở lại',
     'hotline' => 'Hotline đặt hàng (Miễn phí)',
     'categories' => 'Danh mục',

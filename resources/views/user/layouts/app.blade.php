@@ -8,7 +8,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	{{-- Title --}}
-	<title>{{ config('app.name', 'Nhà thuốc Sức Khỏe') }}</title>
+	<title>{{ config('app.name') }}</title>
 
 	{{-- Favicon --}}
 	<link rel="icon" type="image/x-icon" href="{{asset('storage/images/logo/favicon.png')}}">
@@ -60,7 +60,9 @@
 		<div class="vi-background-black uk-light uk-position-z-index" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
 			<nav class="uk-flex uk-flex-between uk-container uk-padding-large uk-padding-remove-vertical">
 				<div>@lang('general.hotline'): 0939.963.285</div>
-				<div>@includeIf('user.partials.lang')</div>
+				<div class="uk-flex uk-flex-row">
+					<x-localization.lang></x-localization.lang>
+				</div>
 			</nav>
 		</div>
 		<div class="uk-foreground-primary uk-light uk-position-z-index uk-box-shadow-medium" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
@@ -87,7 +89,7 @@
 			</div>
 		</main>
 
-		<footer class=" uk-foreground-primary" uk-height-viewport="expand: true">
+		<footer class=" uk-foreground-primary">
 			<div class="uk-container uk-padding-large">
 				<div class="uk-grid uk-text-center uk-text-left@s" data-uk-grid>
 					<div class="uk-width-1-5@s footer-content">

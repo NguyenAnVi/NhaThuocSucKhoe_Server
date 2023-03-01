@@ -14,27 +14,26 @@ use App\Http\Controllers\Admin\Manager\AdminOrderController;
 
 
 Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('admin.login');
-Route::match(['post'], '/logout', [LoginController::class, 'logout'])->name('admin.logout');
+Route::match(['get', 'post'], 'logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 Route::middleware('auth:admin')->group(function () {
     Route::prefix('')->group(function () {
-        Route::get('home', [HomeController::class, 'index'])->name('admin.home');
-        Route::get('', function () {
-            return redirect()->route('admin.home');
-        });
+        Route::get('settings', [HomeController::class, 'settings'])->name('admin.settings');
+
+        Route::get('/{locale?}', [HomeController::class, 'index'])->name('admin.home');
 
         // Manage Admin Account route
-        Route::resource('hr', AdminHrController::class)
+        Route::resource('account', AdminHrController::class)
             ->except(['show'])
             ->names([
-                'index' => 'admin.hr',
-                'create' => 'admin.hr.create',
-                'store' => 'admin.hr.store',
-                'edit' => 'admin.hr.edit',
-                'update' => 'admin.hr.update',
-                'destroy' => 'admin.hr.destroy'
+                'index' => 'admin.account',
+                'create' => 'admin.account.create',
+                'store' => 'admin.account.store',
+                'edit' => 'admin.account.edit',
+                'update' => 'admin.account.update',
+                'destroy' => 'admin.account.destroy'
             ]);
-        Route::get('hr/search', [AdminHrController::class, 'search'])->name('admin.hr.search');
+        Route::get('account/search', [AdminHrController::class, 'search'])->name('admin.account.search');
 
         // Manage User Account route
         Route::resource('customer', AdminCustomerController::class)
@@ -98,6 +97,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('order/search', [AdminOrderController::class, 'search'])->name('admin.order.search');
         Route::post('order/switchstatus', [AdminOrderController::class, 'switchstatus']);
     });
+    Route::match('get', '/language/{locale}', [HomeController::class, 'setlocale']);
 
     Route::fallback([HomeController::class, 'notFound']);
 });
