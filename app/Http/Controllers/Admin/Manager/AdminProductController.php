@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\SaleOff;
-use Exception;
 
 class AdminProductController extends Controller
 {
@@ -17,26 +15,20 @@ class AdminProductController extends Controller
 	
 	public function index($olddata=NULL)
 	{
-		$products = Product::paginate(5);
 		$newdata = ([
-			'collection' => $products,
+			'collection' =>  Product::paginate(5),
 			'title' =>'Danh sách sản phẩm',
-			'createRoute' => route('admin.product.create'),
-			'tableView' => 'admin.manager.product.productTable',
-
-			'saleoffs' => SaleOff::all(),
 		]);
 		if($olddata!=NULL) 
 			$data = array_merge($olddata,$newdata);
 		else 
 			$data = $newdata;
-		return view('admin.layouts.index', $data);
+		return view('admin.manager.product.index', $data);
 	}
 
 	public function create()
 	{
 		return view('admin.layouts.create', [
-			'saleoffs' => SaleOff::all(),
 			'title' => 'Thêm sản phẩm',
 			'formView' => 'admin.manager.product.productAddForm',
 		]);

@@ -55,4 +55,5 @@ Route::match('get', '/language/{locate}', [HomeController::class, 'setlocate']);
 Route::match(['get'], '/testing/tested', [HomeController::class, 'test']);
 
 
+
 Route::fallback([HomeController::class, 'notFound']);

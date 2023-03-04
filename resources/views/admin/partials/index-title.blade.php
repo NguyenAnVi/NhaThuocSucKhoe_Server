@@ -1,5 +1,5 @@
 <div class="uk-flex-around uk-flex">
-    <H3 class="uk-text-bold uk-text-center">{{$title}}</H3>
+   
 </div>
 <div class="uk-flex uk-flex-center uk-flex-right@m uk-flex-middle uk-flex-wrap">
     <div>

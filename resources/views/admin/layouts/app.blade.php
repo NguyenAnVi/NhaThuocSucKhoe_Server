@@ -15,6 +15,8 @@
 
 	<!-- Styles -->
 	<link href="{{ asset('css/uikit.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/vi.css') }}" rel="stylesheet">
+
 	<style>
 		/* * {
 			scrollbar-width: auto;
@@ -39,35 +41,20 @@
 			z-index: -1;
 			@auth('admin') padding-left: 60px; @endauth
 		}
-		/* #content>main{
-			overflow-x: hidden;
-			overflow-y: scroll;
-		} */
 		
 	</style>
 	@yield('css')
 
 	<script src="{{ asset('js/uikit.js') }}"></script>
 	<script src="{{ asset('js/uikit-icons.js') }}"></script>
+	<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
+
 </head>
 <body>
 	<div id="app">
 			
 			<div id="content" class="uk-width-1-1" uk-height-viewport="expand:true;">
-				{{-- <div class="uk-background-secondary uk-light uk-position-z-index uk-padding uk-padding-remove-vertical" uk-sticky=" show-on-up: true; animation: uk-animation-slide-top">
-					<nav class="uk-navbar uk-navbar-transparent">
-						<div data-uk-navbar>
-							<div class="uk-navbar-left">
-								<img src="{{asset('storage/images/logo/favicon.png')}}" style="max-height: 2rem; max-width: 2rem">
-								<a class="uk-navbar-item uk-logo" href="{{route('admin.home')}}">{{ config('app.name', 'Laravel') }}</a>
-								@includeWhen(Auth::guard('admin')->check(), 'admin.partials.sidebar')
-							</div>
-						</div>
-					</nav>
-				</div> --}}
-				
 				<main uk-height-viewport="offset-bottom:true">
-					{{-- @includeIf('admin.partials.generalmessage') --}}
 					<div class="uk-padding">
 						@yield('content')
 					</div>
@@ -78,7 +65,6 @@
 							<div class="uk-text-small uk-text-muted uk-width-1-3@s">
 								ViB1910178@student.ctu.edu.vn
 							</div>
-							
 						</div>
 					</div>
 				</footer>

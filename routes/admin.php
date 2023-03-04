@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Manager\AdminHRController;
 use App\Http\Controllers\Admin\Manager\AdminCustomerController;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
-use App\Http\Controllers\Admin\Manager\AdminSaleOffController;
+use App\Http\Controllers\Admin\Manager\AdminBannerController;
+use App\Http\Controllers\Admin\Manager\AdminImageController;
 use App\Http\Controllers\Admin\Manager\AdminCategoryController;
 use App\Http\Controllers\Admin\Manager\AdminOrderController;
 
@@ -16,11 +17,12 @@ use App\Http\Controllers\Admin\Manager\AdminOrderController;
 Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('admin.login');
 Route::match(['get', 'post'], 'logout', [LoginController::class, 'logout'])->name('admin.logout');
 
+
 Route::middleware('auth:admin')->group(function () {
     Route::prefix('')->group(function () {
         Route::get('settings', [HomeController::class, 'settings'])->name('admin.settings');
 
-        Route::get('/{locale?}', [HomeController::class, 'index'])->name('admin.home');
+        Route::get('/', [HomeController::class, 'index'])->name('admin.home');
 
         // Manage Admin Account route
         Route::resource('account', AdminHrController::class)
@@ -46,20 +48,31 @@ Route::middleware('auth:admin')->group(function () {
             ]);
         Route::get('customer/search', [AdminCustomerController::class, 'search'])->name('admin.customer.search');
 
-        // Manage SaleOff route
-        Route::resource('saleoff', AdminSaleOffController::class)
+        // Manage banner route
+        Route::resource('banner', AdminBannerController::class)
             ->except(['show'])
             ->names([
-                'index' => 'admin.saleoff',
-                'create' => 'admin.saleoff.create',
-                'store' => 'admin.saleoff.store',
-                'edit' => 'admin.saleoff.edit',
-                'update' => 'admin.saleoff.update',
-                'destroy' => 'admin.saleoff.destroy'
+                'index' => 'admin.banner',
+                'create' => 'admin.banner.create',
+                'store' => 'admin.banner.store',
+                'edit' => 'admin.banner.edit',
+                'update' => 'admin.banner.update',
+                'destroy' => 'admin.banner.destroy'
             ]
         );
-        Route::get('saleoff/search', [AdminSaleoffController::class, 'search'])->name('admin.saleoff.search');
-        Route::get('saleoff/getall', [AdminSaleoffController::class, 'getAllAjax'])->name('admin.saleoff.getall');
+        Route::get('banner/search', [AdminBannerController::class, 'search'])->name('admin.banner.search');
+        Route::get('banner/getall', [AdminBannerController::class, 'getAllAjax'])->name('admin.banner.getall');
+
+         // Manage image route
+         Route::resource('image', AdminImageController::class)
+         ->except(['show', 'update' ,'edit'])
+         ->names([
+             'index' => 'admin.image',
+             'create' => 'admin.image.create',
+             'store' => 'admin.image.store',
+             'destroy' => 'admin.image.destroy'
+         ]);
+        Route::post('image/upload', [AdminImageController::class, 'upload'])->name('admin.image.upload');
 
 
         Route::resource('product', AdminProductController::class)

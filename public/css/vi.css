@@ -1,0 +1,50 @@
+.vi-switch-control {
+  display: block;
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.vi-switch-control input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.vi-switch-control.vi-switch-control-primary input:checked ~ .vi-control {
+  background-color: var(--foreground-primary);
+}
+.vi-switch-control.vi-switch-control-secondary input:checked ~ .vi-control {
+  background-color: var(--foreground-secondary);
+}
+
+.vi-switch-control input:checked ~ .vi-control:after {
+  left: 45px;
+}
+.vi-switch-control .vi-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 80px;
+  border-radius: 10px;
+  background-color: darkgray;
+  transition: background-color 0.15s ease-in;
+}
+.vi-switch-control .vi-control:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: white;
+  transition: left 0.15s ease-in;
+}
