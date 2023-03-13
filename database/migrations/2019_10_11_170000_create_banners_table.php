@@ -13,7 +13,7 @@ class CreateBannersTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('link')->default('');
-            $table->string('imageurl')->default('');
+            $table->string('imageurl', 2048)->default('');
             $table->string('status')->default('ACTIVE');
         });
     }

@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\FileBag;
+use Symfony\Component\HttpFoundation\Response;
+use App\Models\Image;
+use Exception;
 class AdminImageController extends Controller
 {
     public function getAll($page = null){
@@ -128,24 +129,34 @@ class AdminImageController extends Controller
 	{
         try {
             if ($request->ajax()!== NULL) {
-                error_log($request->file('image'));
-                if($request->file('image')){
-					$request->file('image')->storeAs('public/images/', 'png.png');
-
-                    return Response(json_encode(['Success: ']));
-                }
-                else {
-                    return Response(json_encode(["hentai"]));
-                }
-                // error_log($request->files);
-            // echo var_dump($request->files);
                 
+                $uid = $request->input('uid');
+                $tnow = time();
+                if($request->file('image')){
+                    $filename = $tnow.'.'.$uid.'.png';
+                    try {
+                        $request->file('image')->storeAs('public/images/uploads/', $filename);
+                        error_log('New image is uploaded('.$filename.').');
+                        $image = new Image();
+                        $image->timestamps = true;
+                        $image->url = asset('storage/images/uploads/'.$filename);
+                        $image->path = "/images/uploads/".$filename;
+                        $image->uid = $uid;
+                        $image->save();
+                        return Response(json_encode([
+                            'status' => 'success',
+                            'url' => $image->url,
+                        ]));
+                    }catch (Exception $ue){
+                        error_log('Error while uploading image: '.$ue->getMessage());
+                    }
+                    return Response(json_encode([
+                        'status' => 'error',
+                    ]));
+                }
             }
-            //code...
         } catch (\Error $th) {
-            //throw $th;
-            // echo var_dump($request->files);
-            return Response(json_encode(['Error: '. $th->getMessage()]));
+            return Response(json_encode(['Error while call function upload: '. $th->getMessage()]));
         }
 	}
 

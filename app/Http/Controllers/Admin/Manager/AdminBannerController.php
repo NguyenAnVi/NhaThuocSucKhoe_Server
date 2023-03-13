@@ -45,31 +45,32 @@ class AdminBannerController extends Controller
 
     public function store(Request $request)
     {
+        error_log('store banner');
         // validate NAME
         $this->validate($request, [
             'name' => 'required|string',
         ]);
 
         // create Banner object and append data:
-        $Banner = new Banner;
+        $banner = new Banner;
         // disable timestamp adding:
-        $Banner->timestamps = false;
+        $banner->timestamps = false;
 
-        $Banner->name = $request->name;
+        $banner->name = $request->name;
 
         // option : add price_amount or add price_percent
         if ($request->boolean('price_check')) {
-            $Banner->amount = $request->price_amount;
-            $Banner->percent = 0;
+            $banner->amount = $request->price_amount;
+            $banner->percent = 0;
         } else {
-            $Banner->amount = 0;
-            $Banner->percent = $request->price_percent;
+            $banner->amount = 0;
+            $banner->percent = $request->price_percent;
         }
 
         // validate starttime and endtime: starttime must be before endtime
         if (strcmp($request->Banner_starttime, $request->Banner_endtime) < 0) {
-            $Banner->starttime = $request->Banner_starttime;
-            $Banner->endtime = $request->Banner_endtime;
+            $banner->starttime = $request->Banner_starttime;
+            $banner->endtime = $request->Banner_endtime;
         } else {
             return back()->withInput()->withErrors([
                 'Banner_endtime' => 'Thời gian kết thúc KM phải lớn hơn thời gian bắt đầu',
@@ -79,23 +80,23 @@ class AdminBannerController extends Controller
         // check if banner
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
-            $name = unified_format($Banner->name) . '-' . time() . '.' . $file->extension();
+            $name = unified_format($banner->name) . '-' . time() . '.' . $file->extension();
             $file->storeAs('public/Banner/banners', $name);
 
-            $Banner->imageurl = asset('storage/Banner/banners').'/'.$name;
+            $banner->imageurl = asset('storage/Banner/banners').'/'.$name;
         } else {
             // make imageurl null if there's no banner
-            $Banner->imageurl = "";
+            $banner->imageurl = "";
         }
 
-        $Banner->save();
+        $banner->save();
 
-        return redirect()->route('admin.banner')->withErrors(['success' => 'Đã tạo thành công CTKM ' . $Banner->name . '.']);
+        return redirect()->route('admin.banner')->withErrors(['success' => 'Đã tạo thành công CTKM ' . $banner->name . '.']);
     }
 
-    public function edit($Banner)
+    public function edit($banner)
     {
-        $sf = Banner::find($Banner);
+        $sf = Banner::find($banner);
             
         if($sf)
             return view('admin.layouts.edit',[
@@ -106,24 +107,34 @@ class AdminBannerController extends Controller
         else return back()->withErrors(['warning'=>'Khong tim thay ID']);
     }
 
-    public function update(Request $request, $Banner)
+    public function update(Request $request, $id)
     {
         // find object
-        $Banner = Banner::find($Banner);
+        error_log('banner update: id='.$id);
+        $banner = Banner::find($id);
 
         // create Banner object and append data:
         // disable timestamp adding:
-        $Banner->timestamps = false;
+        $banner->timestamps = false;
 
         //affect count
         $prop = 0;
 
-        if($request->has('name_check')){
+        if($banner->name != $request->name){
             // validate NAME
             $this->validate($request, [
-                'name' => 'required|string',
+                'name' => 'string|size:255',
             ]);
-            $Banner->name = $request->name;
+            $banner->name = $request->name;
+            $prop ++;
+        }
+        
+        if($banner->imageurl != $request->imageurl){
+            // validate NAME
+            $this->validate($request, [
+                'name' => 'string|size:255',
+            ]);
+            $banner->name = $request->name;
             $prop ++;
         }
 
@@ -131,8 +142,8 @@ class AdminBannerController extends Controller
             // option : add price_amount or add price_percent
             if ($request->boolean('price_check')) {
                 if($request->price_amount > 0){
-                    $Banner->amount = $request->price_amount;
-                    $Banner->percent = 0;
+                    $banner->amount = $request->price_amount;
+                    $banner->percent = 0;
                     $prop ++;
                 } else {
                     return back()->withErrors([
@@ -141,8 +152,8 @@ class AdminBannerController extends Controller
                 }
             } else {
                 if($request->price_percent > 0){
-                $Banner->amount = 0;
-                $Banner->percent = $request->price_percent;
+                $banner->amount = 0;
+                $banner->percent = $request->price_percent;
                 $prop ++;
                 } else return back()->withInput()->withErrors([
                     'price_percent' => 'Phần trăm KM phải lớn hơn 0',
@@ -153,8 +164,8 @@ class AdminBannerController extends Controller
         if($request->has('time_check')){
             // validate starttime and endtime: starttime must be before endtime
             if (strcmp($request->Banner_starttime, $request->Banner_endtime) < 0) {
-                $Banner->starttime = $request->Banner_starttime;
-                $Banner->endtime = $request->Banner_endtime;
+                $banner->starttime = $request->Banner_starttime;
+                $banner->endtime = $request->Banner_endtime;
                 $prop ++;
             } else {
                 return back()->withInput()->withErrors([
@@ -165,12 +176,12 @@ class AdminBannerController extends Controller
 
         if($request->has('banner_check')){
             // 1. delete old image
-            if($Banner->imageurl != ""){
+            if($banner->imageurl != ""){
                 $files = array_filter(
                     glob(
                         storage_path(
                             'app/public/Banner/banners/'
-                            .explode("/",$Banner->imageurl)[sizeof(explode("/",$Banner->imageurl))-1]
+                            .explode("/",$banner->imageurl)[sizeof(explode("/",$banner->imageurl))-1]
                         )
                     )
                     ,"is_file"
@@ -182,20 +193,20 @@ class AdminBannerController extends Controller
             // 2. add new image 
             if ($request->hasFile('banner')) {
                 $file = $request->file('banner');
-                $name = unified_format($Banner->name) . '-' . time() . '.' . $file->extension();
+                $name = unified_format($banner->name) . '-' . time() . '.' . $file->extension();
                 $file->storeAs('public/Banner/banners', $name);
     
-                $Banner->imageurl = asset('storage/Banner/banners').'/'.$name;
+                $banner->imageurl = asset('storage/Banner/banners').'/'.$name;
             } else {
                 // make imageurl null if there's no banner
-                $Banner->imageurl = "";
+                $banner->imageurl = "";
             }
             $prop++;
         }
         
-        $Banner->save();
+        $banner->save();
 
-        // $last_inserted = $Banner->id;
+        // $last_inserted = $banner->id;
 
         return redirect()->route('admin.banner')->withErrors(['success' => $prop.' thuộc tính đã thay đổi.']);
     }

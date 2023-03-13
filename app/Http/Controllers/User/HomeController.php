@@ -32,7 +32,7 @@ class HomeController extends Controller
 		// }
 
 		$data = ([
-			'banners' => BannerController::getBanners(),
+			'banners' => BannerController::getActiveBanners(),
 			// 'saleoffs' => SaleoffController::getSaleoffs(),
 			'categories' => CategoryController::getCategories(),
 			'products' => ProductController::getProducts(25),

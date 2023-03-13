@@ -7,14 +7,13 @@
 	--foreground2: #8d7f00;
 }
 #list{
-	width: 44%;
-	height: 500px;
+	/* width: 55vw; */
 	padding: 0 12px 12px 12px;
+	margin: 0 12px 0 0;
 	background-color: white;
 }
 #preview{
-	/* transform: translateY(-130px); */
-	width: 50%;
+	/* width: 30vw; */
 	padding: 12px 12px 12px 12px;
 	background-color: white;
 }
@@ -116,7 +115,7 @@
 	
 
 <div id="a" class="uk-flex uk-flex-row uk-flex-between ">
-	<div id="list" class="uk-border-rounded-10 uk-box-shadow-small">
+	<div id="list" class="uk-width-3-4 uk-border-rounded-10 uk-box-shadow-small">
 		
 		<div class="table-header uk-width-1-2" style="background-color: var(--foreground1)">
 			@lang('admin.banner.bannerlist', ['type' => trans('admin.banner.banner')])
@@ -168,10 +167,7 @@
 				
 		</div>
 	</div>
-	<script>
-	
-	</script>
-	<div id="preview" class="uk-border-rounded-10 uk-box-shadow-small">
+	<div id="preview" class="uk-width-1-4 uk-border-rounded-10 uk-box-shadow-small">
 		{{-- <div class="table-header uk-width-expand" style="background-color: var(--foreground2)">
 			@lang('admin.banner.tabletitle.preview')
 		</div> --}}
@@ -179,14 +175,16 @@
 			<div class="uk-border-rounded-10 uk-width-expand imgprvdesk uk-box-shadow-small">
 				<img id="imgpreview" class="uk-width-expand uk-border-rounded-10 " src="https://i0.wp.com/traveler.gg/wp-content/uploads/Untitled-7-2.jpg?fit=1920%2C1080&ssl=1" alt="">
 			</div>
-			<form class="uk-form-horizontal uk-padding-small uk-border-rounded-10 uk-width-expand imgprvdesk uk-box-shadow-small" style="margin-top:16px;" action="" method="POST">
+			<x-admin.uploadimage.form></x-admin.uploadimage.form>	
+			<form id="edit-banner" class="uk-form-vertical uk-padding-small uk-border-rounded-10 uk-width-expand imgprvdesk uk-box-shadow-small" style="margin-top:16px;" action="" method="POST">
 				@csrf
+				@method('put')
 				<div class="uk-margin-small">
-					<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.imageurl'):</label>
+					<label class="uk-form-label" for="uploaded-image-url">@lang('admin.banner.button.imageurl'):</label>
 					<div class="uk-form-controls">
 							<div class="uk-flex">
-										<input class="uk-input" name="imageurl" id="imageurl" type="text" oninput="changeImage(this)" placeholder="@lang('admin.banner.button.imageurl')">
-										<x-admin.uploadimage></x-admin.uploadimage>	
+										<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.banner.button.imageurl')">
+										<x-admin.uploadimage.button></x-admin.uploadimage.button>	
 											{{-- <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" aria-label="Custom controls" disabled> --}}
 							</div>
 							
@@ -227,7 +225,10 @@
 		
 		domElement.addEventListener('click',(e) => {
 			const obj = e.currentTarget.children;
+			//set form action route
+			document.getElementById('edit-banner').setAttribute('action', '{{ URL::to("/admin/banner") }}/'+obj[0].innerText)
 
+			//preview
 			document.getElementById('name').value = obj[1].innerText;
 			if(obj[2].innerText.toUpperCase() === 'ACTIVE'){
 				document.getElementById('status').setAttribute('checked', 'checked');
@@ -235,8 +236,8 @@
 				document.getElementById('status').removeAttribute('checked');
 			}
 			document.getElementById('link').value = obj[3].innerText;
-			document.getElementById('imageurl').value = obj[4].innerText;
-			changeImage(document.getElementById('imageurl'));
+			document.getElementById('uploaded-image-url').value = obj[4].innerText;
+			changeImage(document.getElementById('uploaded-image-url'));
 			
 		});
 	

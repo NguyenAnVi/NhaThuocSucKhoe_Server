@@ -23,6 +23,8 @@ return [
   'component' => [
     'uploadimage' => [
       'title' => 'Tải ảnh lên',
+      'dropimagehere' => 'Thêm ảnh vào bằng cách kéo thả ảnh ở đây hoặc nhấn chọn',
+      'uploadsuccess' => 'Tải ảnh lên thành công.',
     ]
   ],
 ];

@@ -18,26 +18,14 @@ class First extends Seeder
             ],
         ]);
 
-        // DB::table('saleoffs')->insert([
-        //     [
-        //         'name' => 'NONE',
-        //         'amount' => 0,
-        //         'percent' => 0,
-        //         'contenturl' => '',
-        //         'starttime' => '2022-10-04 15:43:00',
-        //         'endtime' => null,
-        //         'imageurl' => ''
-        //     ],
-        // ]);
-
         try{
-            rrmdir("storage_path('app/public/saleoff')");
+            rrmdir("storage_path('app/public/products')");
         } catch (\Exception $e){
             error_log('cantnotdeletefolder'.$e->getMessage());
         }
 
         try{
-            rrmdir("storage_path('app/public/products')");
+            rrmdir("storage_path('app/public/images/uploads')");
         } catch (\Exception $e){
             error_log('cantnotdeletefolder'.$e->getMessage());
         }

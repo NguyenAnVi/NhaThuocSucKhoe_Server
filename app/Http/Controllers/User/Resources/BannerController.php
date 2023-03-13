@@ -15,6 +15,9 @@ class BannerController extends Controller
 		else
 			return Banner::paginate($num);
 	}
+	public static function getActiveBanners(){
+		return Banner::where('status', 'ACTIVE')->get();
+	}
 	public static function getSaleoff($id=NULL){
 		if($id)
 			if(SaleoffController::hasSaleoff($id)){
