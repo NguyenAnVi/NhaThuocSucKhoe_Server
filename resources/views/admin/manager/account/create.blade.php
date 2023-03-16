@@ -25,48 +25,48 @@
 	</style>
 @endsection
 @section('content')
-	{{-- <h4 class="uk-padding-remove uk-margin-large-bottom">@lang('admin.banner.title',['type' => trans('admin.banner.banner')])</h4> --}}
+	{{-- <h4 class="uk-padding-remove uk-margin-large-bottom">@lang('admin.account.title',['type' => trans('admin.account.account')])</h4> --}}
 		
 
 	<div id="a" class="uk-flex uk-flex-row uk-flex-between ">
 		<div id="form" class="uk-width-1-1 uk-border-rounded-10 uk-box-shadow-small">
 			
 			<div class="form-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
-				@lang('admin.banner.create', ['type' => trans('admin.banner.banner')])
+				@lang('admin.account.button.addnew', ['type' => trans('admin.account.account')])
 			</div>
 			<div class="uk-flex uk-flex-wrap-between">
-				<button onclick="window.location.href='{{ route('admin.banner') }}';" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button"><span uk-icon="icon: arrow-left"></span>@lang('admin.banner.title', ['type'=> trans('admin.banner.banner')])</button>
+				<button onclick="window.location.href='{{ route('admin.account') }}';" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button"><span uk-icon="icon: arrow-left"></span>@lang('admin.account.title', ['type'=> trans('admin.account.account')])</button>
 			</div>
 			<div>
-				<form id="create-banner" class="uk-form uk-flex uk-flex-wrap uk-padding-small" style="margin-top:16px;" action="{{ route('admin.banner.store') }}" method="POST">
+				<form id="create-banner" class="uk-form uk-flex uk-flex-wrap uk-padding-small" style="margin-top:16px;" action="{{ route('admin.account.store') }}" method="POST">
 					@csrf
 					<div class="uk-width-2-3 uk-padding uk-padding-remove-left uk-flex uk-flex-between uk-flex-column uk-padding-remove-vertical">
 						<div>
 							<div class="uk-margin-small">
-								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.name'):</label>
+								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.name'):</label>
 								<div class="uk-form-controls">
-										<input class="uk-input" name="name" id="name" type="text" placeholder="@lang('admin.banner.button.name')">
+										<input class="uk-input" name="name" id="name" type="text" placeholder="@lang('admin.account.button.name')">
 								</div>
 							</div>
 							<div class="uk-margin-small">
-								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.link'):</label>
+								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.link'):</label>
 								
 								<div class="uk-form-controls uk-flex">
-									<input class="uk-input" name="link" id="link" type="text" placeholder="@lang('admin.banner.button.link')">
+									<input class="uk-input" name="link" id="link" type="text" placeholder="@lang('admin.account.button.link')">
 									<button type="button" id="link-button" class="uk-button uk-button-default" uk-icon="icon: arrow-right"
 													onclick="window.open(document.getElementById('link').value, '_blank')">
 									</button>
 								</div>
 							</div>
 							<div class="uk-margin-small">
-								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.status'):</label>
+								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.status'):</label>
 								<div class="uk-form-controls">
 									<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch> &nbsp;
 								</div>
 							</div>
 						</div>
 						<div class="uk-width-1-1 uk-margin-large-top uk-flex">
-							<button class="uk-button uk-button-primary uk-width-expand" type="submit">@lang('admin.banner.button.add')</button>
+							<button class="uk-button uk-button-primary uk-width-expand" type="submit">@lang('admin.account.button.add')</button>
 						</div>
 					</div>
 
@@ -76,10 +76,10 @@
 					</div>
 
 					<div class="uk-margin-small">
-						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.banner.button.imageurl'):</label>
+						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.account.button.imageurl'):</label>
 						<div class="uk-form-controls">
 								<div class="uk-flex">
-											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.banner.button.imageurl')">
+											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.account.button.imageurl')">
 											<x-admin.uploadimage.button></x-admin.uploadimage.button>	
 												{{-- <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" aria-label="Custom controls" disabled> --}}
 								</div>

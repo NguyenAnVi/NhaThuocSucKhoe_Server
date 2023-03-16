@@ -10,7 +10,7 @@ class CreateProductClassificationsTable extends Migration
         Schema::create('productclassifications', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->string('name');
-            $table->string('imageurl');
+            $table->string('imageurl', 2048);
             $table->integer('stock');
             $table->integer('price');
         });

@@ -12,7 +12,7 @@ class CreateBannersTable extends Migration
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('link')->default('');
+            $table->string('link', 2048)->default('');
             $table->string('imageurl', 2048)->default('');
             $table->string('status')->default('ACTIVE');
         });

@@ -114,7 +114,7 @@
 	<div id="a" class="uk-flex uk-flex-row uk-flex-between ">
 		<div id="list" class="uk-width-3-4 uk-border-rounded-10 uk-box-shadow-small">
 			
-			<div class="table-header uk-width-1-2" style="background-color: var(--foreground1)">
+			<div class="table-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
 				@lang('admin.image.imagelist', ['type' => trans('admin.image.image')])
 			</div>
 			<div class="uk-flex uk-flex-wrap-between">
@@ -174,7 +174,7 @@
 			</div>
 		</div>
 		<div id="preview" class="uk-width-1-4 uk-border-rounded-10">
-			{{-- <div class="table-header uk-width-expand" style="background-color: var(--foreground2)">
+			{{-- <div class="table-header uk-card-title uk-card-title uk-width-expand" style="background-color: var(--foreground2)">
 				@lang('admin.image.tabletitle.preview')
 			</div> --}}
 			<div class="uk-flex uk-flex-center uk-flex-column">
@@ -223,7 +223,7 @@
 			domElement.addEventListener('click',(e) => {
 				const obj = e.currentTarget.children;
 				//set form action route
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/image") }}/'+obj[0].innerText)
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/account") }}/'+obj[0].innerText)
 
 				//preview
 				document.getElementById('path').value = obj[2].innerText;

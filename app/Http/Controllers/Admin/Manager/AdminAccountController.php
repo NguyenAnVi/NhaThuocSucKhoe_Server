@@ -4,59 +4,42 @@ namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 
-class AdminHRController extends Controller
+class AdminAccountController extends Controller
 {
-	public function getCurrentId()
+	public function getCurrentUser()
 	{
-		return Auth::guard('admin')->user()->id;
+		return Auth::guard('admin')->user();
 	}
 
 	public function rejectAction()
 	{
 		//return an message reject permision to a page
 		$data = ([
-			'danger' => 'Tài khoản không đủ quyền thực hiện hành động này.',
+			'danger' => trans('admin.message.rootpermission'),
 		]);
 		return redirect()->route('admin.home')->withErrors($data);
 	}
-	public function checkRootUser($id)
-	{
-		if ($id === 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	/////////////////// using checkRootUser/////////////////
-	// $check = $this->checkRootUser($this->getCurrentId());
-	// if($check){
-	//     //do something if the User is ROOT
-	// }
-	// else{
-	//     return $this->rejectAction();
-	// }
-	//////////////////////////////////////////////////////////
+	public function checkRootUser($user)
+	{	return ($user->role === "ROOT") ? (true) : (false);	}
 
 	public function index($olddata = NULL)
 	{
-		$check = $this->checkRootUser($this->getCurrentId());
-		$admins = DB::table('admins')->paginate(5);
+		$check = $this->checkRootUser($this->getCurrentUser());
+		$users = DB::table('users')->paginate(5);
 		$newdata = ([
-			'collection' => $admins,
-			'title' => 'Danh sách tài khoản admin',
-			'createRoute' => route('admin.hr.create'),
-			'tableView' => 'admin.manager.hr.hrTable'
+			'collection' => $users,
 		]);
 		if ($check) {
 			if ($olddata != NULL) $data = array_merge($olddata, $newdata);
 			else $data = ($newdata);
-			return view('admin.layouts.index', $data);
+			return view('admin.manager.account.index', $data);
 		} else {
 			return $this->rejectAction();
 		}
@@ -64,12 +47,9 @@ class AdminHRController extends Controller
 
 	public function create()
 	{
-		$check = $this->checkRootUser($this->getCurrentId());
+		$check = $this->checkRootUser($this->getCurrentUser());
 		if ($check) {
-			return view('admin.layouts.create', [
-				'title' => 'Thêm tài khoản admin',
-				'formView' => 'admin.manager.hr.hrAddForm',
-			]);
+			return view('admin.manager.account.create');
 		} else {
 			return $this->rejectAction();
 		}

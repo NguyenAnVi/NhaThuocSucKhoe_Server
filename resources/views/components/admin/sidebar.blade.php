@@ -50,9 +50,9 @@
     transition: all 0.4s ease-in;
     transition-property: transform;
   }
-  #sidebar:hover .sidebar-header{
+  /* #sidebar:hover .sidebar-header{
     transform: translateX(0px);
-  }
+  } */
   .sidebar-row-hover:hover,  .sidebar-row-hover:hover>.vi-label{
     color: var(--foreground-secondary-hovering);
     background-color: rgb(197, 197, 197);
@@ -63,9 +63,9 @@
     align-items: center;
     justify-content: center;
     margin:5px;
-    padding: 5px;
-    min-width:30px;
-    min-height: 30px;
+    padding: 0px;
+    width:40px;
+    height: 40px;
     text-align: center;
     border-radius: 25px;
     color: white !important;
@@ -97,40 +97,41 @@
   <div class="uk-flex uk-flex-column uk-flex-wrap-between">
     <div uk-height-viewport="offset-bottom:true">
       <div class="sidebar-row uk-flex uk-flex-row">
-        <div class="vi-label sidebar-header">
-          @lang('general.greeting'), <h3 style="margin: 0;">{{Auth::guard('admin')->user()->name}}</h3>
+        <div class="vi-icon"><img style="max-width:40px; max-height:40px" src="{{ (Auth::guard('admin')->user()->avatar != NULL) ? (Auth::guard('admin')->user()->avatar) : (asset('storage/images/no-avatar.png')) }}" alt=""></div>
+        <div class="vi-label">
+          @lang('admin.component.sidebar.greeting'), {{Auth::guard('admin')->user()->name}}
         </div>
       </div>
       <hr>
       <div data-route="{{ route('admin.home') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: home; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.home')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.home')</div>
       </div>
       <div data-route="{{ route('admin.product') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span class="uk-icon uk-icon-image" style="background-image: url('{{ asset('storage/images/icons/product.png') }}');"></span></div>
-        <div class="vi-label">@lang('general.product')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.product')</div>
       </div>
       <div data-route="{{ route('admin.category') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span class="uk-icon uk-icon-image" style="background-image: url('{{ asset('storage/images/icons/category.png') }}');"></span></div>
-        <div class="vi-label">@lang('general.category')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.category')</div>
       </div>
       <div data-route="{{ route('admin.banner') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span class="uk-icon uk-icon-image" style="background-image: url('{{ asset('storage/images/icons/banner.png') }}');"></span></div>
-        <div class="vi-label">@lang('general.banner')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.banner')</div>
       </div>
       <div data-route="{{ route('admin.image') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: image; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.image')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.image')</div>
       </div>
       <div data-route="{{ route('admin.order') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: credit-card; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.order')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.order')</div>
       </div>
 
       @if(Auth::guard('admin')->user()->id === 1)
       <div data-route="{{ route('admin.account') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: user; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.account')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.account')</div>
       </div>
       @endif
       
@@ -139,11 +140,11 @@
       <hr>
       <div data-route="{{ route('admin.settings') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: cog; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.setting')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.setting')</div>
       </div>
       <div data-route="{{ route('admin.logout') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: sign-out; ratio:1.0;"></span></div>
-        <div class="vi-label">@lang('general.logout')</div>
+        <div class="vi-label">@lang('admin.component.sidebar.logout')</div>
       </div>
     </div>
   </div>
@@ -155,12 +156,11 @@
     route2 = "{!! url()->current() !!}";
     if(route2.includes(route1)){
       domElement.className += " sidebar-row-active";
-    } else {
-      domElement.addEventListener('click',(e) => {
-        let route = e.currentTarget.dataset.route;
-        window.location.href = route;
-      });
-    }
+    } 
+    domElement.addEventListener('click',(e) => {
+      let route = e.currentTarget.dataset.route;
+      window.location.href = route;
+    });
     
   });
 </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\Admin\Manager\AdminHRController;
+use App\Http\Controllers\Admin\Manager\AdminAccountController;
 use App\Http\Controllers\Admin\Manager\AdminCustomerController;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
 use App\Http\Controllers\Admin\Manager\AdminBannerController;
@@ -29,7 +29,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // Manage Admin Account route
-        Route::resource('account', AdminHrController::class)
+        Route::resource('account', AdminAccountController::class)
             ->except(['show'])
             ->names([
                 'index' => 'admin.account',
@@ -39,7 +39,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.account.update',
                 'destroy' => 'admin.account.destroy'
             ]);
-        Route::get('account/search', [AdminHrController::class, 'search'])->name('admin.account.search');
+        Route::get('account/search', [AdminAccountController::class, 'search'])->name('admin.account.search');
 
         // Manage User Account route
         Route::resource('customer', AdminCustomerController::class)

@@ -14,7 +14,7 @@ class First extends Seeder
                 'name' => 'ROOT',
                 'phone' => 'ROOT',
                 'password' => bcrypt('root'),
-                'role' => 'ADMIN',
+                'role' => 'ROOT',
             ],
         ]);
 

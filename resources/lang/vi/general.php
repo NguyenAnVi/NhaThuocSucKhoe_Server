@@ -9,7 +9,6 @@ return [
     'filter' => [
         'all' => 'Tất cả',
     ],
-    'greeting' => 'Xin chào',
     'back' => 'Trở lại',
     'hotline' => 'Hotline đặt hàng (Miễn phí)',
     'categories' => 'Danh mục',

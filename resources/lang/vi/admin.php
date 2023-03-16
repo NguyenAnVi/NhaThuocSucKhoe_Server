@@ -1,5 +1,8 @@
 <?php
 return [
+  'message' => [
+    'rootpermission' => 'Tài khoản không đủ quyền thực hiện hành động này.',
+  ],
   'banner' => [
     'banner' => 'biểu ngữ',
     'title' => 'Quản lý :type',
@@ -45,6 +48,27 @@ return [
     ],
 
   ],
+  'account' => [
+    'list' => 'Danh sách tài khoản',
+    'title' => 'Quản lý tài khoản',
+    'button' => [
+      'id' => 'TT',
+      'name' => 'Tên người dùng',
+      'addnew' => 'Thêm tài khoản mới',
+      'search' => 'Tìm kiếm',
+      'imageurl' => 'Đường dẫn của ảnh',
+      'phone' => 'SĐT',
+      'role' => 'Quyền',
+      'delete' => 'xóa',
+    ],
+    'message' => [
+      'duplicatename' => 'Trùng tên',
+      'copied' => 'Đã lưu vào bộ nhớ tạm',
+      'successfuldeleteimage' => 'Đã xóa thành công.',
+      'errordeleteimage' => 'Xảy ra lỗi khi xóa hình ảnh - :error.',
+    ],
+
+  ],
   'button' => [
     'upload' => 'Tải lên',
     'cancel' => 'Hủy',
@@ -54,6 +78,18 @@ return [
       'title' => 'Tải ảnh lên',
       'dropimagehere' => 'Thêm ảnh vào bằng cách kéo thả ảnh ở đây hoặc nhấn chọn',
       'uploadsuccess' => 'Tải ảnh lên thành công.',
-    ]
+    ],
+    'sidebar' => [
+      'greeting' => 'Xin chào',
+      'home' => 'Tổng quan',
+      'category' => 'Danh mục',
+      'product' => 'Sản phẩm',
+      'banner' => 'Biểu ngữ',
+      'image' => 'Kho ảnh',
+      'order' => 'Hóa đơn',
+      'account' => 'Tài khoản',
+      'setting' => 'Cài đặt',
+      'logout' => 'Đăng xuất',
+    ],
   ],
 ];
