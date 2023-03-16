@@ -22,7 +22,11 @@ Route::middleware('auth:admin')->group(function () {
     Route::prefix('')->group(function () {
         Route::get('settings', [HomeController::class, 'settings'])->name('admin.settings');
 
-        Route::get('/', [HomeController::class, 'index'])->name('admin.home');
+        Route::get('/home',[HomeController::class, 'index'])->name('admin.home');
+
+        Route::get('/', function(){
+            return redirect('/admin/home');
+        });
 
         // Manage Admin Account route
         Route::resource('account', AdminHrController::class)

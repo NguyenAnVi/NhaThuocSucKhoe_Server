@@ -152,7 +152,8 @@
   var route1;
   Array.from(document.querySelectorAll('[data-route]')).map((domElement) => {
     route1 = domElement.dataset.route;
-    if(route1 === "{!! url()->current() !!}"){
+    route2 = "{!! url()->current() !!}";
+    if(route2.includes(route1)){
       domElement.className += " sidebar-row-active";
     } else {
       domElement.addEventListener('click',(e) => {

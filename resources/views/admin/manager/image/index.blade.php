@@ -2,8 +2,8 @@
 @section('css')
 	<style>
 		:root{
-			--foreground1: #007710;
-			--foreground1-table: #2c5732;
+			--foreground1: #240077;
+			--foreground1-table: #392c57;
 			--foreground2: #8d7f00;
 		}
 		#list{
@@ -108,22 +108,24 @@
 	</style>
 @endsection
 @section('content')
-	{{-- <h4 class="uk-padding-remove uk-margin-large-bottom">@lang('admin.banner.title',['type' => trans('admin.banner.banner')])</h4> --}}
+	{{-- <h4 class="uk-padding-remove uk-margin-large-bottom">@lang('admin.image.title',['type' => trans('admin.banner.banner')])</h4> --}}
 		
 
 	<div id="a" class="uk-flex uk-flex-row uk-flex-between ">
 		<div id="list" class="uk-width-3-4 uk-border-rounded-10 uk-box-shadow-small">
 			
 			<div class="table-header uk-width-1-2" style="background-color: var(--foreground1)">
-				@lang('admin.banner.bannerlist', ['type' => trans('admin.banner.banner')])
+				@lang('admin.image.imagelist', ['type' => trans('admin.image.image')])
 			</div>
 			<div class="uk-flex uk-flex-wrap-between">
 				<div class="uk-inline uk-width-expand">
 					<a class="uk-form-icon" href="#" uk-icon="icon: search"></a>
-					<input class="uk-input" type="text" aria-label="Clickable icon" placeholder="@lang('admin.banner.button.search')">
+					<input class="uk-input" type="text" aria-label="Clickable icon" placeholder="@lang('admin.image.button.search')">
 				</div>
-				<button onclick="window.location.href='{{ route('admin.banner.create') }}'" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button">@lang('admin.banner.button.addnew', ['type'=> trans('admin.banner.banner')])</button>
+				<a  class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" href="#uploadimage" uk-toggle>@lang('admin.image.button.addnew', ['type'=> trans('admin.image.image')])</a>
 			</div>
+			<x-admin.uploadimage.form optional="window.location.reload()"></x-admin.uploadimage.form>	
+
 			<div class="">
 				<div class="wrapper">
 		
@@ -131,13 +133,16 @@
 						
 						<div class="row header">
 							<div class="cell">
-								@lang('admin.banner.button.id')
+								@lang('admin.image.button.id')
 							</div>
 							<div class="cell">
-								@lang('admin.banner.button.name')
+								@lang('admin.image.button.uid')
 							</div>
 							<div class="cell">
-								@lang('admin.banner.button.status')
+								@lang('admin.image.button.path')
+							</div>
+							<div class="cell">
+								@lang('admin.image.button.created_at')
 							</div>
 						</div>
 						@foreach ($collection as $row)
@@ -146,13 +151,16 @@
 								{{ $row->id }}
 							</div>
 							<div class="cell">
-								{{ $row->name }}
+								{{ $row->uid }}
 							</div>
 							<div class="cell">
-								{{ $row->status }}
+								{{ $row->path }}
 							</div>
-							<div class="row" style="display:none">{{ $row->link }}</div>
-							<div class="row" style="display:none">{{ $row->imageurl }}</div>
+							<div class="cell">
+								{{ $row->created_at }}
+							</div>
+
+							<div class="cell" style="display:none">{{ $row->url }}</div>
 
 						</div>	
 						@endforeach
@@ -167,61 +175,36 @@
 		</div>
 		<div id="preview" class="uk-width-1-4 uk-border-rounded-10">
 			{{-- <div class="table-header uk-width-expand" style="background-color: var(--foreground2)">
-				@lang('admin.banner.tabletitle.preview')
+				@lang('admin.image.tabletitle.preview')
 			</div> --}}
 			<div class="uk-flex uk-flex-center uk-flex-column">
-
-
+				
+				
 				<div class="uk-border-rounded-10 uk-width-expand uk-box-shadow-small"  uk-lightbox="animation: scale">
 					<a id="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
-						<img id="imgpreview" class="uk-width-expand uk-border-rounded-10 ">
+						<img id="imgpreview" src="{{ asset('storage/images/no-image.png') }}" class="uk-width-expand uk-border-rounded-10 ">
 					</a>
 				</div>
-				
-				<x-admin.uploadimage.form></x-admin.uploadimage.form>	
-
-				<form id="edit-banner" class="uk-form-vertical uk-padding-small uk-border-rounded-10 uk-width-expand uk-box-shadow-small" style="margin-top:16px;" action="" method="POST">
-					@csrf
-					@method('put')
+				<form id="edit-banner" class="uk-form-vertical uk-padding-small uk-border-rounded-10 uk-width-expand imgprvdesk uk-box-shadow-small" style="margin-top:16px;" action="" method="POST">
 					<div class="uk-margin-small">
-						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.banner.button.imageurl'):</label>
+						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.image.button.imageurl'):</label>
 						<div class="uk-form-controls">
 								<div class="uk-flex">
-											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.banner.button.imageurl')">
-											<x-admin.uploadimage.button></x-admin.uploadimage.button>	
-												{{-- <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" aria-label="Custom controls" disabled> --}}
+											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.image.button.imageurl')">
+											<button type="button" class="uk-button uk-button-default" onclick="copyChipboard()"><span uk-icon="icon: copy;"></span></button>
 								</div>
 								
 							</div>
 					</div>
 					
 					<div class="uk-margin-small">
-						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.name'):</label>
+						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.image.button.path'):</label>
 						<div class="uk-form-controls">
-								<input class="uk-input" name="name" id="name" type="text" placeholder="@lang('admin.banner.button.name')">
-						</div>
-					</div>
-					<div class="uk-margin-small">
-						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.link'):</label>
-						
-							
-						
-						<div class="uk-form-controls uk-flex">
-							<input class="uk-input" name="link" id="link" type="text" placeholder="@lang('admin.banner.button.link')">
-							<button type="button" id="link-button" class="uk-button uk-button-default" uk-icon="icon: arrow-right"
-											onclick="window.open(document.getElementById('link').value, '_blank')">
-							</button>
-						</div>
-					</div>
-					<div class="uk-margin-small">
-						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.status'):</label>
-						<div class="uk-form-controls">
-							<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch> &nbsp;
+								<input class="uk-input" name="path" id="path" type="text" placeholder="@lang('admin.image.button.path')">
 						</div>
 					</div>
 					<div class="uk-width-1-1 uk-margin-large-top uk-flex uk-flex-right">
-						<button disabled id="delete-button" class="uk-button uk-button-danger uk-width-1-3" type="submit" form="delete-form">@lang('admin.banner.button.delete')</button>
-						<button disabled id="edit-button" class="uk-button uk-button-primary uk-width-expand" type="submit">@lang('admin.banner.button.apply')</button>
+						<button disabled id="delete-button" class="uk-button uk-button-danger uk-width-1-3" type="submit" form="delete-form">@lang('admin.image.button.delete')</button>
 					</div>
 
 				</form>
@@ -240,33 +223,36 @@
 			domElement.addEventListener('click',(e) => {
 				const obj = e.currentTarget.children;
 				//set form action route
-				document.getElementById('edit-banner').setAttribute('action', '{{ URL::to("/admin/banner") }}/'+obj[0].innerText)
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/banner") }}/'+obj[0].innerText)
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/image") }}/'+obj[0].innerText)
 
 				//preview
-				document.getElementById('name').value = obj[1].innerText;
-				if(obj[2].innerText.toUpperCase() === 'ACTIVE'){
-					document.getElementById('status').setAttribute('checked', 'checked');
-				} else{
-					document.getElementById('status').removeAttribute('checked');
-				}
-				document.getElementById('link').value = obj[3].innerText;
+				document.getElementById('path').value = obj[2].innerText;
 				
-
 				document.getElementById('uploaded-image-url').value = obj[4].innerText;
 				changeImage(document.getElementById('uploaded-image-url'));
 				
 				document.getElementById('delete-button').removeAttribute('disabled');
-				document.getElementById('edit-button').removeAttribute('disabled');
-
-
 			});
 		
 		});
+
+		function copyChipboard() {
+			// Get the text field
+			var copyText = document.getElementById("uploaded-image-url");
+
+			// Select the text field
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); // For mobile devices
+
+			// Copy the text inside the text field
+			navigator.clipboard.writeText(copyText.value);
+
+			// Alert the copied text
+			UIkit.notification("@lang('admin.image.message.copied')");
+		}
 			
 		const changeImage = (e) => {
 			const url = e.value;
-			console.log("object");
 			document.getElementById('imgpreview').setAttribute('src',url);
 			document.getElementById('imgpreviewlightbox').setAttribute('href',url);
 

@@ -9,18 +9,4 @@ class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'imagename'
-    ];
-  
-    /**
-     * Set the user's first name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setImageNamesAttribute($value)
-    {
-        $this->attributes['imagename'] = json_encode($value);
-    }
 }

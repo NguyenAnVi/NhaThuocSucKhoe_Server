@@ -31,15 +31,12 @@ class AdminImageController extends Controller
 			$data = array_merge($olddata,$newdata);
 		else 
 			$data = $newdata;
-		return view('admin.manager.banner.index', $data);
+		return view('admin.manager.image.index', $data);
 	}
 
-    public function create(Request $request)
+    public function create()
     {
-        return view('admin.layouts.create', [
-            'title' => 'Thêm CTKM mới',
-            'formView' => 'admin.manager.Banner.BannerAddForm',
-        ]);
+        return view('admin.manager.image.create');
     }
 
     public function store(Request $request)
@@ -94,35 +91,22 @@ class AdminImageController extends Controller
 
     public function destroy($id)
     {
-        if($id!=1){
-            $sf = Image::find($id);
-            // delete image
-            if($sf->imageurl != ""){
-                $files = array_filter(
-                    glob(
-                        storage_path(
-                            'app/public/Banner/banners/'
-                            .explode("/",$sf->imageurl)[sizeof(explode("/",$sf->imageurl))-1]
-                        )
-                    ),
-                    "is_file"
-                ); 
-                foreach($files as $file)
+        $image = Image::find($id);
+        // delete image
+        try {
+            if($image->path != ""){
+                $file = storage_path('app/public'.$image->path);
+                error_log($file);
                 unlink($file); // delete file
             }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.image')->withErrors(['success' => trans('admin.image.message.errordeleteimage', ['error' => $e->getMessage()])]);
+        }
 
-            // Remove product_Banner_id has this Banner
-            $products = new AdminProductController();
-            $affected_product_count = $products->removeBanner($sf->id);
+        // delete record from database
+        $image->delete();
 
-            // delete record from database
-            $sf->delete();
-
-            if($affected_product_count){
-                return redirect()->route('admin.banner')->withErrors(['success' => 'Đã xóa một CTKM, '.numToText($affected_product_count).' SP đã loại bỏ CTKM này']);    
-            }
-            return redirect()->route('admin.banner')->withErrors(['success' => 'Đã xóa 1 CTKM']);
-        } else return redirect()->route('admin.banner')->withErrors(['warning' => 'Không thể xóa CTKM gốc']);
+        return redirect()->route('admin.image')->withErrors(['success' => trans('admin.image.message.successfuldeleteimage')]);
     }
 
     public function upload(Request $request)

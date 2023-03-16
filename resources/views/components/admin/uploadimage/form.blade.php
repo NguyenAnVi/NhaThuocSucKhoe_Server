@@ -60,7 +60,7 @@
           $('input#uploaded-image-url[type=text]').trigger('oninput')
 
           UIkit.modal.alert('@lang('admin.component.uploadimage.uploadsuccess')');
-
+          {{ isset($optional)?$optional:"" }}
         }
       });
     }
