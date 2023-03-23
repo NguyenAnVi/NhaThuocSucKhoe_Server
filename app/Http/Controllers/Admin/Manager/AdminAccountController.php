@@ -14,30 +14,22 @@ use Illuminate\Support\Facades\DB;
 
 class AdminAccountController extends Controller
 {
-	
-
-	// public n ($user->role === "ROOT" || $user->role === "ADMIN") ? (true) : (false);	}
-
 	public function index($olddata = NULL)
 	{
 		$check = HomeController::checkAdminUser();
 		$users = DB::table('users')->paginate(5);
-		// $available_roles = [];
-		// foreach (AccessPermissions::getAll() as $key => $value) {
-			# code...
-			// array_push($available_roles,[ => $value, 'description' => trans('enum.'.strtolower($value))]);
-			// }
-			$newdata = ([
-				'collection' => $users,
-				'available_roles'=> AccessPermissions::getAll(),
-			]);
+			
 			if ($check) {
-					if ($olddata != NULL) $data = array_merge($olddata, $newdata);
-					else $data = ($newdata);
-					return view('admin.manager.account.index', $data);
-				} else {
-						return $this->rejectAction();
-				}
+				$newdata = ([
+					'collection' => $users,
+					'available_roles'=> AccessPermissions::getAll(),
+				]);
+				if ($olddata != NULL) $data = array_merge($olddata, $newdata);
+				else $data = ($newdata);
+				return view('admin.manager.account.index', $data);
+			} else {
+					return $this->rejectAction();
+			}
 	}
 
 	public function create()
@@ -60,8 +52,7 @@ class AdminAccountController extends Controller
 				'name' => 'required|string|max:255',
 				'phone' => 'required|string|size:10|unique:users',
 				'password' => 'required|min:6',
-				// 'password_confirmation' => 'required|same:password'
-			], $messages = [
+			], [
 				'name.required' => 'Bạn cần nhập tên',
 				'name.max' => 'Tên nhân viên không vượt quá :max kí tự.',
 				'phone.unique' => trans('general.msg.phonenumberisused'),
@@ -196,33 +187,67 @@ class AdminAccountController extends Controller
 			];
 			if($user->name == 'ROOT') return [
 				false,
-				trans('admin.account.message.cannotgrantpermissionforroot')
+				trans('admin.account.message.cannotoperateonroot')
 			];
 			if((AccessPermissions::isValidName($permission)) && ($user)){
 				$user->role = strtoupper($permission);
 				$user->save();
-				return [
-					true, 
-					trans('admin.account.message.successfulgrantaccess')
-				];
-			} else  return [
-				false, 
-				trans('admin.account.message.invalidpermission')
-			];
+				return [true, trans('admin.account.message.successfulgrantaccess')];
+			} else return [false, trans('admin.account.message.invalidpermission')];
 		}else{
 			return $this->rejectAction();
 		}
 	}
 
 	public function requestGrantAccess(Request $request){
-		$check = HomeController::checkRootUser();
-		if($check){
-			$id = $request->id;
-			$per = $request->permission;
-			[$check, $messages] = ($this->grantAccess($id, $per));
-			if($check) return redirect()->route('admin.account')->withErrors(['success'=>$messages]);
-			else return redirect()->back()->withErrors(['danger'=>$messages]);
-		} else return $this->rejectAction();
+		HomeController::checkRootUser();
+		$id = $request->id;
+		$per = $request->permission;
+		[$check, $message] = ($this->grantAccess($id, $per));
+		if($check) return redirect()->route('admin.account')->withErrors(['success'=>$message]);
+		else return redirect()->back()->withErrors(['danger'=>$message]);
+	}
+
+	public function changePassword($id, $newpassword){
+		try {
+			$user = User::find($id);
+			$user->password = Hash::make($newpassword);
+			$user->save();
+			return [true, trans('admin.account.message.successfulchangepassword')];
+		} catch (\Exception $e) {
+			return [false, trans('admin.account.message.errorchangepassword').': '.$e->getMessage()];
+		}
+	}
+
+	public function requestChangePassword(Request $request){
+		HomeController::checkRootUser();
+		if($user = User::find($request->id)){
+			$request->validate([
+				'id' => 'required|exists:users,id',
+				'newpassword' => 'required|string|min:6',
+			]);
+
+			if(HomeController::checkGrandRootUser(1)){
+			}else{
+				if($request->id == 1) return back()->withErrors(['danger' => trans('admin.account.message.cannotoperateonroot') ]);
+				$request->validate([
+					'oldpassword' => 'required',
+					'confirmpassword' => 'required|string|same:newpassword',
+				]);
+				if(!Hash::check($request->oldpassword, $user->password)){
+					return back()->withErrors(['danger' => trans('admin.account.message.oldpasswordincorrect') ]);
+				}
+			}
+			
+			[$check, $message] = $this->changePassword($request->id,$request->newpassword);
+			if($check) return redirect()->route('admin.account')->withErrors(['success'=>$message]);
+			else return redirect()->back()->withErrors(['danger'=>$message]);
+			
+		} else {
+			return back()->withErrors([
+				'warning' => trans('admin.account.message.cannotfinduser', ['id' => $request->id])
+			]);
+		}
 	}
 
 	public function search(Request $request)

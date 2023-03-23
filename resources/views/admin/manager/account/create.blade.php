@@ -73,25 +73,6 @@
 							<button class="uk-button uk-button-primary uk-width-expand" type="submit">@lang('admin.account.button.add')</button>
 						</div>
 					</div>
-
-				{{-- <div class="uk-width-1-3 uk-flex uk-flex-between uk-flex-column uk-padding uk-padding-remove-horizontal uk-padding-remove-top">
-					<div class="uk-border-rounded-10 uk-box-shadow-small">
-						<img id="imgpreview" class="uk-width-expand uk-border-rounded-10 " src="{{ asset('storage/images/no-image.png') }}" alt="">
-					</div>
-
-					<div class="uk-margin-small">
-						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.account.button.imageurl'):</label>
-						<div class="uk-form-controls">
-								<div class="uk-flex">
-											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.account.button.imageurl')">
-											<x-admin.uploadimage.button></x-admin.uploadimage.button>	
-								</div>
-								
-							</div>
-					</div>
-				</div>
-					 --}}
-					
 					
 
 				</form>

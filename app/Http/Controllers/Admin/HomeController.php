@@ -23,6 +23,17 @@ class HomeController extends Controller
         exit();
 	}
 
+	public static function checkGrandRootUser($mode=NULL, $user=NULL)
+	{	
+		if (($user && ($user->id === 1)) || (Auth::user()->id === 1))
+			return true;	
+		else{
+			if(!$mode) return self::refuseAction();
+			else return false;
+		}
+			
+	}
+
 	public static function checkRootUser($user=NULL)
 	{	
 		if (($user && ($user->role === "ROOT")) || (Auth::user()->role === "ROOT"))

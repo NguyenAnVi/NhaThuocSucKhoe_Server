@@ -213,6 +213,7 @@
 					</div>
 					<div class="uk-width-1-1 uk-margin-large-top uk-flex uk-flex-wrap">
 						<a href="#grant-access-modal" disabled id="button-grant-access" onclick="document.getElementById('gaf-id').value = document.getElementById('id').value"  class="uk-button uk-button-primary" type="button" uk-toggle>@lang('admin.account.button.grantaccess')</a>
+						<a href="#change-password-modal" disabled id="button-change-password" onclick="document.getElementById('cpf-id').value = document.getElementById('id').value"  class="uk-button uk-button-primary" type="button" uk-toggle>@lang('admin.account.button.changepassword')</a>
 						<button disabled id="delete-button" class="uk-button uk-button-danger" type="submit" form="delete-form">@lang('admin.account.button.delete')</button>
 					</div>
 
@@ -271,6 +272,51 @@
 										</div>
 									</div>
 								</div>
+							</div>
+							<div class="uk-modal-footer uk-flex uk-flex-right">
+								<button type="submit" class="uk-button uk-button-primary">@lang('admin.button.apply')</button>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div id="change-password-modal" uk-modal>
+					<div class="uk-modal-dialog">
+						<div class="uk-modal-header">
+							<button class="uk-modal-close-default" type="button" uk-close></button>
+							<h4>@lang('admin.account.button.changepassword')</h4>
+						</div>
+						<form id="change-password-form" action="{{ route('admin.account.changepassword') }}" method="POST">
+							@csrf
+							<div class="uk-modal-body">
+
+								<input type="hidden" name="id" id="cpf-id">
+
+								@if(Auth::user()->id != 1)
+								<div class="uk-margin-small">
+									<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.confirmpassword'):</label>
+									<div class="uk-form-controls">
+											<input class="uk-input" name="oldpassword" id="oldpassword" type="password" placeholder="@lang('admin.account.button.oldpassword')">
+									</div>
+								</div>
+								@endif
+								
+								<div class="uk-margin-small">
+									<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.newpassword'):</label>
+									<div class="uk-form-controls">
+											<input class="uk-input" name="newpassword" id="newpassword" type="password" placeholder="@lang('admin.account.button.newpassword')">
+									</div>
+								</div>
+
+								@if(Auth::user()->id != 1)
+								<div class="uk-margin-small">
+									<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.confirmpassword'):</label>
+									<div class="uk-form-controls">
+											<input class="uk-input" name="confirmpassword" id="confirmpassword" type="password" placeholder="@lang('admin.account.button.confirmpassword')">
+									</div>
+								</div>
+								@endif
+
 							</div>
 							<div class="uk-modal-footer uk-flex uk-flex-right">
 								<button type="submit" class="uk-button uk-button-primary">@lang('admin.button.apply')</button>
