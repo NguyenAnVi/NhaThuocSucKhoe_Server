@@ -6,8 +6,10 @@ return [
         'vi' => 'Tiếng Việt',
         'en' => 'English',
     ],
-    'filter' => [
-        'all' => 'Tất cả',
+    'msg' => [
+        'invalidphonenumber' => 'Số điện thoại không hợp lệ',
+        'phonenumberavailable' => 'Số điện thoại sẵn dùng',
+        'phonenumberisused' => 'Số điện thoại đã được sử dụng',
     ],
     'back' => 'Trở lại',
     'hotline' => 'Hotline đặt hàng (Miễn phí)',

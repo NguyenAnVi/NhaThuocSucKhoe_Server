@@ -2,7 +2,33 @@
 return [
   'message' => [
     'rootpermission' => 'Tài khoản không đủ quyền thực hiện hành động này.',
+    'loginrequired' => 'Vui lòng đăng nhập',
   ],
+  'button' => [
+    'upload' => 'Tải lên',
+    'cancel' => 'Hủy',
+    'apply' => 'Áp dụng',
+  ],
+  'component' => [
+    'uploadimage' => [
+      'title' => 'Tải ảnh lên',
+      'dropimagehere' => 'Thêm ảnh vào bằng cách kéo thả ảnh ở đây hoặc nhấn chọn',
+      'uploadsuccess' => 'Tải ảnh lên thành công.',
+    ],
+    'sidebar' => [
+      'greeting' => 'Xin chào',
+      'home' => 'Tổng quan',
+      'category' => 'Danh mục',
+      'product' => 'Sản phẩm',
+      'banner' => 'Biểu ngữ',
+      'image' => 'Kho ảnh',
+      'order' => 'Hóa đơn',
+      'account' => 'Tài khoản',
+      'setting' => 'Cài đặt',
+      'logout' => 'Đăng xuất',
+    ],
+  ],
+
   'banner' => [
     'banner' => 'biểu ngữ',
     'title' => 'Quản lý :type',
@@ -55,41 +81,31 @@ return [
       'id' => 'TT',
       'name' => 'Tên người dùng',
       'addnew' => 'Thêm tài khoản mới',
+      'add' => 'Thêm',
+      'password' => 'Mật khẩu',
       'search' => 'Tìm kiếm',
       'imageurl' => 'Đường dẫn của ảnh',
       'phone' => 'SĐT',
       'role' => 'Quyền',
+      'selectrole' => 'Phân quyền cho tài khoản:',
       'delete' => 'xóa',
+      'grantaccess' => 'Phân quyền',
+      'check' => 'kiểm tra',
     ],
     'message' => [
       'duplicatename' => 'Trùng tên',
       'copied' => 'Đã lưu vào bộ nhớ tạm',
       'successfuldeleteimage' => 'Đã xóa thành công.',
-      'errordeleteimage' => 'Xảy ra lỗi khi xóa hình ảnh - :error.',
+      'errordeleteimage' => 'Xảy ra lỗi khi xóa hình ảnh - :error',
+      'successfulgrantaccess' => 'Phân quyền thành công',
+      'cannotfinduser' => 'Không tìm thấy người dùng',
+      'errorgrantaccess' => 'Phân quyền thất bại',
+      'cannotdeleterootaccount' => 'Không thể xóa tài khoản quản trị.',
+      'cannotfinduser' =>  'Không tìm thấy người dùng có mã :id',
+      'invalidpermission' => 'Quyền truy cập không đúng',
+      'cannotgrantpermissionforroot' => 'Không thể phân quyền cho tài khoản ROOT',
     ],
 
   ],
-  'button' => [
-    'upload' => 'Tải lên',
-    'cancel' => 'Hủy',
-  ],
-  'component' => [
-    'uploadimage' => [
-      'title' => 'Tải ảnh lên',
-      'dropimagehere' => 'Thêm ảnh vào bằng cách kéo thả ảnh ở đây hoặc nhấn chọn',
-      'uploadsuccess' => 'Tải ảnh lên thành công.',
-    ],
-    'sidebar' => [
-      'greeting' => 'Xin chào',
-      'home' => 'Tổng quan',
-      'category' => 'Danh mục',
-      'product' => 'Sản phẩm',
-      'banner' => 'Biểu ngữ',
-      'image' => 'Kho ảnh',
-      'order' => 'Hóa đơn',
-      'account' => 'Tài khoản',
-      'setting' => 'Cài đặt',
-      'logout' => 'Đăng xuất',
-    ],
-  ],
+  
 ];

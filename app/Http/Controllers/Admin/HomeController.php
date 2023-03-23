@@ -8,15 +8,43 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    public static function getCurrentUser()
+	{
+		return Auth::guard('admin')->user();
+	}
+
+	public static function refuseAction()
+	{
+		if (ob_get_level()) {
+            ob_end_clean();
+		}
+						
+		echo view('shared.errors.refusepermission');
+        exit();
+	}
+
+	public static function checkRootUser($user=NULL)
+	{	
+		if (($user && ($user->role === "ROOT")) || (Auth::user()->role === "ROOT"))
+			return true;	
+		else
+			return self::refuseAction();
+	}
+
+    public static function checkAdminUser($user=NULL)
+	{	
+		if (($user && ($user->role === "ADMIN")) || (Auth::user()->role === "ADMIN") || self::checkRootUser($user))
+			return true;	
+		else
+			return self::refuseAction();
+	}
+
     public function index($locale=null)
     {
+        self::checkAdminUser();
         if (isset($locale) && in_array($locale, config('app.available_locales'))) {
             app()->setLocale($locale);
         }
-
-        // $user = Auth::guard('admin')->user();
-        // echo 'Xin chào Admin, '. $user->name;
-
         return view('admin.home');
     }
 

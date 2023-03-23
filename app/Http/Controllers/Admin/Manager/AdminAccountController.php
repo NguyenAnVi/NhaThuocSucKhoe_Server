@@ -5,44 +5,39 @@ namespace App\Http\Controllers\Admin\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
+use App\FakeEnums\AccessPermissions;
+use App\Http\Controllers\Admin\HomeController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 
 class AdminAccountController extends Controller
 {
-	public function getCurrentUser()
-	{
-		return Auth::guard('admin')->user();
-	}
+	
 
-	public function rejectAction()
-	{
-		//return an message reject permision to a page
-		$data = ([
-			'danger' => trans('admin.message.rootpermission'),
-		]);
-		return redirect()->route('admin.home')->withErrors($data);
-	}
-	public function checkRootUser($user)
-	{	return ($user->role === "ROOT") ? (true) : (false);	}
+	// public n ($user->role === "ROOT" || $user->role === "ADMIN") ? (true) : (false);	}
 
 	public function index($olddata = NULL)
 	{
-		$check = $this->checkRootUser($this->getCurrentUser());
+		$check = HomeController::checkAdminUser();
 		$users = DB::table('users')->paginate(5);
-		$newdata = ([
-			'collection' => $users,
-		]);
-		if ($check) {
-			if ($olddata != NULL) $data = array_merge($olddata, $newdata);
-			else $data = ($newdata);
-			return view('admin.manager.account.index', $data);
-		} else {
-			return $this->rejectAction();
-		}
+		// $available_roles = [];
+		// foreach (AccessPermissions::getAll() as $key => $value) {
+			# code...
+			// array_push($available_roles,[ => $value, 'description' => trans('enum.'.strtolower($value))]);
+			// }
+			$newdata = ([
+				'collection' => $users,
+				'available_roles'=> AccessPermissions::getAll(),
+			]);
+			if ($check) {
+					if ($olddata != NULL) $data = array_merge($olddata, $newdata);
+					else $data = ($newdata);
+					return view('admin.manager.account.index', $data);
+				} else {
+						return $this->rejectAction();
+				}
 	}
 
 	public function create()
@@ -57,31 +52,31 @@ class AdminAccountController extends Controller
 
 	public function store(Request $request)
 	{
-		$check = $this->checkRootUser($this->getCurrentId());
+		$check = $this->checkRootUser($this->getCurrentUser());
 		if ($check) {
 			//if the User is ROOT
-			$request->only(['name', 'phone', 'password', 'password_confirm']);
+			$request->only(['name', 'phone', 'password']);
 			$request->validate([
 				'name' => 'required|string|max:255',
-				'phone' => 'required|string|size:10|unique:admins',
+				'phone' => 'required|string|size:10|unique:users',
 				'password' => 'required|min:6',
-				'password_confirmation' => 'required|same:password'
+				// 'password_confirmation' => 'required|same:password'
 			], $messages = [
 				'name.required' => 'Bạn cần nhập tên',
 				'name.max' => 'Tên nhân viên không vượt quá :max kí tự.',
-				'phone.unique' => 'Số điện thoại đã tồn tại.',
+				'phone.unique' => trans('general.msg.phonenumberisused'),
 				'phone.size' => 'Số điện thoại phải có đúng 10 chữ số.',
 				'password.required' => 'Mật khẩu là cần thiết!!!',
 				'password.min' => 'Để an toàn hơn, hãy đặt mật khẩu từ 6 kí tự trở lên.',
-				'password_confirmation.required' => 'Cần phải nhập lại mật khẩu.',
-				'password_confirmation.same' => 'Nhập lại mật khẩu sai, chắc chưa?',
+				// 'password_confirmation.required' => 'Cần phải nhập lại mật khẩu.',
+				// 'password_confirmation.same' => 'Nhập lại mật khẩu sai, chắc chưa?',
 			]);
-			Admin::create([
+			User::create([
 				'name' => $request->input('name'),
 				'phone' => $request->input('phone'),
 				'password' => Hash::make($request->input('password')),
 			]);
-			return redirect()->route('admin.hr')->withErrors(['success' => 'Tạo tài khoản thành công.']);
+			return redirect()->route('admin.account')->withErrors(['success' => 'Tạo tài khoản thành công.']);
 		} else {
 			return $this->rejectAction();
 		}
@@ -158,7 +153,7 @@ class AdminAccountController extends Controller
 
 	public function destroy($id)
 	{
-		$check = $this->checkRootUser($this->getCurrentId());
+		$check = $this->checkRootUser($this->getCurrentUser());
 		if ($check) {
 			unset($check);
 			//do something if the User is ROOT
@@ -169,14 +164,14 @@ class AdminAccountController extends Controller
 			$admin = Admin::find($id);
 			if (!$admin) {
 				return back()->withErrors([
-					'warning' => 'Không tìm thấy người dùng có mã ' . $id
+					'warning' =>trans('admin.account.message.cannotfinduser', ['id' => $id]),
 				]);
 			}
 
 			// Không thể xóa tk ROOT:
 			if ($admin->id == 1) {
 				return back()->withErrors([
-					'danger' => 'Không thể xóa tài khoản quản trị.',
+					'danger' => trans('admin.account.message.cannotdeleterootaccount'),
 				]);
 			}
 
@@ -189,6 +184,45 @@ class AdminAccountController extends Controller
 			unset($check);
 			return $this->rejectAction();
 		}
+	}
+
+	public function grantAccess($userid, $permission)
+	{
+		if(HomeController::checkRootUser()){
+			$user = User::find($userid);
+			if(!$user)  return [
+				false, 
+				trans('admin.account.message.cannotfinduser', ['id'=>$userid])
+			];
+			if($user->name == 'ROOT') return [
+				false,
+				trans('admin.account.message.cannotgrantpermissionforroot')
+			];
+			if((AccessPermissions::isValidName($permission)) && ($user)){
+				$user->role = strtoupper($permission);
+				$user->save();
+				return [
+					true, 
+					trans('admin.account.message.successfulgrantaccess')
+				];
+			} else  return [
+				false, 
+				trans('admin.account.message.invalidpermission')
+			];
+		}else{
+			return $this->rejectAction();
+		}
+	}
+
+	public function requestGrantAccess(Request $request){
+		$check = HomeController::checkRootUser();
+		if($check){
+			$id = $request->id;
+			$per = $request->permission;
+			[$check, $messages] = ($this->grantAccess($id, $per));
+			if($check) return redirect()->route('admin.account')->withErrors(['success'=>$messages]);
+			else return redirect()->back()->withErrors(['danger'=>$messages]);
+		} else return $this->rejectAction();
 	}
 
 	public function search(Request $request)

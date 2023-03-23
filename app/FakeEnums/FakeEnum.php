@@ -17,6 +17,9 @@ abstract class FakeEnum
         }
         return self::$constCacheArray[$calledClass];
     }
+    public static function getAll(){
+        return self::getConstants();
+    }
 
     public static function isValidName($name, $strict = false)
     {

@@ -39,6 +39,7 @@ Route::middleware('auth:admin')->group(function () {
                 'update' => 'admin.account.update',
                 'destroy' => 'admin.account.destroy'
             ]);
+        Route::post('account/grant', [AdminAccountController::class, 'requestGrantAccess'])->name('admin.account.grantaccess');
         Route::get('account/search', [AdminAccountController::class, 'search'])->name('admin.account.search');
 
         // Manage User Account route

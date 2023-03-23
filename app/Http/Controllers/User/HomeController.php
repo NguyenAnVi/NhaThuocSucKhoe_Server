@@ -96,7 +96,7 @@ class HomeController extends Controller
 		}
 						
 		http_response_code(404);
-		return view('user.errors.404');
+		return view('shared.errors.404');
 	}
 }
 

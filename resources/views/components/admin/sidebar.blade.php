@@ -128,7 +128,7 @@
         <div class="vi-label">@lang('admin.component.sidebar.order')</div>
       </div>
 
-      @if(Auth::guard('admin')->user()->id === 1)
+      @if(Auth::guard('admin')->user()->role === "ROOT")
       <div data-route="{{ route('admin.account') }}" class="sidebar-row sidebar-row-hover uk-flex uk-flex-row">
         <div class="vi-icon"><span uk-icon="icon: user; ratio:1.0;"></span></div>
         <div class="vi-label">@lang('admin.component.sidebar.account')</div>

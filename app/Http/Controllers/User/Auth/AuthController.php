@@ -54,10 +54,11 @@ class AuthController extends Controller
     public function checkphone(Request $request)
     {
         $result = '';
-        if(($request->ajax() !== NULL)&&($request->method() == 'GET'))
+        if(($request->ajax() !== NULL))
         {
             $phone = $request->phone;
-            if(strlen($phone)==10){
+            // if(preg_match("/^[+]?[1-9][0-9]{9,14}$/", $phone)){
+            if(preg_match("/^[0]{1}[1-9]{1}[0-9]{8}$/", $phone)){
                 $user = User::where('phone',$phone)->first();
                 if($user){
                 $result = '<div class="uk-text-italic uk-text-danger ">'.trans('general.msg.phonenumberisused').'❌'.'</div>';
@@ -72,6 +73,7 @@ class AuthController extends Controller
             }
             
         }else{
+            error_log('not ajax');
             $result = '<div class="uk-text-italic uk-text-danger ">'.trans('general.msg.erroroccurred').'❌'.'</div>';
             $status = 1;
         }

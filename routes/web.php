@@ -20,7 +20,7 @@ Route::match(['get'], '/show/{type}/{id}', [HomeController::class, 'show']);
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 Route::match(['get', 'post'], '/register', [AuthController::class, 'register'])->name('register');
 Route::match('get','phone-auth', [AuthController::class, 'index']);
-Route::match(['get'], '/checkphone', [AuthController::class, 'checkphone'])->name('checkphone');
+Route::match(['get', 'post'], '/checkphone', [AuthController::class, 'checkphone'])->name('checkphone');
 Route::match(['post', 'get'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
 

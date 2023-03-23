@@ -34,13 +34,13 @@
 			<div class="form-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
 				@lang('admin.account.button.addnew', ['type' => trans('admin.account.account')])
 			</div>
-			<div class="uk-flex uk-flex-wrap-between">
-				<button onclick="window.location.href='{{ route('admin.account') }}';" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button"><span uk-icon="icon: arrow-left"></span>@lang('admin.account.title', ['type'=> trans('admin.account.account')])</button>
-			</div>
-			<div>
-				<form id="create-banner" class="uk-form uk-flex uk-flex-wrap uk-padding-small" style="margin-top:16px;" action="{{ route('admin.account.store') }}" method="POST">
-					@csrf
-					<div class="uk-width-2-3 uk-padding uk-padding-remove-left uk-flex uk-flex-between uk-flex-column uk-padding-remove-vertical">
+			<form id="create-banner" class="uk-form uk-flex uk-flex-center uk-padding-small" action="{{ route('admin.account.store') }}" method="POST">
+				@csrf
+				<div class="uk-width-1-2 uk-padding uk-padding-remove-left uk-flex uk-flex-between uk-flex-column uk-padding-remove-vertical">
+						<div class="uk-flex uk-flex-wrap-between">
+							<button onclick="window.location.href='{{ route('admin.account') }}';" class="uk-button uk-button-primary" style="background-color: var(--foreground1); margin-bottom:16px;" type="button"><span uk-icon="icon: arrow-left"></span>@lang('admin.account.title', ['type'=> trans('admin.account.account')])</button>
+						</div>
+						<div>
 						<div>
 							<div class="uk-margin-small">
 								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.name'):</label>
@@ -49,19 +49,23 @@
 								</div>
 							</div>
 							<div class="uk-margin-small">
-								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.link'):</label>
+								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.phone'):</label>
 								
 								<div class="uk-form-controls uk-flex">
-									<input class="uk-input" name="link" id="link" type="text" placeholder="@lang('admin.account.button.link')">
-									<button type="button" id="link-button" class="uk-button uk-button-default" uk-icon="icon: arrow-right"
-													onclick="window.open(document.getElementById('link').value, '_blank')">
+									<input class="uk-input uk-width-expand" name="phone" id="phone" type="text" pattern="[0]{1}[0-9]{9}" placeholder="@lang('admin.account.button.phone')">
+									<button type="button" id="checkphone-button" class="uk-button uk-button-default uk-width-1-4">
+													@lang('admin.account.button.check')
 									</button>
 								</div>
+								<div class="uk-margin-bottom" id="phone-number-check-result"></div>
+
+								
 							</div>
 							<div class="uk-margin-small">
-								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.status'):</label>
-								<div class="uk-form-controls">
-									<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch> &nbsp;
+								<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.password'):</label>
+
+								<div class="uk-form-controls uk-flex">
+									<input class="uk-input" name="password" id="password" type="password" placeholder="@lang('admin.account.button.password')">
 								</div>
 							</div>
 						</div>
@@ -70,7 +74,7 @@
 						</div>
 					</div>
 
-				<div class="uk-width-1-3 uk-flex uk-flex-between uk-flex-column uk-padding uk-padding-remove-horizontal uk-padding-remove-top">
+				{{-- <div class="uk-width-1-3 uk-flex uk-flex-between uk-flex-column uk-padding uk-padding-remove-horizontal uk-padding-remove-top">
 					<div class="uk-border-rounded-10 uk-box-shadow-small">
 						<img id="imgpreview" class="uk-width-expand uk-border-rounded-10 " src="{{ asset('storage/images/no-image.png') }}" alt="">
 					</div>
@@ -81,13 +85,12 @@
 								<div class="uk-flex">
 											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.account.button.imageurl')">
 											<x-admin.uploadimage.button></x-admin.uploadimage.button>	
-												{{-- <input class="uk-input uk-form-width-medium" type="text" placeholder="Select file" aria-label="Custom controls" disabled> --}}
 								</div>
 								
 							</div>
 					</div>
 				</div>
-					
+					 --}}
 					
 					
 
@@ -105,7 +108,7 @@
 @endsection
 @section('js')
 	<script>
-		document.getElementById('link-button').addEventListener('click', (e) => {
+		document.getElementById('checkphone-button').addEventListener('click', (e) => {
 			
 		});
 		Array.from(document.querySelectorAll('.row[data-bannerid]')).map((domElement) => {
@@ -131,15 +134,26 @@
 			});
 		
 		});
-			
+
+		$('#checkphone-button').on('click', function(){
+			$.ajax({
+				headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+				type: 'get',
+				url: '{{route("checkphone")}}',
+				data: {
+					'phone' : $('#phone').val(),
+				},
+				success:function(obj){ 
+					result = JSON.parse(obj);
+					$('#phone-number-check-result').html(result.result);
+				}
+			});
+		});
+
 		const changeImage = (e) => {
 			const url = e.value;
 			console.log("object");
 			document.getElementById('imgpreview').setAttribute('src',url);
 		}
-		// document.getElementById('imageurl').addEventListener('input', (e) => {
-		// });
-		
-		
 	</script>
 @endsection

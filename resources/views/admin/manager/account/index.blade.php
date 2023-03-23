@@ -112,7 +112,7 @@
 		
 
 	<div id="a" class="uk-flex uk-flex-row uk-flex-between ">
-		<div id="list" class="uk-width-3-4 uk-border-rounded-10 uk-box-shadow-small">
+		<div id="list" class="uk-width-expand uk-border-rounded-10 uk-box-shadow-small">
 			
 			<div class="table-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
 				@lang('admin.account.title')
@@ -170,16 +170,15 @@
 				</div>
 			</div>
 		</div>
-		<div id="preview" class="uk-width-1-4 uk-border-rounded-10">
+		<div id="preview" class="uk-width-1-4 uk-border-rounded-10" style="display:none">
 			<div class="uk-flex uk-flex-center uk-flex-column">
-				
-				<div class="uk-border-rounded-10 uk-width-expand uk-box-shadow-small"  uk-lightbox="animation: scale">
-					<a id="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
-						<img id="imgpreview" src="{{ asset('storage/images/no-image.png') }}" class="uk-width-expand uk-border-rounded-10 ">
-					</a>
-				</div>
-				<form id="edit-banner" class="uk-form-vertical uk-padding-small uk-border-rounded-10 uk-width-expand imgprvdesk uk-box-shadow-small" style="margin-top:16px;" action="" method="POST">
-					<div class="uk-margin-small">
+				<form id="edit-banner" class="uk-form-vertical uk-padding-small uk-border-rounded-10 uk-width-expand uk-box-shadow-small" action="" method="POST">
+					<div class="uk-border-rounded-10 uk-width-expand uk-flex uk-flex-center"  uk-lightbox="animation: scale">
+						<a id="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
+							<img style="width:150px; height:150px; border-radius:75px;" id="imgpreview" src="{{ asset('storage/images/no-avatar.png') }}" class="uk-width-expand uk-border-rounded-10 uk-box-shadow-small">
+						</a>
+					</div>
+					{{-- <div class="uk-margin-small">
 						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.account.button.imageurl'):</label>
 						<div class="uk-form-controls">
 								<div class="uk-flex">
@@ -188,45 +187,129 @@
 								</div>
 								
 							</div>
-					</div>
+					</div> --}}
+					<script>
+						var name="";
+					</script>
+					<input name="id" id="id" type="hidden">
 					
 					<div class="uk-margin-small">
-						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.path'):</label>
+						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.name'):</label>
 						<div class="uk-form-controls">
-								<input class="uk-input" name="path" id="path" type="text" placeholder="@lang('admin.account.button.path')">
+								<input class="uk-input" name="name" id="name" type="text" placeholder="@lang('admin.account.button.name')">
+						</div> 
+					</div>
+					<div class="uk-margin-small">
+						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.phone'):</label>
+						<div class="uk-form-controls">
+								<input class="uk-input" name="phone" id="phone" type="text" placeholder="@lang('admin.account.button.phone')">
 						</div>
 					</div>
-					<div class="uk-width-1-1 uk-margin-large-top uk-flex uk-flex-right">
-						<button disabled id="delete-button" class="uk-button uk-button-danger uk-width-1-3" type="submit" form="delete-form">@lang('admin.account.button.delete')</button>
+					<div class="uk-margin-small">
+						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.account.button.role'):</label>
+						<div class="uk-form-controls">
+								<input class="uk-input" name="role" id="role" type="text" placeholder="@lang('admin.account.button.role')">
+						</div>
+					</div>
+					<div class="uk-width-1-1 uk-margin-large-top uk-flex uk-flex-wrap">
+						<a href="#grant-access-modal" disabled id="button-grant-access" onclick="document.getElementById('gaf-id').value = document.getElementById('id').value"  class="uk-button uk-button-primary" type="button" uk-toggle>@lang('admin.account.button.grantaccess')</a>
+						<button disabled id="delete-button" class="uk-button uk-button-danger" type="submit" form="delete-form">@lang('admin.account.button.delete')</button>
 					</div>
 
 				</form>
-				<form id="delete-form" action="" method="POST">
-					@csrf
-					@method('delete')
-				</form>
+				<form id="delete-form" action="" method="POST">@csrf @method('delete')</form>
+				<style>
+					.role-item{
+						width: 100%;
+						height: 1.5em;
+						padding: 0 5px;
+						margin: 5px 0;
+						border-radius: 5px;
+						box-sizing: border-box;
+					}
+					.role-item:hover{
+						background-color: #a2a2a2;
+					}
+					.role-item[class*="uk-active"]{	
+						background-color: var(--foreground1);
+						color: white;
+					}
+					
+				</style>
+				<div id="grant-access-modal" uk-modal>
+					<div class="uk-modal-dialog">
+						<div class="uk-modal-header">
+							<button class="uk-modal-close-default" type="button" uk-close></button>
+							<h4>@lang('admin.account.button.selectrole')</h4>
+						</div>
+						<form id="grant-access-form" action="{{ route('admin.account.grantaccess') }}" method="POST">
+							@csrf
+							<div class="uk-modal-body">
+								<div class="uk-margin-small">
+									<div class="uk-flex">
+										<div class="uk-width-1-2 uk-flex uk-flex-column uk-child-width-expand">
+											<input type="hidden" name="id" id="gaf-id">
+											@php
+												$i=0;
+											@endphp
+											@foreach ($available_roles as $item)
+											<div class="role-item uk-flex">
+												<input data-index="{{ $i++ }}" id="i-{{ strtolower($item) }}" value="{{ $item }}" type="radio" name="permission">
+												<label class="uk-width-expand" for="i-{{ strtolower($item) }}">{{ $item }}</label>
+											</div>
+														
+											@endforeach
+										</div>
+										<hr class="uk-divider-vertical">
+										<div class="uk-width-1-2 uk-switcher" id="abc">
+											@php
+												$i=0;
+											@endphp
+											@foreach ($available_roles as $item)
+											<div data-index="{{ $i++ }}"  id="roledescription" class="uk-padding-small">@lang('enum.'.strtolower($item))</div>
+											@endforeach
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="uk-modal-footer uk-flex uk-flex-right">
+								<button type="submit" class="uk-button uk-button-primary">@lang('admin.button.apply')</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 @endsection
 @section('js')
 	<script>
+		// var grantAccessRoute = {{ route('admin.account.grantaccess') }};
 		Array.from(document.querySelectorAll('.row[data-bannerid]')).map((domElement) => {
 			
 			domElement.addEventListener('click',(e) => {
 				const obj = e.currentTarget.children;
 				//set form action route
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/image") }}/'+obj[0].innerText)
-
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/account") }}/'+obj[0].innerText);
 				//preview
-				document.getElementById('path').value = obj[2].innerText;
-				
-				document.getElementById('uploaded-image-url').value = obj[4].innerText;
-				changeImage(document.getElementById('uploaded-image-url'));
-				
+				document.getElementById('id').value = obj[0].innerText;
+				document.getElementById('name').value = obj[1].innerText;
+				document.getElementById('phone').value = obj[2].innerText;
+				document.getElementById('role').value = obj[3].innerText;
+				// document.getElementById('uploaded-image-url').value = obj[4].innerText;
+				// changeImage(document.getElementById('uploaded-image-url'));
+				document.getElementById('button-grant-access').removeAttribute('disabled');
 				document.getElementById('delete-button').removeAttribute('disabled');
+				document.getElementById('preview').removeAttribute('style');
 			});
-		
+		});
+
+		Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
+			domElement.addEventListener('change',(e) => {
+				dataindex = (e.target.dataset.index);
+				UIkit.switcher('.uk-switcher').show(dataindex-0);
+				// document.querySelector('div[data-index='+dataindex+']').
+			});
 		});
 
 		function copyChipboard() {
@@ -248,8 +331,11 @@
 			const url = e.value;
 			document.getElementById('imgpreview').setAttribute('src',url);
 			document.getElementById('imgpreviewlightbox').setAttribute('href',url);
-
 		}
+
+		// document.getElementById('button-grant-access').addEventListener('click', (e)=>{
+		// 	document.getElementById('')
+		// });
 		
 	</script>
 @endsection
