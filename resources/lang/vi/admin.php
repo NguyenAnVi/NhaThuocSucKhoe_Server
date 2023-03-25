@@ -67,6 +67,8 @@ return [
       'delete' => 'xóa',
     ],
     'message' => [
+      'youarenottheowner' => 'Không thể thao tác lên hình ảnh của người khác',
+      'cannotfindimage' => 'Không tìm thấy hình ảnh',
       'duplicatename' => 'Trùng tên',
       'copied' => 'Đã lưu vào bộ nhớ tạm',
       'successfuldeleteimage' => 'Đã xóa thành công.',

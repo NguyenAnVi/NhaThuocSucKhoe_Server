@@ -34,12 +34,13 @@ class HomeController extends Controller
 			
 	}
 
-	public static function checkRootUser($user=NULL)
+	public static function checkRootUser($mode=NULL, $user=NULL)
 	{	
 		if (($user && ($user->role === "ROOT")) || (Auth::user()->role === "ROOT"))
 			return true;	
 		else
-			return self::refuseAction();
+				if(!$mode) return self::refuseAction();
+				else return false;
 	}
 
     public static function checkAdminUser($user=NULL)

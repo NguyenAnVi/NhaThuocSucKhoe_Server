@@ -117,11 +117,7 @@
 			<div class="table-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
 				@lang('admin.image.imagelist', ['type' => trans('admin.image.image')])
 			</div>
-			<div class="uk-flex uk-flex-wrap-between">
-				<div class="uk-inline uk-width-expand">
-					<a class="uk-form-icon" href="#" uk-icon="icon: search"></a>
-					<input class="uk-input" type="text" aria-label="Clickable icon" placeholder="@lang('admin.image.button.search')">
-				</div>
+			<div class="uk-flex uk-flex-right">
 				<a  class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" href="#uploadimage" uk-toggle>@lang('admin.image.button.addnew', ['type'=> trans('admin.image.image')])</a>
 			</div>
 			<x-admin.uploadimage.form optional="window.location.reload()"></x-admin.uploadimage.form>	
@@ -223,7 +219,7 @@
 			domElement.addEventListener('click',(e) => {
 				const obj = e.currentTarget.children;
 				//set form action route
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/account") }}/'+obj[0].innerText)
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/image") }}/'+obj[0].innerText)
 
 				//preview
 				document.getElementById('path').value = obj[2].innerText;

@@ -5,25 +5,25 @@ namespace App\Http\Controllers\Admin\Manager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Admin\Manager\AdminProductController;
-use Symfony\Component\HttpFoundation\Response;
 use App\Models\Image;
 use Exception;
+use App\Http\Controllers\Admin\HomeController;
+
 class AdminImageController extends Controller
 {
     public function getAll($page = null){
-        if($page) return Image::paginate((int) $page);
-        else return Image::get();
-    }
-
-    public function getAllAjax(Request $request){
-        if ($request->ajax()){
-            return Response(json_encode($this->getAll()));
+        if(HomeController::checkRootUser(1)){
+            if($page) return Image::paginate((int) $page);
+            else return Image::get();
+        } else {
+            if($page) return Image::where('uid', HomeController::getCurrentUser()->id)->paginate((int) $page);
+            else return Image::where('uid', HomeController::getCurrentUser()->id)->get();
         }
     }
 
     public function index($olddata=NULL)
 	{
+        HomeController::checkAdminUser();
 		$newdata = ([
 			'collection' => $this->getAll(5),
 		]);
@@ -36,11 +36,13 @@ class AdminImageController extends Controller
 
     public function create()
     {
+        HomeController::checkAdminUser();
         return view('admin.manager.image.create');
     }
 
     public function store(Request $request)
     {
+        HomeController::checkAdminUser();
         // validate NAME
         $this->validate($request, [
             'name' => 'required|string',
@@ -91,20 +93,28 @@ class AdminImageController extends Controller
 
     public function destroy($id)
     {
+        HomeController::checkAdminUser();
         $image = Image::find($id);
-        // delete image
-        try {
-            if($image->path != ""){
-                $file = storage_path('app/public'.$image->path);
-                error_log($file);
-                unlink($file); // delete file
-            }
-        } catch (\Exception $e) {
-            return redirect()->route('admin.image')->withErrors(['success' => trans('admin.image.message.errordeleteimage', ['error' => $e->getMessage()])]);
-        }
+        
+        //check owner or root 
+        if($image){
+            if($image->uid === HomeController::getCurrentUser()->id || HomeController::checkRootUser(1)){
+                // delete image
+                try {
+                    if($image->path != ""){
+                        $file = storage_path('app/public'.$image->path);
+                        error_log($file);
+                        unlink($file); // delete file
+                    }
+                } catch (\Exception $e) {
+                    return redirect()->route('admin.image')->withErrors(['success' => trans('admin.image.message.errordeleteimage', ['error' => $e->getMessage()])]);
+                }
 
-        // delete record from database
-        $image->delete();
+                // delete record from database
+                $image->delete();
+
+            } else return back()->withInput()->withErrors(['error'=> trans('admin.image.message.youarenottheowner')]);
+        } else return back()->withInput()->withErrors(['error'=> trans('admin.image.message.cannotfindimage')]);
 
         return redirect()->route('admin.image')->withErrors(['success' => trans('admin.image.message.successfuldeleteimage')]);
     }
