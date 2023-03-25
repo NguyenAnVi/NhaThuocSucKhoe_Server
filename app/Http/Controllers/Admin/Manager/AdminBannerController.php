@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Admin\Manager\AdminProductController;
-use Illuminate\Support\Facades\Response;
-
-use function PHPUnit\Framework\returnSelf;
+use App\Http\Controllers\Admin\HomeController;
 
 class AdminBannerController extends Controller
 {
@@ -26,6 +23,7 @@ class AdminBannerController extends Controller
 
     public function index($olddata=NULL)
 	{
+        HomeController::checkAdminUser();
 		$newdata = ([
 			'collection' => $this->getAll(5),
 		]);
@@ -38,11 +36,14 @@ class AdminBannerController extends Controller
 
     public function create(Request $request)
     {
+        HomeController::checkAdminUser();
         return view('admin.manager.banner.create');
     }
 
     public function store(Request $request)
     {
+        HomeController::checkAdminUser();
+
         error_log('store banner');
         // validate NAME
         $this->validate($request, [
@@ -75,23 +76,10 @@ class AdminBannerController extends Controller
         return redirect()->route('admin.banner')->withErrors(['success' => trans('admin.banner.message.successfulcreatebanner', ['type'=> trans('admin.banner.banner'),'name'=>$banner->name])]);
     }
 
-    // public function edit($id)
-    // {
-    //     $banner = Banner::find($id);
-            
-    //     if($banner)
-    //         return view('admin.manage.banner.edit',[
-    //             'Banner' => $banner,
-    //             'title' => 'Thay đổi thông tin CTKM',
-    //             'formView' => 'admin.manager.Banner.BannerEditForm',
-    //         ]);
-    //     else return back()->withErrors(['warning'=>'Khong tim thay ID']);
-    // }
-
-    
-
     public function update(Request $request, $id)
     {
+        HomeController::checkAdminUser();
+
         // find object
         $banner = Banner::find($id);
 
@@ -142,19 +130,35 @@ class AdminBannerController extends Controller
 
     public function destroy($id)
     {
+        HomeController::checkAdminUser();
         $banner = Banner::find($id);
         // delete image
 
         $banner->delete();
 
-        return redirect()->route('admin.banner')->withErrors(['success' => trans('admin.banner.message.successfuldeletebanner',['type', trans('admin.banner.banner')])]);
+        return redirect()->route('admin.banner')->withErrors(['success' => trans('admin.banner.message.successfuldeletebanner')]);
         
     }
 
-	public function search(Request $request)
+	public function requestSearch(Request $request ,$key)
 	{
-		if ($request->ajax()!== NULL) {
-			return Response(json_encode(DB::table('Banners')->where('name', 'LIKE', '%' . $request->search . '%')->get()));
+        HomeController::checkAdminUser();
+
+        if ($request->ajax() !== NULL) {
+			try {
+				$list = DB::table('banners')
+				->where('name', 'LIKE', '%' . $key . '%')
+				->orWhere('status', 'LIKE', '%' . $key . '%')
+				->get();
+				
+				return Response(
+					json_encode([
+						'list' => $list,
+					])
+				);
+			} catch (\Exception $e) {
+				return Response (json_encode(['error' => $e->getMessage()]));
+			}
 		}
 	}
 }

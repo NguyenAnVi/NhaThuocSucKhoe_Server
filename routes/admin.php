@@ -43,17 +43,6 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('account/changepassword', [AdminAccountController::class, 'requestChangePassword'])->name('admin.account.changepassword');
         Route::get('account/search/{key}', [AdminAccountController::class, 'requestSearch'])->name('admin.account.search');
 
-        // Manage User Account route
-        // Route::resource('customer', AdminCustomerController::class)
-        //     ->except(['show', 'create', 'store'])
-        //     ->names([
-        //         'index' => 'admin.customer',
-        //         'edit' => 'admin.customer.edit',
-        //         'update' => 'admin.customer.update',
-        //         'destroy' => 'admin.customer.destroy'
-        //     ]);
-        // Route::get('customer/search', [AdminCustomerController::class, 'search'])->name('admin.customer.search');
-
         // Manage banner route
         Route::resource('banner', AdminBannerController::class)
             ->except(['show'])
@@ -66,7 +55,7 @@ Route::middleware('auth:admin')->group(function () {
                 'destroy' => 'admin.banner.destroy'
             ]
         );
-        Route::get('banner/search', [AdminBannerController::class, 'search'])->name('admin.banner.search');
+        Route::get('banner/search/{key}', [AdminBannerController::class, 'requestSearch'])->name('admin.banner.search');
         Route::get('banner/getall', [AdminBannerController::class, 'getAllAjax'])->name('admin.banner.getall');
 
          // Manage image route

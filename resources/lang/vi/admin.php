@@ -47,8 +47,8 @@ return [
     ],
     'message' => [
       'duplicatename' => 'Trùng tên',
-      'successfulcreatebanner' => 'Đã tạo thành công :type (:name).',
-      'successfuldeletebanner' => 'Đã xóa một :type.',
+      'successfulcreatebanner' => 'Đã tạo thành công (:name).',
+      'successfuldeletebanner' => 'Đã xóa thành công.',
     ],
   ],
   'image' => [
