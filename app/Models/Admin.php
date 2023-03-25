@@ -17,35 +17,6 @@ class Admin extends Authenticatable
     protected $fillable = [
         'name', 'phone', 'password',
     ];
-
-    protected $hidden = [
-        'remember_token','password', 'created_at', 'updated_at'
-
-    ];
-
-    public function scopeName($query, $request)
-    {
-        if ($request->has('name_filter')) {
-            $query->where('name', 'LIKE', '%' . $request->input('name') . '%');
-        }
-
-        return $query;
-    }
-    public function scopePhone($query, $request)
-    {
-        if ($request->has('phone_filter')) {
-            $query->where('phone', 'LIKE', '%' . $request->input('phone') . '%');
-        }
-
-        return $query;
-    }
-    public function scopePoint($query, $request)
-    {
-        if ($request->has('point_filter')) {
-            $query->where('point', 'LIKE', '%' . $request->input('point') . '%');
-        }
-
-        return $query;
-    }
+    protected $hidden = ['password'];
 }
 

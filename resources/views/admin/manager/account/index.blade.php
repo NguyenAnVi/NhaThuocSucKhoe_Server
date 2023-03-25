@@ -5,6 +5,8 @@
 			--foreground1: #240077;
 			--foreground1-table: #392c57;
 			--foreground2: #8d7f00;
+			--foreground2-table: #3e3800;
+
 		}
 		#list{
 			/* width: 55vw; */
@@ -52,8 +54,22 @@
 			color: #ffffff;
 			background: var(--foreground1-table);
 		}
+		.row.search.header {
+			font-weight: 900;
+			color: #ffffff;
+			background: var(--foreground2-table);
+		}
 		.row:hover:not(.header){
-			background-color: rgb(156, 255, 179) !important;
+			background-color: rgb(156, 255, 179);
+		}
+		.row.on-search:hover:not(.header){
+			background-color: rgb(255, 252, 156) !important;
+		}
+		#search{
+			width: 750px;
+		}
+		#search-results{
+			min-width: 750px;
 		}
 		@media screen and (max-width: 570px) {
 			.table {
@@ -105,7 +121,7 @@
 				display: block;
 			}
 		}
-	</style>
+	</style> 
 @endsection
 @section('content')
 	{{-- <h4 class="uk-padding-remove uk-margin-large-bottom">@lang('admin.account.title',['type' => trans('admin.banner.banner')])</h4> --}}
@@ -117,15 +133,18 @@
 			<div class="table-header uk-card-title uk-width-1-2" style="background-color: var(--foreground1)">
 				@lang('admin.account.title')
 			</div>
-			<div class="uk-flex uk-flex-wrap-between">
-				<div class="uk-inline uk-width-expand">
-					<a class="uk-form-icon" href="#" uk-icon="icon: search"></a>
-					<input class="uk-input" type="text" aria-label="Clickable icon" placeholder="@lang('admin.account.button.search')">
+			<div class="uk-flex uk-flex-between">
+				<div class="search-field">
+					<div class="uk-inline">
+						<a class="uk-form-icon" uk-icon="icon: search"></a>
+						<input id="search" class="uk-input" autocomplete="off" type="text" placeholder="@lang('admin.account.button.search')">
+					</div>
+					<div id="search-results" class="uk-position-bottom-center-out uk-background-default uk-box-shadow-small uk-margin-remove uk-border-rounded-10" style="display: none"></div>
 				</div>
 				<a  class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" href="{{ route('admin.account.create') }}" uk-toggle>@lang('admin.account.button.addnew')</a>
 			</div>
 
-			<div class="">
+			<div>
 				<div class="wrapper">
 		
 					<div class="table">
@@ -145,7 +164,7 @@
 							</div>
 						</div>
 						@foreach ($collection as $row)
-						<div class="row" data-bannerid="{{ $row->id }}">
+						<div class="row" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-phone="{{ $row->phone }}" data-role="{{ $row->role }}">
 							<div class="cell">
 								{{ $row->id }}
 							</div>
@@ -178,16 +197,6 @@
 							<img style="width:150px; height:150px; border-radius:75px;" id="imgpreview" src="{{ asset('storage/images/no-avatar.png') }}" class="uk-width-expand uk-border-rounded-10 uk-box-shadow-small">
 						</a>
 					</div>
-					{{-- <div class="uk-margin-small">
-						<label class="uk-form-label" for="uploaded-image-url">@lang('admin.account.button.imageurl'):</label>
-						<div class="uk-form-controls">
-								<div class="uk-flex">
-											<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.account.button.imageurl')">
-											<button type="button" class="uk-button uk-button-default" onclick="copyChipboard()"><span uk-icon="icon: copy;"></span></button>
-								</div>
-								
-							</div>
-					</div> --}}
 					<script>
 						var name="";
 					</script>
@@ -330,33 +339,79 @@
 @endsection
 @section('js')
 	<script>
+		function removeAccents(str) {
+			var AccentsMap = [
+				"aàảãáạăằẳẵắặâầẩẫấậ",
+				"AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+				"dđ", "DĐ",
+				"eèẻẽéẹêềểễếệ",
+				"EÈẺẼÉẸÊỀỂỄẾỆ",
+				"iìỉĩíị",
+				"IÌỈĨÍỊ",
+				"oòỏõóọôồổỗốộơờởỡớợ",
+				"OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+				"uùủũúụưừửữứự",
+				"UÙỦŨÚỤƯỪỬỮỨỰ",
+				"yỳỷỹýỵ",
+				"YỲỶỸÝỴ"    
+			];
+			for (var i=0; i<AccentsMap.length; i++) {
+				var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+				var char = AccentsMap[i][0];
+				str = str.replace(re, char);
+			}
+			return str;
+		}
 		// var grantAccessRoute = {{ route('admin.account.grantaccess') }};
-		Array.from(document.querySelectorAll('.row[data-bannerid]')).map((domElement) => {
+		function highlight(str1, str2){
+			let pos = removeAccents(str1.toUpperCase()).indexOf(str2.toUpperCase());
+			let qty = str2.length;
+			console.log(str1,':',str2);
+			console.log(pos,':',qty);
+			let result = str1.split('');
+			if(pos>=0)
+				for (let i = 0; i < result.length; i++) {
+					if(i>=pos && i<=pos+qty-1) result[i] = '<span class="uk-text-warning">'+result[i]+'</span>';
+					else result[i] = '<span>'+result[i]+'</span>';
+				}
+			return result.join("");
+		}
+
+		function parseList(a, s){
+			let output="";
+			output+='<div class="wrapper">';
+			output+='<div class="table">';
+			output+='<div class="row search header">';
+			output+='<div class="cell">@lang('admin.account.button.name')</div>';
+			output+='<div class="cell">@lang('admin.account.button.phone')</div>';
+			output+='<div class="cell">@lang('admin.account.button.role')</div>';
+			output+='</div>	';
+
+			a.list.forEach(item => {
+				output+='<div class="row on-search" data-id="'+item.id+'" data-name="'+item.name+'" data-phone="'+item.phone+'" data-role="'+item.role+'">';
+				output+='<div class="cell">'+highlight(item.name, s)+'</div>';
+				output+='<div class="cell">'+highlight(item.phone, s)+'</div>';
+				output+='<div class="cell">'+highlight(item.role, s)+'</div>';
+				output+='</div>	';
+			});
 			
-			domElement.addEventListener('click',(e) => {
-				const obj = e.currentTarget.children;
-				//set form action route
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/account") }}/'+obj[0].innerText);
-				//preview
-				document.getElementById('id').value = obj[0].innerText;
-				document.getElementById('name').value = obj[1].innerText;
-				document.getElementById('phone').value = obj[2].innerText;
-				document.getElementById('role').value = obj[3].innerText;
-				// document.getElementById('uploaded-image-url').value = obj[4].innerText;
-				// changeImage(document.getElementById('uploaded-image-url'));
+			output+='</div>';
+			output+='</div>';
+			return  output;
+		}
+
+		function addClickPreview(){
+			$('.row').on('click', function() {
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/account") }}/'+$(this).data('id'));
+				document.getElementById('id').value = $(this).data('id');
+				document.getElementById('name').value = $(this).data('name');
+				document.getElementById('phone').value = $(this).data('phone');
+				document.getElementById('role').value = $(this).data('role');
 				document.getElementById('button-grant-access').removeAttribute('disabled');
 				document.getElementById('delete-button').removeAttribute('disabled');
 				document.getElementById('preview').removeAttribute('style');
 			});
-		});
-
-		Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
-			domElement.addEventListener('change',(e) => {
-				dataindex = (e.target.dataset.index);
-				UIkit.switcher('.uk-switcher').show(dataindex-0);
-				// document.querySelector('div[data-index='+dataindex+']').
-			});
-		});
+		}
 
 		function copyChipboard() {
 			// Get the text field
@@ -379,9 +434,51 @@
 			document.getElementById('imgpreviewlightbox').setAttribute('href',url);
 		}
 
-		// document.getElementById('button-grant-access').addEventListener('click', (e)=>{
-		// 	document.getElementById('')
-		// });
-		
+		$(document).ready(()=>{
+			addClickPreview();
+
+			Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
+				domElement.addEventListener('change',(e) => {
+					dataindex = (e.target.dataset.index);
+					UIkit.switcher('.uk-switcher').show(dataindex-0);
+					// document.querySelector('div[data-index='+dataindex+']').
+				});
+			});
+
+			$('#search').on('input', (e)=>{
+				let key = removeAccents(e.currentTarget.value);
+				if(key){
+					let route = "{{ URL::to('/admin/account/search') }}/"+key;
+				
+					$.ajax({
+						headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+						type: 'get',
+						url: route,
+						success:function(obj){ 
+							result = JSON.parse(obj);
+							if (result.error) UIkit.notification(result.error);
+							$('#search-results').html(parseList(result, key));
+							addClickPreview();
+							$('#search-results').show();
+						}
+					});
+				} else $('#search-results').hide();
+
+			});
+
+			$(document).click(function(event) {
+				//Hide the #search-results if visible
+				var $target = $(event.target);
+				if(!$target.closest('#search-results').length && 
+				$('#search-results').is(":visible")) {
+					$('#search-results').hide();
+				}        
+			});
+
+			$('#search-results').on('click' ,function(){
+				event.stopPropagation();
+			});
+			
+		});
 	</script>
 @endsection

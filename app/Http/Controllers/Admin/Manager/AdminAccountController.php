@@ -8,6 +8,7 @@ use App\Models\User;
 use App\FakeEnums\AccessPermissions;
 use App\Http\Controllers\Admin\HomeController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -34,43 +35,35 @@ class AdminAccountController extends Controller
 
 	public function create()
 	{
-		$check = $this->checkRootUser($this->getCurrentUser());
-		if ($check) {
-			return view('admin.manager.account.create');
-		} else {
-			return $this->rejectAction();
-		}
+		HomeController::checkRootUser();
+		return view('admin.manager.account.create');
 	}
 
 	public function store(Request $request)
 	{
-		$check = $this->checkRootUser($this->getCurrentUser());
-		if ($check) {
-			//if the User is ROOT
-			$request->only(['name', 'phone', 'password']);
-			$request->validate([
-				'name' => 'required|string|max:255',
-				'phone' => 'required|string|size:10|unique:users',
-				'password' => 'required|min:6',
-			], [
-				'name.required' => 'Bạn cần nhập tên',
-				'name.max' => 'Tên nhân viên không vượt quá :max kí tự.',
-				'phone.unique' => trans('general.msg.phonenumberisused'),
-				'phone.size' => 'Số điện thoại phải có đúng 10 chữ số.',
-				'password.required' => 'Mật khẩu là cần thiết!!!',
-				'password.min' => 'Để an toàn hơn, hãy đặt mật khẩu từ 6 kí tự trở lên.',
-				// 'password_confirmation.required' => 'Cần phải nhập lại mật khẩu.',
-				// 'password_confirmation.same' => 'Nhập lại mật khẩu sai, chắc chưa?',
-			]);
-			User::create([
-				'name' => $request->input('name'),
-				'phone' => $request->input('phone'),
-				'password' => Hash::make($request->input('password')),
-			]);
-			return redirect()->route('admin.account')->withErrors(['success' => 'Tạo tài khoản thành công.']);
-		} else {
-			return $this->rejectAction();
-		}
+		HomeController::checkRootUser();
+		//if the User is ROOT
+		$request->only(['name', 'phone', 'password']);
+		$request->validate([
+			'name' => 'required|string|max:255',
+			'phone' => 'required|string|size:10|unique:users',
+			'password' => 'required|min:6',
+		], [
+			'name.required' => 'Bạn cần nhập tên',
+			'name.max' => 'Tên nhân viên không vượt quá :max kí tự.',
+			'phone.unique' => trans('general.msg.phonenumberisused'),
+			'phone.size' => 'Số điện thoại phải có đúng 10 chữ số.',
+			'password.required' => 'Mật khẩu là cần thiết!!!',
+			'password.min' => 'Để an toàn hơn, hãy đặt mật khẩu từ 6 kí tự trở lên.',
+			// 'password_confirmation.required' => 'Cần phải nhập lại mật khẩu.',
+			// 'password_confirmation.same' => 'Nhập lại mật khẩu sai, chắc chưa?',
+		]);
+		User::create([
+			'name' => $request->input('name'),
+			'phone' => $request->input('phone'),
+			'password' => Hash::make($request->input('password')),
+		]);
+		return redirect()->route('admin.account')->withErrors(['success' => 'Tạo tài khoản thành công.']);
 	}
 
 	public function edit($id)
@@ -242,7 +235,6 @@ class AdminAccountController extends Controller
 			[$check, $message] = $this->changePassword($request->id,$request->newpassword);
 			if($check) return redirect()->route('admin.account')->withErrors(['success'=>$message]);
 			else return redirect()->back()->withErrors(['danger'=>$message]);
-			
 		} else {
 			return back()->withErrors([
 				'warning' => trans('admin.account.message.cannotfinduser', ['id' => $request->id])
@@ -250,16 +242,26 @@ class AdminAccountController extends Controller
 		}
 	}
 
-	public function search(Request $request)
+	public function requestSearch(Request $request, $key)
 	{
 		if ($request->ajax() !== NULL) {
-			return Response(
-				json_encode(
-					DB::table('admins')
-						->where('name', 'LIKE', '%' . $request->search . '%')
-						->get()
-				)
-			);
+			try {
+				$list = DB::table('users')
+				->where('name', 'LIKE', '%' . $key . '%')
+				->orWhere('phone', 'LIKE', '%' . $key . '%')
+				->orWhere('role', 'LIKE', '%' . $key . '%')
+				->get();
+				
+				return Response(
+					json_encode([
+						'list' => $list,
+						// 'phone' => $phone,
+						// 'role' => $role,
+					])
+				);
+			} catch (\Exception $e) {
+				return Response (json_encode(['error' => $e->getMessage()]));
+			}
 		}
 	}
 }
