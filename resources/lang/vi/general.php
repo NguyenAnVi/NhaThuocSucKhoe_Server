@@ -10,6 +10,7 @@ return [
         'invalidphonenumber' => 'Số điện thoại không hợp lệ',
         'phonenumberavailable' => 'Số điện thoại sẵn dùng',
         'phonenumberisused' => 'Số điện thoại đã được sử dụng',
+        'pagenotfound' => 'Không tìm thấy trang - err404'
     ],
     'back' => 'Trở lại',
     'hotline' => 'Hotline đặt hàng (Miễn phí)',
