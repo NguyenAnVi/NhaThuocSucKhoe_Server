@@ -56,8 +56,17 @@
         processData: false,
         contentType: false,
         success:function(obj){
-          $('input#uploaded-image-url[type=text]').val(obj.url)
-          $('input#uploaded-image-url[type=text]').trigger('oninput')
+          @if(isset($element))
+            $('{{ $element }}').val(obj.url);
+            setTimeout(() => {
+              $('{{ $element }}').trigger('oninput');
+            }, 1500);
+          @else
+            $('#uploaded-image-url').val(obj.url);
+            setTimeout(() => {
+              $('#uploaded-image-url').trigger('oninput');
+            }, 1500);
+          @endif
 
           UIkit.notification('@lang('admin.component.uploadimage.uploadsuccess')');
           UIkit.modal('#uploadimage').hide();
