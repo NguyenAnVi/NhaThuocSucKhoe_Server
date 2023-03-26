@@ -235,7 +235,6 @@
 						padding: 0 5px;
 						margin: 5px 0;
 						border-radius: 5px;
-						box-sizing: border-box;
 					}
 					.role-item:hover{
 						background-color: #a2a2a2;
@@ -256,27 +255,24 @@
 							@csrf
 							<div class="uk-modal-body">
 								<div class="uk-margin-small">
-									<div class="uk-flex">
-										<div class="uk-width-1-2 uk-flex uk-flex-column uk-child-width-expand">
-											<input type="hidden" name="id" id="gaf-id">
-											@php
-												$i=0;
-											@endphp
+									<div>
+										<input type="hidden" name="id" id="gaf-id">
+										@php $i=0; @endphp
+										@foreach ($available_roles as $item)
+											<input hidden data-index="{{ $i++ }}" id="per-{{ strtolower($item) }}" value="{{ strtoupper($item) }}" type="radio" name="permission">
+										@endforeach
+									</div>
+									<div class=" uk-flex uk-flex-row">
+										
+										<div>
 											@foreach ($available_roles as $item)
-											<div class="role-item uk-flex">
-												<input data-index="{{ $i++ }}" id="i-{{ strtolower($item) }}" value="{{ $item }}" type="radio" name="permission">
-												<label class="uk-width-expand" for="i-{{ strtolower($item) }}">{{ $item }}</label>
-											</div>
-														
+												<label for="per-{{ strtolower($item) }}" class="role-item uk-flex">{{ $item }}</label>
 											@endforeach
 										</div>
-										<hr class="uk-divider-vertical">
-										<div class="uk-width-1-2 uk-switcher" id="abc">
-											@php
-												$i=0;
-											@endphp
+										<div class="uk-width-expand uk-padding-small uk-padding-remove-right uk-padding-remove-top uk-switcher">
+											@php $i=0; @endphp
 											@foreach ($available_roles as $item)
-											<div data-index="{{ $i++ }}"  id="roledescription" class="uk-padding-small">@lang('enum.'.strtolower($item))</div>
+											<div data-index="{{ $i++ }}"  id="roledescription"><span uk-icon="icon: info"></span> &nbsp; @lang('enum.accesspermission.'.strtolower($item))</div>
 											@endforeach
 										</div>
 									</div>
@@ -437,12 +433,12 @@
 		$(document).ready(()=>{
 			addClickPreview();
 
-			Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
-				domElement.addEventListener('change',(e) => {
-					dataindex = (e.target.dataset.index);
-					UIkit.switcher('.uk-switcher').show(dataindex-0);
-					// document.querySelector('div[data-index='+dataindex+']').
-				});
+			$('input[id*=per-]').on('change', function(){
+				id= $(this).attr('id');
+				dataindex = ($(this).data('index'));
+				$('label[for*=per-]').removeClass('uk-active');
+				$('label[for='+id+']').addClass('uk-active');
+				UIkit.switcher('.uk-switcher').show(dataindex)
 			});
 
 			$('#search').on('input', (e)=>{

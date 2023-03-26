@@ -94,7 +94,8 @@ Route::middleware('auth:admin')->group(function () {
             ]
         );
         Route::get('category/getallleaf', [AdminCategoryController::class, 'getAllLeafAjax'])->name('admin.category.getallleaf');
-        Route::post('category/switchstatus', [AdminCategoryController::class, 'switchstatus'])->name('admin.category.switchstatus');
+        Route::get('category/detail/{id}', [AdminCategoryController::class, 'getDetail']);
+        // Route::post('category/switchstatus', [AdminCategoryController::class, 'switchstatus'])->name('admin.category.switchstatus');
         Route::get('category/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
 
         // ORDER management

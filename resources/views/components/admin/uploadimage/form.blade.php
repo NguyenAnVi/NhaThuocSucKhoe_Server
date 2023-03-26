@@ -59,7 +59,8 @@
           $('input#uploaded-image-url[type=text]').val(obj.url)
           $('input#uploaded-image-url[type=text]').trigger('oninput')
 
-          UIkit.modal.alert('@lang('admin.component.uploadimage.uploadsuccess')');
+          UIkit.notification('@lang('admin.component.uploadimage.uploadsuccess')');
+          UIkit.modal('#uploadimage').hide();
           {{ isset($optional)?$optional:"" }}
         }
       });

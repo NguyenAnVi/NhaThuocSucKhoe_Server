@@ -28,7 +28,6 @@ return [
       'logout' => 'Đăng xuất',
     ],
   ],
-
   'banner' => [
     'banner' => 'biểu ngữ',
     'title' => 'Quản lý :type',
@@ -113,7 +112,28 @@ return [
       'successfulchangepassword' => 'Thay đổi mật khẩu thành công',
       'errorchangepassword' => 'Có lỗi xảy ra khi thay đổi mật khẩu',
     ],
-
   ],
-  
+  'category' => [
+    'title' => 'Quản lý danh mục',
+    'edittitle' => 'Sửa danh mục',
+    'button' => [
+      'id' => 'TT',
+      'parentid' => 'Danh mục cha',
+      'parent_id' => 'Cha',
+      'name' => 'Tên danh mục',
+      'status' => 'Trạng thái',
+      'addnew' => 'Thêm danh mục mới',
+      'edit' => 'Sửa',
+      'search' => 'Tìm kiếm',
+      'imageurl' => 'Đường dẫn của ảnh',
+      'delete' => 'xóa',
+      'detail' => 'Chi tiết',
+      'apply' => 'Thay đổi',
+      'active' => 'Đã kích hoạt',
+      'inactive' => 'Chưa kích hoạt',
+    ],
+    'message' => [
+      'copied' => 'Đã lưu vào bộ nhớ tạm',
+    ],
+  ],
 ];

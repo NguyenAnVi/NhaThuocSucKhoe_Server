@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Manager;
 
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Services\CategoryService;
 use App\Models\Category;
 use App\Http\Controllers\Admin\Manager\AdminProductController;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class AdminCategoryController extends Controller
@@ -55,21 +55,29 @@ class AdminCategoryController extends Controller
 		if($pages == 0)	return Category::orderby('id', 'asc')->get();
 		else return Category::orderby('id', 'asc')->paginate($pages);
 	}
-
-	public function getAllAjax(Request $request){
-		if($request->ajax()!==NULL){
-			return Response(json_encode($this->getAll()));
-		}
-
+	
+	public function index()
+	{
+		HomeController::checkAdminUser();
+		$data = [
+			'collection' => $this->getAll(5),
+		];
+		return view('admin.manager.category.index', $data);
+		// return view('admin.layouts.index',[
+		// 	'collection' => $this->getAll(5),
+		// 	'title' => 'Danh sách các danh mục',
+		// 	'createRoute' => route('admin.category.create'),
+		// 	'tableView' => 'admin.manager.category.categoryTable',
+		// ]);
 	}
 
 	public function create()
 	{
-		return view('admin.layouts.create', [
-			'categories' => $this->getAll(),
-			'title' => 'Thêm danh muc',
-			'formView' => 'admin.manager.category.categoryAddForm',
-		]);
+		// return view('admin.layouts.create', [
+		// 	'categories' => $this->getAll(),
+		// 	'title' => 'Thêm danh muc',
+		// 	'formView' => 'admin.manager.category.categoryAddForm',
+		// ]);
 	}
 
 	public function store(Request $request)
@@ -98,15 +106,6 @@ class AdminCategoryController extends Controller
 		return back()->withInput()->withErrors(['danger'=> 'Tạo danh mục không thành công']);
 	}
 
-	public function index()
-	{
-		return view('admin.layouts.index',[
-			'collection' => $this->getAll(5),
-			'title' => 'Danh sách các danh mục',
-			'createRoute' => route('admin.category.create'),
-			'tableView' => 'admin.manager.category.categoryTable',
-		]);
-	}
 
 	public function edit($id)
 	{
@@ -224,6 +223,17 @@ class AdminCategoryController extends Controller
 	public function search (Request $request){
 		if ($request->ajax()!== NULL) {
 			return Response(json_encode(DB::table('categories')->where('name', 'LIKE', '%' . $request->search . '%')->get()));
+		}
+	}
+
+	public function getDetail (Request $request, $id){
+		if($request->ajax() !== NULL) {
+			$cat = Category::find($id);
+			if($cat){
+				return Response(json_encode(['status'=>1,'content' => $cat->detail]));
+			} else {
+				return Response(json_encode(['status'=>0,'content' => '']));
+			}
 		}
 	}
 }

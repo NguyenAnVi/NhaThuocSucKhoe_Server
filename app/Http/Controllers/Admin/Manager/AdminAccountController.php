@@ -186,7 +186,7 @@ class AdminAccountController extends Controller
 				$user->role = strtoupper($permission);
 				$user->save();
 				return [true, trans('admin.account.message.successfulgrantaccess')];
-			} else return [false, trans('admin.account.message.invalidpermission')];
+			} else return [false, trans('admin.account.message.invalidpermission').$permission];
 		}else{
 			return $this->rejectAction();
 		}
