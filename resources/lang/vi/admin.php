@@ -139,6 +139,10 @@ return [
       'cannotfindid' => 'Không tìm thấy mã danh mục',
       'successfulupdating' => 'Thay đổi thành công (:prop thuộc tính)',
       'cannotfindparentiditself' => 'Không thể tự đặt danh mục cha bằng chính nó',
+      'successfulcreate' => 'Tạo danh mục thành công',
+      'errordeletingcategory' => 'Có lỗi xảy ra khi xóa danh mục',
+      'errorcreatingcategory' => 'Tạo danh mục không thành công',
+      'successfuldeletecategorywithproduct' => 'Xóa thành công danh mục :id, :category danh mục con và :product sản phẩm liên quan đã được xóa.'
     ],
   ],
 ];

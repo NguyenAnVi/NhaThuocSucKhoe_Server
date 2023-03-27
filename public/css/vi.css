@@ -6,7 +6,7 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  height: 15px;
+  height: 20px;
   width: 80px;
   padding-block: 10px;
 }
@@ -29,7 +29,7 @@
 }
 .vi-switch-control .vi-control {
   position: absolute;
-  height: 30px;
+  height: 23px;
   width: 60px;
   border-radius: 20px;
   transform: translateX(15px);
@@ -39,11 +39,11 @@
 .vi-switch-control .vi-control:after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 5px;
+  left: 0px;
+  top: 7px;
   width: 40px;
-  height: 40px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.285);
+  height: 30px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.285);
   border-radius: 20px;
   background: rgb(255, 255, 255);
   transform: translate(-15px, -10px);

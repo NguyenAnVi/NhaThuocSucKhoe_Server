@@ -101,7 +101,7 @@
 					</div>
 					<div id="search-results" class="uk-position-bottom-center-out uk-background-default uk-box-shadow-small uk-margin-remove uk-border-rounded-10" style="display: none"></div>
 				</div>
-				<button onclick="window.location.href='{{ route('admin.category.create') }}'" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button">@lang('admin.category.button.addnew', ['type'=> trans('admin.category.category')])</button>
+				<a uk-toggle href="#edit-modal" onclick="makeCreateForm()" class="uk-margin-left uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button">@lang('admin.category.button.addnew')</a>
 			</div>
 			<div class="">
 				<div class="wrapper">
@@ -181,24 +181,21 @@
 				<x-admin.uploadimage.form></x-admin.uploadimage.form>	
 				<div id="edit-modal" class="uk-modal-container" uk-modal="bg-close:false;stack: true">
 					<div class="uk-modal-dialog">
-							{{-- <div class="uk-modal-header">
-									<h5 class="uk-text-lead">@lang('admin.category.edittitle')</h5>
-							</div> --}}
 							<div class="uk-modal-body">
-								<form id="edit-form" action="" method="POST">
+								<form id="edit-form" action="" class="uk-form-small uk-form-horizontal" method="POST">
 									@csrf
-									@method('put')
-									<div class="uk-flex uk-flex-wrap">
-										<div class="uk-width-3-4 uk-margin-small">
+									<div id="edit-form-opt"></div>
+									<div class="uk-flex">
+										<div class="uk-width-3-4">
 											<div class="uk-margin-small">
-												<label class="uk-form-label" for="form-horizontal-text">@lang('admin.category.button.status'):</label>
+												<label class="uk-form-label" for="status">@lang('admin.category.button.status'):</label>
 												<div class="uk-form-controls">
 													<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch>
 												</div>
 											</div>
 											
 											<div class="uk-margin-small">
-												<label class="uk-form-label" for="parentid">@lang('admin.category.button.parentid'):</label>
+												<label class="uk-form-label" for="parentidselect">@lang('admin.category.button.parentid'):</label>
 												<div class="uk-form-controls">
 													<div class="uk-flex">
 														<select class="uk-select" id="parentidselect" name="parentid">
@@ -215,7 +212,7 @@
 												<label class="uk-form-label" for="name">@lang('admin.category.button.name'):</label>
 												<div class="uk-form-controls">
 													<div class="uk-flex">
-														<input id="name" class="uk-input" type="text" name="name">
+														<input id="name" class="uk-input" type="text" name="name" placeholder="@lang('admin.category.button.name')">
 													</div>
 													</div>
 											</div>
@@ -233,28 +230,24 @@
 											
 		
 										</div>
-										<div class="uk-width-1-4 uk-margin-small uk-border-rounded-10 uk-box-shadow">
-											<div for="uploaded-image-url" class="uk-flex uk-flex-center" uk-lightbox="animation: scale">
+										<div class="uk-width-1-4 uk-border-rounded-10 uk-box-shadow">
+											<div for="uploaded-image-url" class="uk-width-expand uk-margin-small" uk-lightbox="animation: scale">
 												<a class="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
-													<img>
+													<img style="width:255px ;height: 191px; margin-left:5px; object-fit:cover; border-radius: 5px;">
 												</a>
 											</div>
-
-											
 											
 										</div>
 
 									</div>
-									<div class="">
+									<div class="uk-margin-small-top uk-margin-right">
 										<label class="uk-form-label" for="froala-editor">@lang('admin.category.button.detail'):</label>
 										<div class="uk-form-controls">
-												<div class="uk-flex">
+												<div>
 													<textarea tabindex="1" name='detail' id="froala-editor"></textarea>
 												</div>
 											</div>
 									</div>
-
-									
 								</form>
 							</div>
 							<div class="uk-modal-footer uk-text-right">
@@ -281,15 +274,36 @@
 			'status':0
 		};
 
-		function changeImage(e){
-				let id = e.id;
-				let val = e.value;
+		function changeImage(element){
+			let id = element.id;
+			let val = element.value;
+			var tester=new Image();
+			tester.src=val;
+			tester.onload= function(){
 				$('div[for="'+id+'"]>a>img').attr('src',val);
 				$('div[for='+id+']>a').attr('href',val);
-			}
+			};
+			tester.onerror=function(){
+				$('div[for="'+id+'"]>a>img').attr('src','{{ asset("storage/images/no-image.png") }}');
+				$('div[for='+id+']>a').attr('href', '{{ asset("storage/images/no-image.png") }}');
+			};
+		}
+		
+		function makeCreateForm(){
+			document.getElementById('edit-form').setAttribute('action', '{{ route('admin.category.store') }}');
+
+			$('#status').removeAttr('checked');
+			$('option').show();
+			$('option').removeAttr('selected');
+			$('#name').val("");
+			$('#uploaded-image-url').val("");
+			$('#uploaded-image-url').trigger('oninput');
+			$('.fr-view').html("");
+
+		}
 
 		$(document).ready(()=>{
-			var editor = FroalaEditor('textarea#froala-editor', { editorClass: 'uk-width-1-1',  heightMax: 300});
+			var editor = FroalaEditor('textarea#froala-editor', { editorClass: 'uk-width-1-1',  heightMax: 210});
 
 			function removeAccents(str) {
 				var AccentsMap = [
@@ -330,20 +344,20 @@
 			function parseList(a, s){
 				let output="";
 				output+='<div class="wrapper">';
-				output+='<div class="table">';
-				output+='<div class="row search header">';
-				output+='<div class="cell">@lang('admin.category.button.name')</div>';
-				output+='<div class="cell">@lang('admin.category.button.status')</div>';
-				output+='</div>	';
-
-				a.list.forEach(item => {
-					output+='<div class="row on-search" data-id="'+item.id+'" data-name="'+item.name+'"  data-link="'+item.link+'"  data-imageurl="'+item.imageurl+'"  data-status="'+item.status+'">';
-					output+='<div class="cell">'+highlight(item.name, s)+'</div>';
-					output+='<div class="cell">'+highlight(item.status, s)+'</div>';
+					output+='<div class="table">';
+					output+='<div class="row search header">';
+					output+='<div class="cell">@lang('admin.category.button.name')</div>';
+					output+='<div class="cell">@lang('admin.category.button.status')</div>';
 					output+='</div>	';
-				});
-				
-				output+='</div>';
+
+					a.list.forEach(item => {
+						output+='<div class="row on-search" data-id="'+item.id+'" data-name="'+item.name+'"  data-link="'+item.link+'"  data-imageurl="'+item.imageurl+'"  data-status="'+item.status+'">';
+						output+='<div class="cell">'+highlight(item.name, s)+'</div>';
+						output+='<div class="cell">'+highlight(item.status, s)+'</div>';
+						output+='</div>	';
+					});
+					
+					output+='</div>';
 				output+='</div>';
 				return  output;
 			}
@@ -377,6 +391,7 @@
 					current.status = $(this).data('status')
 
 					//set form action route
+					$('#edit-form-opt').html('@method('put')')
 					document.getElementById('edit-form').setAttribute('action', '{{ URL::to("/admin/category") }}/'+current.id);
 					document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/category") }}/'+current.id);
 
@@ -391,10 +406,6 @@
 					document.getElementById('name').value = $(this).data('name');
 					document.getElementById('uploaded-image-url').value = current.imageurl; 
 					$('#uploaded-image-url').trigger('oninput');
-					// changeImage(document.getElementById('uploaded-image-url'));
-					
-					// $('.fr-view').html(current.detail);
-					// $('[name=detail]').html(current.detail);
 
 					if(current.status === 1) document.getElementById('status').setAttribute('checked', 'checked');
 					else document.getElementById('status').removeAttribute('checked');
@@ -404,6 +415,8 @@
 			}
 			
 			addClickPreview();
+
+			
 
 			Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
 				domElement.addEventListener('change',(e) => {
@@ -452,6 +465,6 @@
 		function checkOldParentId() {
 			$('option[value='+current.parentid+']').attr('checked','checked')
 		}
-		
+
 	</script>
 @endsection

@@ -43,13 +43,6 @@ class AdminCategoryController extends Controller
 							->get();
 	}
 
-	// public function getAllLeafAjax(Request $request){
-	// 	if($request->ajax()!==NULL){
-	// 		return Response(json_encode($this->getAllLeaf()));
-	// 	}
-
-	// }
-
 	public function getAllParents(){
 		return DB::table('categories')->where('id',0)->orWhere('parent_id', 0)->get();
 	}
@@ -68,71 +61,44 @@ class AdminCategoryController extends Controller
 			'categoryparentnodes' => $this->getAllParents(),
 		];
 		return view('admin.manager.category.index', $data);
-		// return view('admin.layouts.index',[
-		// 	'collection' => $this->getAll(5),
-		// 	'title' => 'Danh sách các danh mục',
-		// 	'createRoute' => route('admin.category.create'),
-		// 	'tableView' => 'admin.manager.category.categoryTable',
-		// ]);
-	}
-
-	public function create()
-	{
-		// return view('admin.layouts.create', [
-		// 	'categories' => $this->getAll(),
-		// 	'title' => 'Thêm danh muc',
-		// 	'formView' => 'admin.manager.category.categoryAddForm',
-		// ]);
 	}
 
 	public function store(Request $request)
 	{
+		HomeController::checkAdminUser();
+
 		$this->validate($request, [
 			'name' => 'required',
-			'detail' => 'max:5000',
+			'parentid' => 'exists:categories,id',
+			'detail' => 'string|nullable|max:65535',
+			'imageurl' => 'string|max:2048',
 		]);
 		try{
 			$category = new Category();
 			$category->timestamps = false;
 			$category->name = $request->name;
-			$category->parent_id = $request->parent_id;
-			$category->detail = (!$request->detail)?(''):$request->detail;
-			$category->status = ($request->status)?(1):(0);
+			$category->parent_id = $request->parentid;
+			$category->detail = ($request->detail)?$request->detail:('');
+			$category->imageurl = $request->imageurl;
+			$category->status = ($request->has('status'))?(1):(0);
 			$category->save();
 
-			return back()->withInput()->withErrors(['success'=> 'Tạo danh mục thành công']);
+			return back()->withInput()->withErrors(['success'=> trans('admin.category.message.successfulcreate')]);
 
 		}catch (\Exception $err){
-			//session::flash('error',$err->getMessage());
-			return back()->withInput()->withErrors(['danger'=> 'Tạo danh mục không thành công: '.$err->getMessage()]);
+			return back()->withInput()->withErrors(['danger'=> trans('admin.category.message.errorcreatingcategory').'('.$err->getMessage().')']);
 		}
-
-		return true;
-		return back()->withInput()->withErrors(['danger'=> 'Tạo danh mục không thành công']);
+		return back()->withInput()->withErrors(['danger'=> trans('admin.category.message.errorcreatingcategory')]);
 	}
-
-
-	// public function edit($id)
-	// {
-	// 	$category = Category::find($id);
-	// 	if($category)
-	// 		return view('admin.layouts.edit',[
-	// 			'category' => $category,
-	// 			'categories' => $this->categoryService->getParent(),
-	// 			'title' => 'Thay đổi thông tin danh mục',
-	// 			'formView' => 'admin.manager.category.categoryEditForm',
-	// 		]);
-	// 	else return back()->withErrors(['warning'=>'Khong tim thay ID']);
-	// }
 
 	public function update($id, Request $request)
 	{
-		HomeController::checkRootUser();
+		HomeController::checkAdminUser();
+
 		$category = Category::find($id);
 
 		if($category){
 			try{
-
 				$prop = 0;
 				$category->timestamps = false;
 				// if ($request->has('name_check')){
@@ -144,7 +110,6 @@ class AdminCategoryController extends Controller
 					$prop++;
 				}
 
-				// if ($request->has('parent_id_check')){
 				if ($request->parentid != $category->parent_id){
 					if(($request->parentid == $category->id)){
 						return back()->withErrors(['error' => trans('admin.category.message.cannotfindparentiditself')]);
@@ -155,7 +120,6 @@ class AdminCategoryController extends Controller
 					$prop++;
 				}
 
-				// if ($request->has('detail_check')){
 				if ($request->detail !== $category->detail){
 					$this->validate($request, [
 						'detail' => 'max:65535',
@@ -182,7 +146,6 @@ class AdminCategoryController extends Controller
 						$category->status = (0);
 						$prop++;
 					}
-
 				}
 
 				$category->save();
@@ -201,41 +164,49 @@ class AdminCategoryController extends Controller
 
 	public function destroy(int $id)
 	{
-		$menu = Category::where('id', $id)->first();
+		HomeController::checkAdminUser();
+		$category = Category::find($id);
 
 		try{
-			if ($menu){
-				$countChildren = 0;
+			if ($category){
+				$countcategories = 0;
 				foreach($this->getChildren($id) as $item){
 					$this->destroy($item->id);
-					$countChildren++;
+					$countcategories++;
 				}
 
+				$countproducts = 0;
 				foreach($this->getRelativeProduct($id) as $item){
 					$product = new AdminProductController();
 					try{
 						$product->destroy($item->id);
+						$countproducts++;
 					} catch (\Exception $e){
 						return back()->withErrors([
-							'danger'=>'Có lỗi xảy ra khi xóa Danh mục : '.$e->getMessage(),
+							'danger'=>trans('admin.category.message.errordeletingcategory').'('.$e->getMessage().')',
+
 						]);
 					}
 				}
 				Category::where('id', $id)->delete();
 
 				return back()->withErrors([
-					'success' => 'Xóa thành công danh mục '.$id.', '.$countChildren.' danh mục con đã được xóa.',
+					'success' => trans('admin.category.message.successfuldeletecategorywithproduct', ['id'=>$id ,'category' => $countcategories, 'product'=>$countproducts]),
 				]);
+			} else {
+				return back()->withErrors(['danger'=>trans('admin.category.message.cannotfindid')]);
 			}
 		} catch (\Exception $e) {
 			return back()->withErrors([
-				'danger'=>'Có lỗi xảy ra khi xóa Danh mục : '.$e->getMessage(),
+				'danger'=>trans('admin.category.message.errordeletingcategory').'('.$e->getMessage().')',
 			]);
 		}
 	}
 
 	public function switchstatus( Request $request)
 	{
+		HomeController::checkAdminUser();
+
 		if ($request->ajax()) {
 			$c = Category::find($request->id);
 			$c->timestamps = false;

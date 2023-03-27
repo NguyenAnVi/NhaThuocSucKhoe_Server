@@ -43,8 +43,6 @@ class AdminBannerController extends Controller
     public function store(Request $request)
     {
         HomeController::checkAdminUser();
-
-        error_log('store banner');
         // validate NAME
         $this->validate($request, [
             'name' => 'string|max:255|unique:banners,name',
@@ -64,7 +62,6 @@ class AdminBannerController extends Controller
         $banner->link = $request->link;
 
         
-        // option : add price_amount or add price_percent
         if ($request->has('status')) {
             $banner->status = 'ACTIVE';
         } else {
