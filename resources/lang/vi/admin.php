@@ -133,7 +133,12 @@ return [
       'inactive' => 'Chưa kích hoạt',
     ],
     'message' => [
-      'copied' => 'Đã lưu vào bộ nhớ tạm',
+      'errorgetdetail' => 'Xảy ra lỗi khi lấy thông tin chi tiết',
+      'cannotfindparentid' => 'Không tìm thấy danh mục cha.',
+      'errorupdating' => 'Có lỗi xảy ra khi đang lưu thay đổi (:msg)',
+      'cannotfindid' => 'Không tìm thấy mã danh mục',
+      'successfulupdating' => 'Thay đổi thành công (:prop thuộc tính)',
+      'cannotfindparentiditself' => 'Không thể tự đặt danh mục cha bằng chính nó',
     ],
   ],
 ];

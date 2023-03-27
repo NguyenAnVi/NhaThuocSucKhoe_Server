@@ -33,15 +33,14 @@
 			align-items: center;
 		}
 		.wrapper {
-			margin: 16px 0 0 0;
 			max-width: 100%;
 			box-sizing: border-box;
 			display: flex;
+			border-radius: 5px;
+			overflow: auto;
 		}
 		.table {
-			margin: 0 0 40px 0;
 			width: 100%;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 			display: table;
 		}
 		.row {
@@ -68,43 +67,6 @@
 		.row.on-search:hover:not(.header){
 			background-color: rgb(255, 252, 156) !important;
 		}
-		#search{
-			width: 500px;
-		}
-		#search-results{
-			min-width: 750px;
-		}
-		@media screen and (max-width: 570px) {
-			.table {
-				display: block;
-			}
-			.row {
-				padding: 14px 0 7px;
-				display: block;
-			}
-			.row.header {
-				padding: 0;
-				height: 6px;
-			}
-			.row.header .cell {
-				display: none;
-			}
-			.row .cell {
-				margin-bottom: 10px;
-			}
-			.row .cell:before {
-				margin-bottom: 3px;
-				content: attr(data-title);
-				min-width: 48px;
-				font-size: 10px;
-				line-height: 10px;
-				font-weight: bold;
-				text-transform: uppercase;
-				color: #969696;
-				display: block;
-			}
-		}
-
 		.cell {
 			padding: 6px 12px;
 			display: table-cell;
@@ -112,18 +74,13 @@
 			text-overflow:ellipsis; 
 			overflow: hidden;
 		}
-		/* .cell:last-child{
-			max-width: 100px;
-		} */
-		.cell:nth-child(2){
-			max-width: calc(500px - 25px - 100px);
+		#search{
+			width: 500px;
 		}
-		@media screen and (max-width: 570px) {
-			.cell {
-				padding: 2px 16px;
-				display: block;
-			}
+		#search-results{
+			min-width: 750px;
 		}
+	
 	</style>
 @endsection
 @section('content')
@@ -148,9 +105,7 @@
 			</div>
 			<div class="">
 				<div class="wrapper">
-		
 					<div class="table">
-						
 						<div class="row header">
 							<div class="cell uk-table-shrink">
 								@lang('admin.category.button.id')
@@ -166,7 +121,7 @@
 							</div>
 						</div>
 						@foreach ($collection as $row)
-						<div class="row" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-parentid="{{ $row->parent_id }}" data-imageurl="{{ $row->imageurl }}" data-status="{{ $row->status }}">
+						<div class="row getdetailable" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-parentid="{{ $row->parent_id }}" data-imageurl="{{ $row->imageurl }}" data-status="{{ $row->status }}">
 							<div class="cell">
 								{{ $row->id }}
 							</div>
@@ -183,7 +138,6 @@
 						@endforeach
 						
 					</div>
-					
 				</div>
 				<div>
 					{{$collection -> links()}}
@@ -192,12 +146,12 @@
 		</div>
 		<div id="preview" class=" uk-border-rounded-10 uk-box-shadow-small">
 			<div class="uk-flex  uk-text-center uk-flex-column">
-				<div class=""  uk-lightbox="animation: scale">
-					<a id="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
-						<img style="min-width: 300px; max-width:300px;" id="imgpreview">
+				<div for="input-imageurl"  uk-lightbox="animation: scale">
+					<a class="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
+						<img style="min-width: 300px; max-width:300px;" class="imgpreview" >
 					</a>
 				</div>
-
+				<input hidden type="text" class="input-imageurl" id="input-imageurl"  oninput="changeImage(this)">
 				<div class="wrapper">
 					<div class="table">
 						<div class="row">
@@ -219,7 +173,7 @@
 					</div>
 				</div>
 
-				<div class="uk-flex-small uk-flex-row">
+				<div class="uk-flex-small uk-flex-row uk-margin-bottom">
 					<button id="delete-button" class="uk-button uk-button-danger uk-overflow-hidden" type="submit" form="delete-form">@lang('admin.category.button.delete')</button>
 					<a href="#edit-modal" class="uk-button uk-button-primary uk-overflow-hidden" uk-toggle>@lang('admin.category.button.edit')</a>
 				</div>
@@ -227,59 +181,71 @@
 				<x-admin.uploadimage.form></x-admin.uploadimage.form>	
 				<div id="edit-modal" class="uk-modal-container" uk-modal="bg-close:false;stack: true">
 					<div class="uk-modal-dialog">
-							<div class="uk-modal-header">
-									<h2 class="uk-modal-title">@lang('admin.category.edittitle')</h2>
-							</div>
+							{{-- <div class="uk-modal-header">
+									<h5 class="uk-text-lead">@lang('admin.category.edittitle')</h5>
+							</div> --}}
 							<div class="uk-modal-body">
-								<form id="edit-category" style="margin-top:16px;" action="" method="POST">
+								<form id="edit-form" action="" method="POST">
 									@csrf
 									@method('put')
-
-
-									<div class="uk-margin-small uk-flex">
-										<div class="uk-width-1-2">
+									<div class="uk-flex uk-flex-wrap">
+										<div class="uk-width-3-4 uk-margin-small">
 											<div class="uk-margin-small">
 												<label class="uk-form-label" for="form-horizontal-text">@lang('admin.category.button.status'):</label>
 												<div class="uk-form-controls">
-													<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch> &nbsp;
+													<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch>
 												</div>
 											</div>
 											
 											<div class="uk-margin-small">
-												<label class="uk-form-label" for="name">@lang('admin.category.button.name'):</label>
-												<div class="uk-form-controls">
-														<div class="uk-flex">
-															<input id="name" class="uk-input" type="text" name="name">
-														</div>
-													</div>
-											</div>
-		
-											<div class="uk-margin-small">
 												<label class="uk-form-label" for="parentid">@lang('admin.category.button.parentid'):</label>
 												<div class="uk-form-controls">
-														<div class="uk-flex">
-															option
-														</div>
+													<div class="uk-flex">
+														<select class="uk-select" id="parentidselect" name="parentid">
+															<option value="0"> * </option>
+															@foreach($categoryparentnodes as $item)
+															<option value="{{ $item->id }}">{{ $item->name }}</option>
+															@endforeach
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="uk-margin-small">
+												<label class="uk-form-label" for="name">@lang('admin.category.button.name'):</label>
+												<div class="uk-form-controls">
+													<div class="uk-flex">
+														<input id="name" class="uk-input" type="text" name="name">
+													</div>
 													</div>
 											</div>
-		
+
 											<div class="uk-margin-small">
 												<label class="uk-form-label" for="uploaded-image-url">@lang('admin.category.button.imageurl'):</label>
 												<div class="uk-form-controls">
 														<div class="uk-flex">
-																	<input class="uk-input" name="imageurl" id="uploaded-image-url" type="text" oninput="changeImage(this)" placeholder="@lang('admin.category.button.imageurl')">
-																	<x-admin.uploadimage.button></x-admin.uploadimage.button>	
+															<input oninput="changeImage(this)" class="uk-input" name="imageurl" id="uploaded-image-url" type="text" placeholder="@lang('admin.category.button.imageurl')">
+															<x-admin.uploadimage.button></x-admin.uploadimage.button>	
 														</div>
 														
 													</div>
 											</div>
+											
+		
 										</div>
-										<div class="uk-width-1-2">
+										<div class="uk-width-1-4 uk-margin-small uk-border-rounded-10 uk-box-shadow">
+											<div for="uploaded-image-url" class="uk-flex uk-flex-center" uk-lightbox="animation: scale">
+												<a class="imgpreviewlightbox" href="{{ asset('storage/images/no-image.png') }}">
+													<img>
+												</a>
+											</div>
+
+											
 											
 										</div>
-									</div>
 
-									<div class="uk-margin-small">
+									</div>
+									<div class="">
 										<label class="uk-form-label" for="froala-editor">@lang('admin.category.button.detail'):</label>
 										<div class="uk-form-controls">
 												<div class="uk-flex">
@@ -287,14 +253,13 @@
 												</div>
 											</div>
 									</div>
-								
 
 									
 								</form>
 							</div>
 							<div class="uk-modal-footer uk-text-right">
 									<button class="uk-button uk-button-default uk-modal-close" type="button">@lang('admin.button.cancel')</button>
-									<button  class="uk-button uk-button-primary" type="submit">@lang('admin.category.button.apply')</button>
+									<button form="edit-form" class="uk-button uk-button-primary" type="submit">@lang('admin.category.button.apply')</button>
 							</div>
 					</div>
 				</div>
@@ -307,116 +272,137 @@
 @section('js')
 	<script type="text/javascript" src="{{asset('froala-editor/js/froala_editor.pkgd.min.js')}}"></script>
 	<script>
-		function removeAccents(str) {
-			var AccentsMap = [
-				"aàảãáạăằẳẵắặâầẩẫấậ",
-				"AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
-				"dđ", "DĐ",
-				"eèẻẽéẹêềểễếệ",
-				"EÈẺẼÉẸÊỀỂỄẾỆ",
-				"iìỉĩíị",
-				"IÌỈĨÍỊ",
-				"oòỏõóọôồổỗốộơờởỡớợ",
-				"OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
-				"uùủũúụưừửữứự",
-				"UÙỦŨÚỤƯỪỬỮỨỰ",
-				"yỳỷỹýỵ",
-				"YỲỶỸÝỴ"    
-			];
-			for (var i=0; i<AccentsMap.length; i++) {
-				var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-				var char = AccentsMap[i][0];
-				str = str.replace(re, char);
+		var current = {
+			'id':'',
+			'parentid':'',
+			'name':'',
+			'detail':'',
+			'imageurl':'',
+			'status':0
+		};
+
+		function changeImage(e){
+				let id = e.id;
+				let val = e.value;
+				$('div[for="'+id+'"]>a>img').attr('src',val);
+				$('div[for='+id+']>a').attr('href',val);
 			}
-			return str;
-		}
-		function highlight(str1, str2){
-			let pos = removeAccents(str1.toUpperCase()).indexOf(str2.toUpperCase());
-			let qty = str2.length;
-			console.log(str1,':',str2);
-			console.log(pos,':',qty);
-			let result = str1.split('');
-			if(pos>=0)
-				for (let i = 0; i < result.length; i++) {
-					if(i>=pos && i<=pos+qty-1) result[i] = '<span class="uk-text-warning">'+result[i]+'</span>';
-					else result[i] = '<span>'+result[i]+'</span>';
-				}
-			return result.join("");
-		}
-
-		function parseList(a, s){
-			let output="";
-			output+='<div class="wrapper">';
-			output+='<div class="table">';
-			output+='<div class="row search header">';
-			output+='<div class="cell">@lang('admin.category.button.name')</div>';
-			output+='<div class="cell">@lang('admin.category.button.status')</div>';
-			output+='</div>	';
-
-			a.list.forEach(item => {
-				output+='<div class="row on-search" data-id="'+item.id+'" data-name="'+item.name+'"  data-link="'+item.link+'"  data-imageurl="'+item.imageurl+'"  data-status="'+item.status+'">';
-				output+='<div class="cell">'+highlight(item.name, s)+'</div>';
-				output+='<div class="cell">'+highlight(item.status, s)+'</div>';
-				output+='</div>	';
-			});
-			
-			output+='</div>';
-			output+='</div>';
-			return  output;
-		}
-
-		function addClickPreview(){
-			$('.row').on('click', function() {
-
-				//set form action route
-				document.getElementById('edit-category').setAttribute('action', '{{ URL::to("/admin/category") }}/'+$(this).data('id'));
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/category") }}/'+$(this).data('id'));
-
-				$('.input-id').text($(this).data('id'));
-				$('.input-parentid').text($(this).data('parentid'));
-
-				
-				document.getElementById('name').value = $(this).data('name');
-				$('.input-name').text($(this).data('name'));
-				
-				$.ajax({
-					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-					type: 'get',
-					url: '{{ URL::to('/admin/category/detail') }}/'+$(this).data('id'),
-					success:function(obj){
-						let r = JSON.parse(obj)
-						console.log(r.status);
-						if(r.status) $('.fr-view').html(r.content);
-						else UIkit.notification('Error while fetching category\'s detail');
-					}
-				});
-				
-				document.getElementById('uploaded-image-url').value = $(this).data('imageurl');
-				changeImage(document.getElementById('uploaded-image-url'));
-				
-				
-				if($(this).data('status') === 1){
-					document.getElementById('status').setAttribute('checked', 'checked');
-					$('.input-status').text('@lang('admin.category.button.active')');
-				} else{
-					document.getElementById('status').removeAttribute('checked');
-					$('.input-status').text('@lang('admin.category.button.inactive')');
-				}
-
-				$('#preview').css('width', '30%');
-			});
-		}
-			
-		const changeImage = (e) => {
-			const url = e.value;
-			document.getElementById('imgpreview').setAttribute('src',url);
-			document.getElementById('imgpreviewlightbox').setAttribute('href',url);
-
-		}
 
 		$(document).ready(()=>{
+			var editor = FroalaEditor('textarea#froala-editor', { editorClass: 'uk-width-1-1',  heightMax: 300});
+
+			function removeAccents(str) {
+				var AccentsMap = [
+					"aàảãáạăằẳẵắặâầẩẫấậ",
+					"AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+					"dđ", "DĐ",
+					"eèẻẽéẹêềểễếệ",
+					"EÈẺẼÉẸÊỀỂỄẾỆ",
+					"iìỉĩíị",
+					"IÌỈĨÍỊ",
+					"oòỏõóọôồổỗốộơờởỡớợ",
+					"OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+					"uùủũúụưừửữứự",
+					"UÙỦŨÚỤƯỪỬỮỨỰ",
+					"yỳỷỹýỵ",
+					"YỲỶỸÝỴ"    
+				];
+				for (var i=0; i<AccentsMap.length; i++) {
+					var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+					var char = AccentsMap[i][0];
+					str = str.replace(re, char);
+				}
+				return str;
+			}
+			function highlight(str1, str2){
+				let pos = removeAccents(str1.toUpperCase()).indexOf(str2.toUpperCase());
+				let qty = str2.length;
+				console.log(str1,':',str2);
+				console.log(pos,':',qty);
+				let result = str1.split('');
+				if(pos>=0)
+					for (let i = 0; i < result.length; i++) {
+						if(i>=pos && i<=pos+qty-1) result[i] = '<span class="uk-text-warning">'+result[i]+'</span>';
+						else result[i] = '<span>'+result[i]+'</span>';
+					}
+				return result.join("");
+			}
+			function parseList(a, s){
+				let output="";
+				output+='<div class="wrapper">';
+				output+='<div class="table">';
+				output+='<div class="row search header">';
+				output+='<div class="cell">@lang('admin.category.button.name')</div>';
+				output+='<div class="cell">@lang('admin.category.button.status')</div>';
+				output+='</div>	';
+
+				a.list.forEach(item => {
+					output+='<div class="row on-search" data-id="'+item.id+'" data-name="'+item.name+'"  data-link="'+item.link+'"  data-imageurl="'+item.imageurl+'"  data-status="'+item.status+'">';
+					output+='<div class="cell">'+highlight(item.name, s)+'</div>';
+					output+='<div class="cell">'+highlight(item.status, s)+'</div>';
+					output+='</div>	';
+				});
+				
+				output+='</div>';
+				output+='</div>';
+				return  output;
+			}
+			function establishValidity(){
+				$('option').show();
+				$('option[value='+current.id+']').hide();
+				$('option').removeAttr('selected');
+				$('option[value='+current.parentid+']').attr('selected', 'selected')
+			}
+			function addClickPreview(){
+				$('.getdetailable').on('click', function() {
+					// set current:
+					current.id = $(this).data('id')
+					current.parentid = $(this).data('parentid')
+					current.name = $(this).data('name')
+					$.ajax({
+						headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+						type: 'get',
+						url: '{{ URL::to('/admin/category/detail') }}/'+current.id,
+						success:function(obj){
+							let r = JSON.parse(obj)
+							if(r.status == 1){
+								$('#froala-editor').html(r.content);
+								$('.fr-view').html(r.content);
+							}
+							else UIkit.notification('@lang('admin.category.message.errorgetdetail')');
+						}
+					});
+					current.detail = $('[name=detail]').html();
+					current.imageurl = $(this).data('imageurl')
+					current.status = $(this).data('status')
+
+					//set form action route
+					document.getElementById('edit-form').setAttribute('action', '{{ URL::to("/admin/category") }}/'+current.id);
+					document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/category") }}/'+current.id);
+
+					$('.input-id').text(current.id);
+					$('.input-parentid').text(current.parentid);
+					$('.input-name').text(current.name);
+					$('.input-imageurl').val(current.imageurl); 
+					$('.input-imageurl').trigger('oninput');
+					$('.input-status').text((current.status === 1)?('@lang('admin.category.button.active')'):('@lang('admin.category.button.inactive')'));
+					$('#preview').css('width', '30%');
+					
+					document.getElementById('name').value = $(this).data('name');
+					document.getElementById('uploaded-image-url').value = current.imageurl; 
+					$('#uploaded-image-url').trigger('oninput');
+					// changeImage(document.getElementById('uploaded-image-url'));
+					
+					// $('.fr-view').html(current.detail);
+					// $('[name=detail]').html(current.detail);
+
+					if(current.status === 1) document.getElementById('status').setAttribute('checked', 'checked');
+					else document.getElementById('status').removeAttribute('checked');
+
+					establishValidity();
+				});
+			}
 			
-			FroalaEditor('textarea#froala-editor', { editorClass: 'uk-width-1-1',  heightMax: 300});
 			addClickPreview();
 
 			Array.from(document.querySelectorAll('[id*=i-]')).map((domElement) => {
@@ -462,6 +448,10 @@
 			});
 			
 		});
+
+		function checkOldParentId() {
+			$('option[value='+current.parentid+']').attr('checked','checked')
+		}
 		
 	</script>
 @endsection

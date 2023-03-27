@@ -29,7 +29,7 @@ class AdminCategoryController extends Controller
 		return $c;
 	}
 
-	public function getAllLeaf(){
+	public function getAllLeafs(){
 
 		// SELECT leaf.node_id
 		// FROM tree AS leaf
@@ -43,11 +43,15 @@ class AdminCategoryController extends Controller
 							->get();
 	}
 
-	public function getAllLeafAjax(Request $request){
-		if($request->ajax()!==NULL){
-			return Response(json_encode($this->getAllLeaf()));
-		}
+	// public function getAllLeafAjax(Request $request){
+	// 	if($request->ajax()!==NULL){
+	// 		return Response(json_encode($this->getAllLeaf()));
+	// 	}
 
+	// }
+
+	public function getAllParents(){
+		return DB::table('categories')->where('id',0)->orWhere('parent_id', 0)->get();
 	}
 
 	public function getAll($pages = 0)
@@ -61,6 +65,7 @@ class AdminCategoryController extends Controller
 		HomeController::checkAdminUser();
 		$data = [
 			'collection' => $this->getAll(5),
+			'categoryparentnodes' => $this->getAllParents(),
 		];
 		return view('admin.manager.category.index', $data);
 		// return view('admin.layouts.index',[
@@ -107,70 +112,91 @@ class AdminCategoryController extends Controller
 	}
 
 
-	public function edit($id)
-	{
-		$category = Category::find($id);
-		if($category)
-			return view('admin.layouts.edit',[
-				'category' => $category,
-				'categories' => $this->categoryService->getParent(),
-				'title' => 'Thay đổi thông tin danh mục',
-				'formView' => 'admin.manager.category.categoryEditForm',
-			]);
-		else return back()->withErrors(['warning'=>'Khong tim thay ID']);
-	}
+	// public function edit($id)
+	// {
+	// 	$category = Category::find($id);
+	// 	if($category)
+	// 		return view('admin.layouts.edit',[
+	// 			'category' => $category,
+	// 			'categories' => $this->categoryService->getParent(),
+	// 			'title' => 'Thay đổi thông tin danh mục',
+	// 			'formView' => 'admin.manager.category.categoryEditForm',
+	// 		]);
+	// 	else return back()->withErrors(['warning'=>'Khong tim thay ID']);
+	// }
 
 	public function update($id, Request $request)
 	{
-			$category = Category::find($id);
-			$prop = 0;
+		HomeController::checkRootUser();
+		$category = Category::find($id);
 
-			if($category){
+		if($category){
+			try{
+
+				$prop = 0;
 				$category->timestamps = false;
-				if ($request->has('name_check')){
+				// if ($request->has('name_check')){
+				if ($request->name != $category->name){
 					$this->validate($request, [
-						'name' => 'required',
-					], [
-						'name.required' => 'Không được để trống tên danh mục.'
+						'name' => 'required|string|max:255',
 					]);
 					$category->name = $request->name;
 					$prop++;
 				}
 
-				if ($request->has('parent_id_check')){
-					if(Category::find($request->parent_id) === NULL)
-						return back()->withErrors(['parent_id.exists' => 'Danh mục cha đã chọn không có trong cơ sở dữ liệu.']);
-					$category->parent_id = $request->parent_id;
+				// if ($request->has('parent_id_check')){
+				if ($request->parentid != $category->parent_id){
+					if(($request->parentid == $category->id)){
+						return back()->withErrors(['error' => trans('admin.category.message.cannotfindparentiditself')]);
+					}
+					if( (DB::table('categories')->where('parent_id', 0)->find($request->parentid) === NULL) && ($request->parentid != 0))
+						return back()->withErrors(['parent_id.exists' => trans('admin.category.message.cannotfindparentid')]);
+					$category->parent_id = $request->parentid;
 					$prop++;
 				}
 
-				if ($request->has('detail_check')){
+				// if ($request->has('detail_check')){
+				if ($request->detail !== $category->detail){
 					$this->validate($request, [
-						'detail' => 'max:5000',
-					], [
-						'detail.max' => 'Số lượng kí tự tối đa không vượt quá :max',
+						'detail' => 'max:65535',
 					]);
 					$category->detail = $request->detail;
 					$prop++;
 				}
 
-				if ($request->has('status_check')){
-					$category->status = ($request->status==1)?(1):(0);
+				if ($request->imageurl !== $category->imageurl){
+					$this->validate($request, [
+						'imageurl' => 'max:65535',
+					]);
+					$category->imageurl = $request->imageurl;
 					$prop++;
 				}
-				try{
-					$category->save();
-				} catch(\Exception $e){
-					return back()->withInput()->withErrors(['danger'=> 'Có lỗi xảy ra khi đang lưu thay đổi lên cơ sở dữ liệu ('.$e->getMessage().')']);
+
+				if ($request->has('status')){
+					if($category->status==0){
+						$category->status = (1);
+						$prop++;
+					}
+				} else {
+					if($category->status==1){
+						$category->status = (0);
+						$prop++;
+					}
+
 				}
-				// Update successfully
+
+				$category->save();
+			} catch(\Exception $e){
+				return back()->withInput()->withErrors(['danger'=> trans('admin.category.message.errorupdating',['msg'=>$e->getMessage()])]);
 			}
-			else{
-				return back()->withErrors([
-					'danger' => 'Khong tim thay ID',
-				]);
-			}
-			return back()->withErrors(['success'=>'Thay đổi thành công ('.$prop.' thuộc tính)']);
+			// Update successfully
+		}
+		else{
+			return back()->withErrors([
+				'danger' => trans('admin.category.message.cannotfindid'),
+			]);
+		}
+		return back()->withErrors(['success'=> trans('admin.category.message.successfulupdating', ['prop'=>$prop])]);
 	}
 
 	public function destroy(int $id)
