@@ -13,13 +13,13 @@ class CreateProductsTable extends Migration
             $table->text('detail');
             $table->boolean('classified')->default(false);
             $table->string('price')->default("")->nullable();
-            $table->text('images');
+            $table->text('images')->default("");
             $table->integer('weight')->default(1000);   // Can nang (don vi: gram)
             $table->integer('saleoff_price')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->integer('stock',false,true)->default(0)->nullable();
-            $table->integer('sold', false, true)->default(0);
+            $table->integer('stock')->default(0);
+            $table->integer('sold')->default(0);
             $table->string('status')->default('ACTIVE');
 
         });

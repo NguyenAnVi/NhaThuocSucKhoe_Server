@@ -15,7 +15,7 @@ if (!function_exists('getImageAt')) {
 				if($array[$position] != '')
 					return $array[$position];
 			}
-		return asset('storage/products/no-image.png');
+		return asset('storage/images/no-image.png');
 	}
 }
 
@@ -135,8 +135,8 @@ if(!function_exists('numToText')){
 }
 
 if(!function_exists('toCurrency')){
-	function toCurrency($num, $str='đ'){
-		return number_format($num, 0, ',', '.').' '.$str;
+	function toCurrency($num){
+		return number_format($num, 0, ',', '.');
 	} 
 }
 

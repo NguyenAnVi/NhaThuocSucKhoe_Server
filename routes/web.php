@@ -13,7 +13,7 @@ Route::match(['get'], '/', [HomeController::class, 'gethomepage'])->name('home')
 // Resources
 Route::get('/getcategoriesmenu', [HomeController::class,'getcategoriesmenu'])->name('getcategoriesmenu');
 
-// Route::match(['get'], '/search/{keyword}', [SearchController::class, 'search'])->name('search');
+
 Route::match(['get'], '/show/{type}/{id}', [HomeController::class, 'show']);
 
 // User_Auth
@@ -54,6 +54,6 @@ Route::match('get', '/language/{locate}', [HomeController::class, 'setlocate']);
 
 Route::match(['get'], '/testing/tested', [HomeController::class, 'test']);
 
-
+Route::get('s', [HomeController::class, 'search'])->name('search');
 
 Route::fallback([HomeController::class, 'notFound']);

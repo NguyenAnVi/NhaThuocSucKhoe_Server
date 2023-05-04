@@ -1,3 +1,4 @@
+
 <style>
   .vi-rounded{
     border-radius: 15px;
@@ -37,8 +38,7 @@
       <article class="uk-article">
         {{-- uk-breadcrumb --}}
         <ul class="uk-breadcrumb">
-          <li><a href="">abc</a></li>
-          <li><a href="">xyz</a></li>
+          <li><a href="">Bubu</a></li>
           <li><span>{{$item->name}}</span></li>
         </ul>
         <h2 class=""><a class="uk-link-reset" href="">{{$item->name}}</a></h2>
@@ -46,22 +46,72 @@
           <p class="uk-article-meta">Đã bán {{intval($item->sold)}}</p>
           <a href="" class="uk-article-meta">Report <span uk-icon="warning"></span></a>
         </div>
-        <p class="uk-margin-remove uk-text-lead uk-alert uk-padding-small uk-width-1-1">
-          {{toCurrency($item->price)}}
-        </p>
+        <h2 id="price" class="uk-margin-remove uk-alert uk-padding-small uk-width-1-1 uk-text-bold">
+          {{toCurrency($item->price)}}<sup>đ</sup>
+        </h2>
 
         {{-- buttons and select number add to cart --}}
         <form action="@if (Auth::check()){{ route('addCart') }}@endif" method="post" class="uk-form-horizontal uk-margin-small">
           
           @csrf
+          @if($item->classified==1)
+          <link rel="stylesheet" href="{{ asset('css/options.css') }}">
+          <div class="uk-margin">
+            <div class="uk-width-1-1 uk-flex uk-flex-middle">
+              <div class="uk-width-1-4">
+                <label class="uk-padding-small uk-padding-remove-horizontal" id="options-name"></label>
+              </div>
+              <div class="uk-width-3-4"  id="options">
+                 
+              </div>
+            </div>
+            <script>
+              
+              $('#options').html("");
+              $.ajax({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                type: 'get',
+                url: '{{ URL::to('/admin/product/options') }}/'+{{ $item->id }},
+                success:function(obj){
+                  let r = JSON.parse(obj)
+                  if(r.status == 1){
+                    // create Options with Params
+                    $('#price').html(currency(minPrice(r.content)) + "-" + currency(maxPrice(r.content)));
+                    r.content.forEach(item => {
+                      console.log(item);
+                      $('#options-name').html(item.name);
+                      
+                      $('#options').append(`
+                        <input class="checkbox-budget" type="radio" name="option" value="${item.value}" id="option-${item.value}">
+                        <label class="for-checkbox-budget" for="option-${item.value}"  data-value="${item.value}" data-stock="${item.stock}" data-price="${item.price}">
+                          <span data-hover="${item.value}">${item.value}</span>
+                        </label>
+                      `);
+                    });
+                    $('.for-checkbox-budget').click(function(){
+                      let stock = $(this).data('stock');
+                      $('#amount').attr('max', stock);
+                      $('#stock').html(stock);
+                      let price = $(this).data('price');
+                      $('#price').html(currency(price));
+                    });
+                  }
+                  else UIkit.notification(r.content);
+                }
+              });
+            </script>
+          </div>
+            @endif
           <div class="uk-margin">
             <div class="uk-width-1-1 uk-flex uk-flex-left uk-flex-middle" uk-grid>
-              <div class="uk-width-1-4"><label class="uk-padding-small uk-padding-remove-horizontal">Số lượng</label></div>
+              <div class="uk-width-1-4">
+                <label class="uk-padding-small uk-padding-remove-horizontal">Số lượng</label>
+              </div>
               <div class="uk-width-3-4">
                 <input type="text" name="user_id" value="{{Auth::id()}}" hidden>
                 <input type="text" name="product_id" value="{{ $item->id }}" hidden>
                 <input type="number" value="1" min="1" max="{{intval($item->stock)}}" class="uk-input uk-width-small" name="quantity" id="amount">
-                (Kho: {{intval($item->stock)}})
+                (Kho: <span id="stock">{{intval($item->stock)}}</span>)
               </div>
               <div class="uk-div-1-4"><label class="uk-padding-small uk-padding-remove-horizontal">Vận chuyển</label></div>
               <div class="uk-div-3-4">
@@ -116,6 +166,9 @@
       <div class="uk-width-1-1">
         <h3 class="uk-alert uk-padding-small uk-border-rounded uk-padding-remove-right">Sản phẩm cùng danh mục</h3>
         {{-- show thís category --}}
+        <div class="uk-flex uk-flex-wrap uk-child-width-1-1">
+          @each ('user.partials.product_card_horizontal',$sameCat,'item', 'user.partials.feature_updating')
+        </div>
       </div>
       <div class="uk-width-1-1">
         <h3 class="uk-alert uk-padding-small uk-border-rounded uk-padding-remove-right">Sản phẩm tương tự</h3>
@@ -124,3 +177,34 @@
     </div>
   </div>
 </div>
+@section('js')
+<script>
+let dong = Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
+function currency(num){
+  return dong.format(parseInt(num));
+}
+function minPrice(arr){
+  arr1 = arr.map(function(element){
+    return element.price;
+  })
+  return Math.min.apply(null,arr1);
+}
+function maxPrice(arr){
+  arr1 = arr.map(function(element){
+    return element.price;
+  })
+  return Math.max.apply(null,arr1);
+}
+$(document).ready(function(){
+  $('[data-type=product]').click(function (){
+    let type = $(this).data('type');
+    let id = $(this).data('id');
+    window.location.href='/'+'show/'+type+'/'+id;
+    return;
+  });
+});
+</script>
+@endsection

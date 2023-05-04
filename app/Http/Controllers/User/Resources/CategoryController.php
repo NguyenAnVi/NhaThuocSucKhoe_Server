@@ -22,6 +22,13 @@ class CategoryController extends Controller
 			}
 			else return NULL;
 	}
+	public static function getWithName($name){
+		if($name){
+			return Category::where('name','LIKE','%'.$name.'%')->get();
+		} else {
+			return NULL;
+		};
+	}
 
 	public static function hasCategory($id){
 		return (Category::find($id)!=NULL);

@@ -232,7 +232,7 @@
 				$.ajax({
 					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 					type: 'get',
-					url: '{{ URL::to('/admin/product/getoptions') }}/'+current.id,
+					url: '{{ URL::to('/admin/product/options') }}/'+current.id,
 					success:function(obj){
 						let r = JSON.parse(obj)
 						if(r.status == 1){
@@ -323,14 +323,6 @@
 		}
 	})
 
-	// before submit operate form
-	$('form#operate-form').on("submit", function(e){
-		e.preventDefault()
-		$('#images').val(JSON.stringify(imageURLs));
-		$('#options').val(JSON.stringify(getOptions()));
-		alert(JSON.stringify(getOptions()));
-		$(this).unbind('submit').submit(); 
-	});
 
 	const getOptions = () => {
 		var options = [];
@@ -520,7 +512,8 @@
 					<div class="uk-modal-dialog">
 						
 						<div class="uk-modal-body">
-							<form id="operate-form" action="" class="uk-form-small uk-form-vertical" method="POST" enctype="multipart/form-data">
+							<form id="operate-form" action="" class="uk-form-small uk-form-vertical" method="POST" enctype="multipart/form-data"
+							onsubmit="$('#images').val(JSON.stringify(imageURLs));$('#options').val(JSON.stringify(getOptions()));">
 								@csrf
 								<input type="hidden" name="formstatus" value="@error('any') {{ old('formstatus') }} @enderror">
 								<div hidden id="operate-form-opt"></div>

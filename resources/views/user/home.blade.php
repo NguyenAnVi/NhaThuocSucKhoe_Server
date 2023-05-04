@@ -124,12 +124,7 @@
 <script src="{{asset('js/jquery-3.6.1.min.js')}}"></script>
 <script>
   $(document).ready(function(){
-    $('[data-type=product]').click(function (){
-      let type = $(this).data('type');
-      let id = $(this).data('id');
-      window.location.href='/'+'show/'+type+'/'+id;
-      return;
-    });
+   
   });
 </script>
 @endsection

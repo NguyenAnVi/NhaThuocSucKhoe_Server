@@ -15,12 +15,24 @@ class ProductController extends Controller
 		else
 			return Product::paginate($num);
 	}
+
+	public static function getSameCategory($category_id, $count = NULL){
+		return ($count > 0)  ? 
+			(Product::where('category_id','=',$category_id)->get()->count($count)) : (Product::where('category_id','=',$category_id)->get());
+	}
+
 	public static function getProduct($id=NULL){
 		if($id)
 			if(ProductController::hasProduct($id)){
 				return Product::find($id);
 			}
 			else return NULL;
+	}
+
+	public static function getWithName($name){
+		if($name)
+			return Product::where('name','like','%'.$name.'%')->get();
+		else return NULL;
 	}
 
 	public static function hasProduct($id){

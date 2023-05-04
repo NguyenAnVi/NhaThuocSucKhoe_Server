@@ -13,6 +13,8 @@ class AdminProductController extends Controller
 	public function getAll(){
 		return Product::all();
 	}
+
+	
 	
 	public function index($olddata=NULL)
 	{
@@ -48,29 +50,31 @@ class AdminProductController extends Controller
 		$product= new Product();
 		$product->timestamps = false;
 
-		
-
-
 		$product->status = ($request->has('status'))?('ACTIVE'):('INACTIVE');
 		$product->name = $request->name;
 		$product->category_id = $request->categoryid;
-		$product->weight = $request->weight;
-		$product->stock = $request->stock;
-		$product->price = $request->price;
-		$product->saleoff_price = $request->saleoffprice;
+		$product->weight = ($request->weight!=NULL)?($request->weight):0;
+		$product->stock = ($request->stock!=NULL)?($request->stock):0;
+		$product->price = ($request->price!=NULL)?($request->price):0;
+		$product->saleoff_price = ($request->saleoffprice!=NULL)?($request->saleoffprice):0;
 		$product->detail = ($request->detail!=NULL)?$request->detail:"";
+		$product->images = '';
 		
-		$images = json_decode($request->images);
-		$product->images = json_encode($images);
+		if(json_decode($request->images)!=NULL){
+			$product->images =$request->images;
+		} else {
+			$product->images ="";
+		}
 		
 		$product->save();
 
 		// Classify Product here
-		if($request->has('options')) {
+		$options = [];
+		error_log("ssssssssssssssssssssssssss".$request->options);
+		if($request->options != "") {
 			try {
-				$options = [];
 				$options_arr = json_decode($request->options);
-				foreach($options_arr as $option){
+				foreach((array)$options_arr as $option){
 					$options_name = $option->name;
 					foreach($option->values as $item){
 						array_push($options , [
@@ -83,14 +87,17 @@ class AdminProductController extends Controller
 					}
 				}
 				DB::table('productclassifications')->insert($options);
-				$product->classified = true;
-				$product->stock = NULL;
-				$product->price = NULL;
+				$product->classified = 1;
+				$product->stock = 0;
+				$product->price = 0;
+				$product->saleoff_price = 0;
 				$product->save();
 			} catch (\Error $e) {
 				return back()->withInput()->withErrors(['warning'=>trans('admin.product.message.errorwhileaddingcassification').$e->getMessage()]);
 			}
 			
+		} else {
+			$product->classified = 0;
 		}
 		
 		// Shipping method here
@@ -287,11 +294,14 @@ class AdminProductController extends Controller
 				$options = DB::table('productclassifications')
 				->where('product_id','=',$product_id)
 				->get();
+				return Response(json_encode(['status'=>1,'content' => $options]));
 			} catch (Exception $e) {
 				return Response(json_encode(['status'=>0,'content' => $e->getMessage()]));
 			}
 		}
+		return Response(json_encode(['status'=>0,'content' => "NotAjax"]));
 
-		return Response(json_encode(['status'=>1,'content' => $options]));
 	}
+
+	
 }

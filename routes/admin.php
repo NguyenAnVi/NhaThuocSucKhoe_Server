@@ -80,6 +80,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('product/options/{id}', [AdminProductController::class, 'getOptions'])->name('admin.product.getoptions');
         Route::post('product/updatestock', [AdminProductController::class, 'updateStock'])->name('admin.product.updatestock');
         Route::get('product/detail/{id}', [AdminProductController::class, 'getDetail']);
+        Route::post('product/samecategory', [AdminProductController::class, 'getSameCategoryAjax']);
         
         
         

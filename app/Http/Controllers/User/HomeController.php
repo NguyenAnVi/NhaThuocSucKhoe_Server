@@ -14,6 +14,8 @@ class HomeController extends Controller
 		if (isset($locale) && in_array($locale, config('app.available_locales'))) {
 				app()->setLocale($locale);
 		}
+
+		
 		
 		// Lay cac san pham co CTKM
 		// $saleoff_pro = Product::where('saleoff_id', '!=', '1')->get();
@@ -43,6 +45,7 @@ class HomeController extends Controller
 		return view('user.home', $data);
 	}
 
+	
 	public function getcategoriesmenu(Request $request){
 		if($request->ajax()!==NULL){
 			return Response(json_encode(view('user.partials.category', ['categories' => CategoryController::getCategories()])->render()));
@@ -53,9 +56,11 @@ class HomeController extends Controller
 	{
 		switch($what){
 			case 'product':
+				$product = ProductController::getProduct($id);
 				$data = ([
-					'item' => ProductController::getProduct($id),
+					'item' => $product,
 					'view' => 'user.show.product',
+					'sameCat' => ProductController::getSameCategory($product->category_id)
 				]);
 				return view('user.show', $data);
 				break;
@@ -97,6 +102,27 @@ class HomeController extends Controller
 						
 		http_response_code(404);
 		return view('shared.errors.404');
+	}
+
+	public function search(Request $request){
+		if($request->ajax() !== NULL){
+			try {
+				$key = $request->search;
+				if(strlen($key)>0){
+					$categories = CategoryController::getWithName($key);
+					$products = ProductController::getWithName($key);
+					$result = [
+						'categories' => $categories,
+						'products' => $products
+					];
+					return Response(json_encode(['status'=>1,'content'=>$result]));
+				} else {
+					return Response(json_encode(['status'=>0,'content'=>'0 result']));
+				}
+			} catch (Exception $e) {
+				return Response(json_encode(['status'=>0,'content' => $e->getMessage()]));
+			}
+		}
 	}
 }
 

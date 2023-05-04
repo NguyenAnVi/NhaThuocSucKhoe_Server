@@ -179,22 +179,159 @@
 
 @yield('js')
 <script>
-	$(document).ready(function(){
-		//get categories menu
-		$.ajax({
-      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-      type: 'get',
-      url: '{{route('getcategoriesmenu')}}',
-      success:function(obj){
-        $('#categories-menu').html((JSON.parse(obj)));
-      }
-    });
 
-		@if($errors->any())
-		//show notification
-		{!! implode('', $errors->all("UIkit.notification(':message', {pos: 'top-center', timeout : 0});")) !!}    
-		@endif
+function removeAccents(str) {
+	var AccentsMap = [
+		"aàảãáạăằẳẵắặâầẩẫấậ",
+		"AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+		"dđ", "DĐ",
+		"eèẻẽéẹêềểễếệ",
+		"EÈẺẼÉẸÊỀỂỄẾỆ",
+		"iìỉĩíị",
+		"IÌỈĨÍỊ",
+		"oòỏõóọôồổỗốộơờởỡớợ",
+		"OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+		"uùủũúụưừửữứự",
+		"UÙỦŨÚỤƯỪỬỮỨỰ",
+		"yỳỷỹýỵ",
+		"YỲỶỸÝỴ"    
+	];
+	for (var i=0; i<AccentsMap.length; i++) {
+		var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+		var char = AccentsMap[i][0];
+		str = str.replace(re, char);
+	}
+	return str;
+}
+function highlight(str1, str2){
+	let pos = removeAccents(str1.toUpperCase()).indexOf(str2.toUpperCase());
+	let qty = str2.length;
+	console.log(str1,':',str2);
+	console.log(pos,':',qty);
+	let result = str1.split('');
+	if(pos>=0)
+		for (let i = 0; i < result.length; i++) {
+			if(i>=pos && i<=pos+qty-1) result[i] = '<span class="uk-text-warning">'+result[i]+'</span>';
+			else result[i] = '<span>'+result[i]+'</span>';
+		}
+	return result.join("");
+}
+function parseList(a, s){
+	let output="";
+
+	output+=`<div>Sản phẩm</div><ul>`;
+		a.products.forEach(item => {
+		output+=`
+		
+			<li data-type="product" data-id="${item.id}}">
+				<div class="uk-border-rounded uk-card uk-overflow-hidden uk-flex">
+					<div class="product-title uk-padding-small uk-flex uk-flex-column uk-flex-between" style="height:6rem">
+						<div style="height: 3rem;" class="uk-overflow-hidden"><p>${item.name}</p></div>
+						<div style="height:1.5rem; font-size:1.2rem">
+							<span class="uk-text-bold">${item.price}<sup>đ</sup></span>
+						</div>
+						<div style="height:1rem;">
+							<span>Đã bán ${item.sold}</span>
+						</div>
+						
+					</div>  
+				</div>
+			</li>
+		`;
 	});
+	
+
+	output+=`
+		<li>Hiển thị ${a.products.length} kết quả</li>
+	</ul>
+	<hr>
+	<div>Danh mục</div>
+	<ul>`;
+
+		a.categories.forEach(item => {
+		output+=
+		`
+			<li data-type="category" data-id="${item.id}}">
+				<div class="uk-border-rounded uk-card uk-overflow-hidden uk-flex">
+					<div class="product-image uk-padding-small">
+						<img style="aspect-ratio:1/1;" class="uk-object-cover" src="${item.imageurl}" alt="">
+					</div>
+					<div class="product-title uk-padding-small uk-flex uk-flex-column uk-flex-between" style="height:6rem">
+						<div style="height: 3rem;" class="uk-overflow-hidden"><p>${highlight(item.name,s)}</p></div>
+					</div>
+				</div>
+			</li>
+		`;
+	});
+	
+	output+=
+	`
+		<li>Hiển thị ${a.categories.length} kết quả</li>
+	</ul>
+	`;
+	return  output;
+}
+
+function createShowClickListener(){
+	$('[data-type]').off('click').on('click',function (){
+		let type = $(this).data('type');
+		let id = $(this).data('id');
+		window.location.href='/'+'show/'+type+'/'+id;
+		return;
+	});
+}
+
+$(document).ready(function(){
+
+	//get categories menu
+	$.ajax({
+		headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+		type: 'get',
+		url: '{{route('getcategoriesmenu')}}',
+		success:function(obj){
+			$('#categories-menu').html((JSON.parse(obj)));
+		}
+	});
+
+	createShowClickListener();
+
+	@if($errors->any())
+	//show notifications
+	{!! implode('', $errors->all("UIkit.notification(':message', {pos: 'top-center', timeout : 0});")) !!}    
+	@endif
+
+	$("#search").on('input',function(){
+		UIkit.dropdown('div#search-results').show();
+		let key = removeAccents($(this).val());
+		if(key.length>0){
+			console.log("searching "+key);
+			$.ajax({
+				headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+				type: 'get',
+				data: {
+					'search': key
+				},
+				url: "{{ URL::to('/s') }}",
+				success:function(obj){
+					r = JSON.parse(obj)
+					console.log(r.content);
+					if((r.status = 1)){
+						$('#search-results-has-results').html(parseList(r.content, key))
+						createShowClickListener();
+						$('#search-results-has-no-result').addClass('uk-hidden');
+						$('#search-results-has-results').removeClass('uk-hidden');
+					} else {
+						console.log(r.content);
+						$('#search-results-has-no-result').removeClass('uk-hidden');
+						$('#search-results-has-results').addClass('uk-hidden');
+					}
+				}
+			});
+		} else {
+			UIkit.dropdown('div#search-results').hide();
+		}
+	})
+});
 </script>
 
 </html>
