@@ -10,9 +10,11 @@ class CreateProductClassificationsTable extends Migration
         Schema::create('productclassifications', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->string('name');
-            $table->string('imageurl', 2048);
+            $table->string('value');
+            $table->string('imageurl', 2048)->nullable();
             $table->integer('stock');
             $table->integer('price');
+            $table->primary(['product_id', 'name', 'value']);
         });
     }
 

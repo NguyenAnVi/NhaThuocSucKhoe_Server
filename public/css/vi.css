@@ -50,3 +50,6 @@
 
   transition: left 2s cubic-bezier(0, 0.75, 0.27, 1);
 }
+.vi-button-dash{
+  border: 2px dashed black;
+}

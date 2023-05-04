@@ -6,11 +6,15 @@
  * @param position : 0 .. length of array - index of image
  */
 if (!function_exists('getImageAt')) {
-	function getImageAt(string $array = null, int $position)
+	function getImageAt(string $array_str = null, int $position)
 	{
-		if($array)
-			if(json_decode(str_replace('\\','',$array))[$position] != '')
-				return json_decode(str_replace('\\','',$array))[$position];
+		if($array_str)
+			if(!empty($array_str)){
+				$array_str = substr($array_str,2,strlen($array_str)-4);
+				$array = explode("\",\"",$array_str);
+				if($array[$position] != '')
+					return $array[$position];
+			}
 		return asset('storage/products/no-image.png');
 	}
 }
@@ -26,15 +30,20 @@ if (!function_exists('getLength')) {
 
 if (!function_exists('getCollection')){
 	function getCollection($array) {
-		$output = '<div style="width:10rem; height:5rem;overflow: hidden" uk-slider="center:true; finite :true; ">';
-		$output .= '<ul class="uk-grid uk-slider-items uk-child-width-1-1">';
+		$output='';
 		if($array){
 			$js = json_decode(str_replace('\\','',$array));
-			foreach ($js as $item){
-				$output .= '<li><img style="object-fit: cover;width:10rem; height:5rem;" src="'. $item . '"></li>';
+			if(is_array($array) || is_object($array)){
+				foreach ($js as $item){
+					$output .= '<li>';
+						$output .= '<a class="imgpreviewlightbox" href="'.$item.'">';
+							$output .= '<img style="object-fit: contain; height: 200px;" src="'. $item . '">';
+						$output .= '</a>';
+					$output .= '</li>';
+				}
 			}
 		}
-		$output .= '</ul></div>';
+		
 		return $output;
 	}
 } 

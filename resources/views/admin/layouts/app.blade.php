@@ -43,11 +43,12 @@
 		}
 		
 	</style>
-	@yield('css')
-
 	<script src="{{ asset('js/uikit.js') }}"></script>
 	<script src="{{ asset('js/uikit-icons.js') }}"></script>
 	<script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
+	@yield('css')
+
+	@yield('js-head')
 
 </head>
 <body>
@@ -75,6 +76,6 @@
 	<x-admin.notification></x-admin.notification>
 
 </body>
-@yield('js')
+	@yield('js')
 </html>
 

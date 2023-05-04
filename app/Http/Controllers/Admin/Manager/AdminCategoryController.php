@@ -29,7 +29,7 @@ class AdminCategoryController extends Controller
 		return $c;
 	}
 
-	public function getAllLeafs(){
+	public static function getLeafs(){
 
 		// SELECT leaf.node_id
 		// FROM tree AS leaf
@@ -37,10 +37,10 @@ class AdminCategoryController extends Controller
 		// WHERE child.node_id IS NULL
 
 		return DB::table('categories as leaf')
-							->select('leaf.*')
-							->leftJoin('categories as child','child.parent_id', '=', 'leaf.id')
-							->whereNull('child.id')
-							->get();
+			->select('leaf.*')
+			->leftJoin('categories as child','child.parent_id', '=', 'leaf.id')
+			->whereNull('child.id')
+			->get();
 	}
 
 	public function getAllParents(){

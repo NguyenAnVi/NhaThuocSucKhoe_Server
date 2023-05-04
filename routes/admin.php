@@ -69,16 +69,17 @@ Route::middleware('auth:admin')->group(function () {
 
         
         Route::resource('product', AdminProductController::class)
-        ->except(['show'])
+        ->except(['show','create', 'edit'])
         ->names([
             'index' => 'admin.product',
-            'create' => 'admin.product.create',
             'store' => 'admin.product.store',
-            'edit' => 'admin.product.edit',
             'update' => 'admin.product.update',
             'destroy' => 'admin.product.destroy'
         ]);
         Route::get('product/search', [AdminProductController::class, 'search'])->name('admin.product.search');
+        Route::get('product/options/{id}', [AdminProductController::class, 'getOptions'])->name('admin.product.getoptions');
+        Route::post('product/updatestock', [AdminProductController::class, 'updateStock'])->name('admin.product.updatestock');
+        Route::get('product/detail/{id}', [AdminProductController::class, 'getDetail']);
         
         
         

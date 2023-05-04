@@ -106,7 +106,7 @@ class AuthController extends Controller
             'general_message' => 'Tạo tài khoản thành công.',
             'general_message_type' => 'success',
         ]);
-        return view('user.auth.login', $data);
+        return redirect('login');
     }
 
     public function logout(Request $request){

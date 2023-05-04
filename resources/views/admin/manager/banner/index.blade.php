@@ -242,7 +242,7 @@
 					<div class="uk-margin-small">
 						<label class="uk-form-label" for="form-horizontal-text">@lang('admin.banner.button.status'):</label>
 						<div class="uk-form-controls">
-							<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch>
+							<x-buttons.switch id="status" name="status" type="secondary" switchtype=""></x-buttons.switch>
 						</div>
 					</div>
 					<div class="uk-width-1-1 uk-margin-large-top uk-flex uk-flex-right">

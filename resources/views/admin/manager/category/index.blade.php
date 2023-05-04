@@ -190,7 +190,7 @@
 											<div class="uk-margin-small">
 												<label class="uk-form-label" for="status">@lang('admin.category.button.status'):</label>
 												<div class="uk-form-controls">
-													<x-buttons.switch id="status" type="secondary" switchtype=""></x-buttons.switch>
+													<x-buttons.switch id="status" name="status" type="secondary" switchtype=""></x-buttons.switch>
 												</div>
 											</div>
 											

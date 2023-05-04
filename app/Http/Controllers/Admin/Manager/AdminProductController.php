@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,9 +16,15 @@ class AdminProductController extends Controller
 	
 	public function index($olddata=NULL)
 	{
+		$product = DB::table('products')
+			->join('categories', 'products.category_id', '=', 'categories.id')
+			->select('products.*', 'categories.name as category_name')
+			->paginate(8);
+
 		$newdata = ([
-			'collection' =>  Product::paginate(5),
-			'title' =>'Danh sách sản phẩm',
+			'shipping_methods' => DB::table('shipping')->get(),
+			'collection' =>  $product,
+			'categories' => AdminCategoryController::getLeafs()
 		]);
 		if($olddata!=NULL) 
 			$data = array_merge($olddata,$newdata);
@@ -26,73 +33,83 @@ class AdminProductController extends Controller
 		return view('admin.manager.product.index', $data);
 	}
 
-	public function create()
-	{
-		return view('admin.layouts.create', [
-			'title' => 'Thêm sản phẩm',
-			'formView' => 'admin.manager.product.productAddForm',
-		]);
-	}
-
 	public function store(Request $request)
 	{
 		$this->validate($request, [
-			'name' => 'required',
-			'price' => 'required',
-			'category' => 'required',
-			'saleoff' => 'required',
-			'detail' => 'max:5000',
+			'name' => 'required|string:255',
+			'categoryid' => 'required|integer|min:1',
+			'detail' => 'max:2000000000',
+			'weight' => 'required',
+		],[
+			'categoryid.min' => trans('admin.product.message.categorymustbeavavlidvalue'),
 		]);
+
 		
 		$product= new Product();
 		$product->timestamps = false;
 
+		
+
+
+		$product->status = ($request->has('status'))?('ACTIVE'):('INACTIVE');
 		$product->name = $request->name;
-		$product->price = $request->price;
-		$product->saleoff_id = $request->saleoff;
-		$product->category_id = $request->category;
+		$product->category_id = $request->categoryid;
+		$product->weight = $request->weight;
 		$product->stock = $request->stock;
+		$product->price = $request->price;
+		$product->saleoff_price = $request->saleoffprice;
 		$product->detail = ($request->detail!=NULL)?$request->detail:"";
-		$product->saleoff_id = ($request->saleoff<0)?0:$request->saleoff;
-		$product->images = "";
+		
+		$images = json_decode($request->images);
+		$product->images = json_encode($images);
 		
 		$product->save();
 
-		if($request->has('images')){
-			$count = 1;
-			$files = [];
-			foreach($request->file('images') as $file)
-			{
-				$name = $count.preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $product->name)) . '-' . time() . '.' . $file->extension();
-				$file->storeAs('public/products/'.$product->id.'/', $name);
-				$name = asset('storage/products/'.$product->id).'/'.$name;
-				$files[] = $name;
-				$count++;
-				
+		// Classify Product here
+		if($request->has('options')) {
+			try {
+				$options = [];
+				$options_arr = json_decode($request->options);
+				foreach($options_arr as $option){
+					$options_name = $option->name;
+					foreach($option->values as $item){
+						array_push($options , [
+							'product_id' => $product->id,
+							'name' => $options_name,
+							'value' => $item->name,
+							'price' => $item->price,
+							'stock' => $item->stock
+						]);
+					}
+				}
+				DB::table('productclassifications')->insert($options);
+				$product->classified = true;
+				$product->stock = NULL;
+				$product->price = NULL;
+				$product->save();
+			} catch (\Error $e) {
+				return back()->withInput()->withErrors(['warning'=>trans('admin.product.message.errorwhileaddingcassification').$e->getMessage()]);
 			}
 			
-			$product->images = $files;
-			// return view('tested', ['msg'=>$count.'.'.$product->name.'.'.$f ]);
-		}else {
-			// make imageurl null if there's no banner
-			$product->images = "";
 		}
 		
-		$product->save();
-		return back()->withErrors(['success'=> 'Sản phẩm đã được thêm']);
-	}
-
-	public function edit($id)
-	{
-		$product = Product::find($id);
-		if($product){
-			return view('admin.layouts.edit',[
-				'saleoffs' => SaleOff::all(),
-				'product' => $product,
-				'title' => 'Thay đổi thông tin sản phẩm',
-				'formView' => 'admin.manager.product.productEditForm',
-			]);
-		}else return back()->withErrors(['warning'=>'Khong tim thay ID']);
+		// Shipping method here
+		if($request->has('shippingmethods')){
+			foreach($request->shippingmethods as $shippingmethod){
+				try {
+					$shippingmethod_id = DB::table('shipping')->where('code','=',$shippingmethod)->first()->id;
+					DB::table('productshippingmethods')->updateOrInsert([
+						'product_id' => $product->id,
+						'shipping_id' => $shippingmethod_id
+					]);
+				} catch (\Exception $e) {
+					return back()->withInput()->withErrors(['warning'=>trans('admin.product.message.errorwhileaddingshippingmethod').$e->getMessage()]);
+				}
+			};
+		}
+		
+		
+		return redirect()->back()->withErrors(['success'=> trans('admin.product.message.productadded')]);
 	}
 
 	public function update(Request $request,$p)
@@ -168,7 +185,6 @@ class AdminProductController extends Controller
 				} catch (\Exception $e) {
 					echo '';
 				};
-				
 			}
 
 			// 2. add new images
@@ -224,12 +240,6 @@ class AdminProductController extends Controller
 		return redirect()->route('admin.product')->withErrors(['success' => 'Đã xóa 1 SP']);
 	}
 
-	// public function loadMore(Request $request){
-	// 	if($request->ajax()){
-
-	// 		return Response();
-	// 	}
-	// }
 
 	public function search(Request $request)
 	{
@@ -238,37 +248,50 @@ class AdminProductController extends Controller
 		}
 	}
 
-	public function removeSaleoff($saleoff_id){
-		$check = 0;
-		$products = Product::where('saleoff_id', $saleoff_id)->get();
-		foreach ($products as $item){
-			$item->timestamps = false;
-			$item->saleoff_id = 1;
-			$item->save();
-			$check++;
-		}
-		return $check;
-	}
-
 	/**
 	 * cập nhật lại số lượng sản phẩm khi có thay đổi về đơn hàng
 	 * @param int $id mã sản phẩm
 	 * @param int $quantity số lượng sản phẩm cần thay đổi
-	 * @param int $multiplier cần trừ hay là thêm lại sản phẩm 
+	 * @param int $adding cần trừ hay là thêm lại sản phẩm 
 	 * (nếu muốn tăng số lượng thì để 1, giảm số lượng thì để 0)
 	 * @return void
 	 */
-	public function restock(int $id, int $quantity, int $multiplier){
-		$multiplier = ($multiplier>0?1:($multiplier<0?-1:0));
-		if($multiplier==0) return;
+	public function updateStock(int $id, int $quantity, int $adding){
+		$adding = ($adding>0?1:($adding<0?-1:0));
+		if($adding==0) return;
 		else {
 			$product = Product::where('id', $id)->first();
 			$product->timestamps = false;
 			error_log('truoc khi thay doi so luong: '.$product->stock);
-			$product->stock += ($multiplier * $quantity) ;
+			$product->stock += ($adding * $quantity) ;
 			error_log('sau khi thay doi so luong : '.$product->stock);
 			$product->save();
 			return;
 		}
+	}
+
+	public function getDetail (Request $request, $id){
+		if($request->ajax() !== NULL) {
+			$out = Product::find($id);
+			if($out){
+				return Response(json_encode(['status'=>1,'content' => $out->detail]));
+			} else {
+				return Response(json_encode(['status'=>0,'content' => trans('admin.product.message.errorgetproductdetail')]));
+			}
+		}
+	}
+
+	public function getOptions(Request $request, $product_id){
+		if($request->ajax() !== NULL) {
+			try {
+				$options = DB::table('productclassifications')
+				->where('product_id','=',$product_id)
+				->get();
+			} catch (Exception $e) {
+				return Response(json_encode(['status'=>0,'content' => $e->getMessage()]));
+			}
+		}
+
+		return Response(json_encode(['status'=>1,'content' => $options]));
 	}
 }

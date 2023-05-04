@@ -25,6 +25,23 @@ class Testing extends Seeder
             ],
         ]);
 
+        DB::table('shipping')->insert([
+            [
+                'name' => 'Giao hàng nhanh',
+                'code' => 'GHN',
+                'min_weight' => '0',
+                'max_weight' => '20000',
+                'fee' => '56'
+            ],
+            [
+                'name' => 'Giao hàng tiết kiệm',
+                'code' => 'GHTK',
+                'min_weight' => '0',
+                'max_weight' => '50000',
+                'fee' => '60'
+            ],
+        ]);
+
         DB::unprepared(
             "INSERT INTO nhathuocsuckhoe.categories
                 (id,name,parent_id,detail,imageurl,status)
