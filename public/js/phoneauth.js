@@ -41,15 +41,14 @@
         // user in with confirmationResult.confirm(code).
         window.confirmationResult = confirmationResult;
         // ...
-        console.log(window.confirmationResult);
-        UIkit.notification('Message sent', {pos: 'top-center', timeout : 3});
+        UIkit.notification('Message sent', {pos: 'top-center'});
         const time = new Date(Date.now()+60000);
         document.getElementById('countdown-button').setAttribute('uk-countdown', 'date:'+time.toISOString());
         showP2();
       }).catch((error) => {
         // Error; SMS not sent
         // ...
-        UIkit.notification('Error: '+error.message, {pos: 'top-center', timeout : 3});
+        UIkit.notification('Error: '+error.message, {pos: 'top-center'});
       });
 
   }
@@ -59,9 +58,9 @@
     window.confirmationResult.confirm(code).then(function (result) {
       var user = result.user;
       console.log(user);
-      UIkit.notification('Auth is successful', {pos: 'top-center', timeout : 3});
+      UIkit.notification('Auth is successful', {pos: 'top-center'});
       showP3();
     }).catch(function (error) {
-      UIkit.notification('Error: '+error.message, {pos: 'top-center', timeout : 3});
+      UIkit.notification('Error: '+error.message, {pos: 'top-center'});
     });
   }

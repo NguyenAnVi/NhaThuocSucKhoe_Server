@@ -52,8 +52,8 @@
 										</div>
 									</div>
 									<div class="uk-width-1-4">
-										<div class="uk-width-expand">
-											{{ $item->qty }}
+										<div class="uk-width-expand uk-text-center">
+											{{ $item->quantity }}
 										</div>
 									</div>
 							</div>

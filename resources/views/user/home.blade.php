@@ -103,13 +103,15 @@
        <div uk-filter="target: .js-filter">
         <ul class="uk-subnav uk-subnav-pill">
           <li uk-filter-control><a href="#">@lang('general.filter.all')</a></li>
-            {{-- @foreach($productable_categories as $item)
+            @foreach($saleoffable_categories as $item)
               <li uk-filter-control=".category-{{$item->id}}"><a href="#">{{$item->name}}</a></li>
-            @endforeach --}}
+            @endforeach
         </ul>
     
         <div class="uk-flex uk-flex-wrap js-filter uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-6@l uk-text-center">
           {{-- @each ('user.partials.product_card',$saleoff_products,'item', 'user.partials.feature_updating') --}}
+          @each ('user.partials.product_card',$saleoffable_products,'item', 'user.partials.feature_updating')
+
         </div>
     
       </div>
@@ -124,7 +126,14 @@
 <script src="{{asset('js/jquery-3.6.1.min.js')}}"></script>
 <script>
   $(document).ready(function(){
-   
+   $('.category-showing-product-on-click').click(function(){
+    $('#search').val($(this).data('cname'));
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    $('#search').trigger('input');
+   });
   });
 </script>
 @endsection

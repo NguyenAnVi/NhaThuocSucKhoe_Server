@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\Resources\ProductClassifyController;
 use App\Models\Product;
 use Cart;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,8 @@ class CartController extends Controller
         $user_id = $request->user_id;
         $product_id = $request->product_id;
         $quantity = $request->quantity;
+        $classified = $request->classified;
+        
         
         $product = Product::find($product_id);
 
@@ -51,16 +54,25 @@ class CartController extends Controller
         
         $product_name = $product->name;
         $product_image = $product->images;
-        $product_price = $product->price;
+        $product_price = ($product->saleoff_price == 0)?($product->price):($product->saleoff_price);
+        $product_discount = $product->saleoff_price;
+        $product_option = NULL;
+
+        if($classified){
+            $c_value = $request->optionvalue;
+            $product_option = ProductClassifyController::findWithProductAndValue($product_id, $c_value);
+        }
 
         $data = [
             'id' => $product_id,
             'qty' => $quantity,
             'name' => $product_name,
             'price' => $product_price,
+            'discount' => $product_discount,
             'weight' => '1',
             'options' => [
                 'image' => $product_image,
+                'option' => ($product_option)?($product_option->name):(""),
             ],
         ];
         try {

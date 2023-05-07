@@ -14,30 +14,16 @@ class HomeController extends Controller
 		if (isset($locale) && in_array($locale, config('app.available_locales'))) {
 				app()->setLocale($locale);
 		}
-
 		
-		
-		// Lay cac san pham co CTKM
-		// $saleoff_pro = Product::where('saleoff_id', '!=', '1')->get();
-
-		// Lay cac danh muc lien quan cac san pham tren ^
-		// $pro_cat_list = [];
-		// foreach($saleoff_pro as $item){
-		// 	if(!in_array($item->category_id, $pro_cat_list)){
-		// 		$pro_cat_list = array_merge($pro_cat_list, [$item->category_id]);
-		// 	}
-				
-		// }
-		// $pro_cat = [];
-		// foreach ($pro_cat_list as $item) {
-		// 	$pro_cat = array_merge($pro_cat, [CategoryController::getCategory($item)]);
-		// }
+		error_log("00000000000000000000".gettype(CategoryController::getSaleoffableCategories()));
 
 		$data = ([
 			'banners' => BannerController::getActiveBanners(),
 			// 'saleoffs' => SaleoffController::getSaleoffs(),
-			'categories' => CategoryController::getCategories(),
+			'categories' => CategoryController::getLeafs(),
 			'products' => ProductController::getProducts(25),
+			'saleoffable_categories' => CategoryController::getSaleoffableCategories(),
+			'saleoffable_products' => ProductController::getSaleoffableProducts(),
 			
 			// 'saleoff_products' => $saleoff_pro,
 			// 'productable_categories' => $pro_cat,
@@ -57,12 +43,19 @@ class HomeController extends Controller
 		switch($what){
 			case 'product':
 				$product = ProductController::getProduct($id);
-				$data = ([
-					'item' => $product,
-					'view' => 'user.show.product',
-					'sameCat' => ProductController::getSameCategory($product->category_id)
-				]);
-				return view('user.show', $data);
+				if($product){
+					$category_name = CategoryController::getCategory($product->category_id)->name;
+					$data = ([
+						'item' => $product,
+						'category_name' => $category_name,
+						'view' => 'user.show.product',
+						'sameCat' => ProductController::getSameCategory($product->category_id)
+					]);
+					return view('user.show', $data);
+				} else {
+					return back()->withErrors(['danger' => trans('general.msg.invalidproductid')]);
+				}
+
 				break;
 			case 'category':
 				//
@@ -109,7 +102,12 @@ class HomeController extends Controller
 			try {
 				$key = $request->search;
 				if(strlen($key)>0){
-					$categories = CategoryController::getWithName($key);
+					// search for categories
+					$cat_list = CategoryController::getAllIdWithName($key);
+
+					// search for product which have category
+					$categories = ProductController::getWithCategory($cat_list);
+
 					$products = ProductController::getWithName($key);
 					$result = [
 						'categories' => $categories,

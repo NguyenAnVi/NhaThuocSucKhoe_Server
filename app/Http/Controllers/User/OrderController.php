@@ -14,21 +14,22 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
   public function index(){
-    $user = User::where('id', \Auth::id())->first();
+
+    $user = User::find(\Auth::id());
     if($user){
       $pending = Order::where('user_id', $user->id)->Where('status', 'PENDING')->get();
       $processing = Order::where('user_id', $user->id)->where('status', 'PROCESSING')->get();
       $delivering = Order::where('user_id', $user->id)->where('status', 'DELIVERING')->get();
       $delivered = Order::where('user_id', $user->id)->where('status', 'DELIVERED')->get();
-      $cancelled = Order::where('user_id', $user->id)
-                        ->where('status', 'CANCELLED_BY_USER')
-                        ->orWhere('status', 'CANCELLED_BY_SHOP')->get();
+      $cancelled_by_user = Order::where('user_id', $user->id)->where('status', 'CANCELLED_BY_USER')->get();
+      $cancelled_by_shop = Order::where('user_id', $user->id)->Where('status', 'CANCELLED_BY_SHOP')->get();
       return view('user.order.view', [
         'pending' => $pending,
         'processing' => $processing,
         'delivering' => $delivering,
         'delivered' => $delivered,
-        'cancelled' => $cancelled,
+        'cancelled_by_user' => $cancelled_by_user,
+        'cancelled_by_shop' => $cancelled_by_shop,
       ]);
     } else {
       return back()->withErrors([

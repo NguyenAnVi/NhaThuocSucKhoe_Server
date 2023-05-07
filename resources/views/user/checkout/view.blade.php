@@ -90,14 +90,14 @@
 								<hr>
 
 								<div class="uk-text-bold">Chọn đơn vị vận chuyển:</div>
-								<select onchange="checkShippingFee()" name="shipping_method" id="shipping-method" class="uk-select">
-									<option value="none">Chọn...</option>
+								<select onchange="checkShippingFee()" name="shipping_method" id="shipping-method" class="uk-select" required>
+									<option value="">Chọn...</option>
 									<option value="GHN">Giao hàng nhanh</option>
 									<option value="GHTK">Giao hàng tiết kiệm</option>
 								</select>
 
 								<div class="uk-text-bold">Chọn phương thức thanh toán:</div>
-								<select onchange="if(document.getElementById('payment-method').value=='CREDIT') {alert('Tính năng sớm ra mắt.'); document.getElementById('payment-method').value=''}" name="payment_method" id="payment-method" class="uk-select">
+								<select required onchange="if(document.getElementById('payment-method').value=='CREDIT') {alert('Tính năng sớm ra mắt.'); document.getElementById('payment-method').value=''}" name="payment_method" id="payment-method" class="uk-select">
 									<option value="">Chọn...</option>
 									<option value="COD">{{__('Thanh toán khi nhận hàng')}}</option>
 									<option value="CREDIT">{{__('Thanh toán bằng thẻ')}}</option>
@@ -116,7 +116,8 @@
 								</div>
 								<div class="uk-flex uk-flex-between">
 									<div>Giảm giá: </div>
-									<div><strong id="saleoff-info">0 đ</strong></div>
+									<div><strong id="saleoff-info"><span id="total-discount" data-uid="{{ Auth::user()->id }}"></span></strong></div>
+									<input type="hidden" name="totaldiscount">
 								</div>
 								<div class="uk-flex uk-flex-between">
 									<div><h4>Tổng thanh toán: </h4> </div>
@@ -147,9 +148,30 @@
 		});
 
 		function initialize() {
+			checkTotalDiscount();
 			checkSubTotal();
 			checkShippingFee();
 		}
+
+		function checkTotalDiscount(){
+			let uid = $('#total-discount').data('uid');
+
+			$.ajax({
+				headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+				type: 'get',
+				url: '{{route("getTotalDiscount")}}',
+				data: {
+					'user_id' : uid,
+				},
+				success:function(obj){ 
+					saleoff = parseInt(obj);
+					$('#total-discount').html(toCurrency(obj));
+					$('[name="totaldiscount"]').val((obj));
+					calculateTotal();
+				}
+			});
+		}
+
 		function checkSubTotal() { 
 			let uid = $('#subtotal-info').data('uid');
 

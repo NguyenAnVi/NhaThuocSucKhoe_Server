@@ -23,9 +23,9 @@
 							"y":"1%",
 							"background-color":"none",
 							"title":{
-									"text":"Today's Activity",
+									"text":"@lang('admin.dashboard.analytics')",
 									"text-align":"left",
-									"font-size":"14px",
+									"font-size":"20px",
 									"font-color":"#666666",
 									"background-color":"none"
 							}
@@ -36,7 +36,7 @@
 							"y":"1%",
 							"background-color":"none",
 							"title":{
-									"text":"Last Sync: Yesterday",
+									"text":"@lang('admin.dashboard.lastsync') : @lang('admin.dashboard.time.yesterday')",
 									"text-align":"right",
 									"font-size":"11px",
 									"font-color":"#666666",
@@ -52,7 +52,7 @@
 							"background-color":"#ffffff",
 							"border-radius":4,
 							"title":{
-									"text":"Steps",
+									"text":"@lang('admin.dashboard.orders')",
 									"text-align":"left",
 									"background-color":"none",
 									"font-color":"#000000",
@@ -139,7 +139,7 @@
 							"background-color":"#ffffff",
 							"border-radius":4,
 							"title":{
-									"text":"<strong>Distance</strong> / Miles",
+									"text":"<strong>@lang('admin.dashboard.orders')</strong>",
 									"text-align":"left",
 									"background-color":"none",
 									"font-color":"#000000",
@@ -226,7 +226,7 @@
 							"background-color":"#ffffff",
 							"border-radius":4,
 							"title":{
-									"text":"Calories",
+									"text":"@lang('admin.dashboard.revenue')",
 									"text-align":"left",
 									"background-color":"none",
 									"font-color":"#000000",
@@ -313,7 +313,7 @@
 							"background-color":"#ffffff",
 							"border-radius":4,
 							"title":{
-									"text":"Step Tracker",
+									"text":"@lang('admin.dashboard.tracker')",
 									"text-align":"left",
 									"font-size":"13px",
 									"font-color":"#000000",
@@ -422,8 +422,8 @@
 			zingchart.render({ 
 				id : 'myChart', 
 				data : myConfig, 
-				height: 700, 
-				width: 1700 
+				height: 400, 
+				width: 1200 
 			});
 		</script>
 </html>

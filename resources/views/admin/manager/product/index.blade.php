@@ -12,6 +12,7 @@
 		'id':'',
 		'contentid':'',
 		'contentname':'',
+		'categoryid':'',
 		'name':'',
 		'detail':'',
 		'images':'',
@@ -63,7 +64,7 @@
 									</div>
 
 									<div class="uk-width-1-2">
-										<button onclick="current.cur_valueid = (isNaN($(this).parent().prev().data('valueid')))?(0):($(this).parent().prev().data('valueid')+1); current.cur_groupid = $(this).parent().parent().parent().parent().data('groupid'); $(this).parent().before(newOptVal)" class="uk-width-expand uk-button uk-button-default vi-button-dash" type="button">@lang('admin.product.button.addoptionvalue')</button>
+										<button id="addNewOptValBtn" onclick="current.cur_valueid = (isNaN($(this).parent().prev().data('valueid')))?(0):($(this).parent().prev().data('valueid')+1); current.cur_groupid = $(this).parent().parent().parent().parent().data('groupid'); $(this).parent().before(newOptVal)" class="uk-width-expand uk-button uk-button-default vi-button-dash" type="button">@lang('admin.product.button.addoptionvalue')</button>
 									</div>
 								</div>
 
@@ -99,6 +100,7 @@
 		$('#saleoffprice').val("");
 		$('[data-groupid]').remove();
 		$('#myImg').html("");
+		$('[for="input-images"]').html("");
 		$('#urlimage-list').html("");
 	}
 
@@ -121,9 +123,19 @@
 	}
 
 	function showOption(data){
-		hideOption()
-		$('#addNewOptGrpBtn').trigger('click')
-		alert('here:'+data)
+		if(data.length>0){
+			hideOption()
+			$('#addNewOptGrpBtn').trigger('click')
+			$('#opt-grp-0').val(data[0].name)
+			for (let i = 0; i < data.length-1; i++) {
+				$('#addNewOptValBtn').trigger('click')
+			}
+			data.map((item , index) => {
+				$(`[name="opt-grp-0-name-${index}"]`).val(item.value)
+				$(`[name="opt-grp-0-price-${index}"]`).val(item.price)
+				$(`[name="opt-grp-0-stock-${index}"]`).val(item.stock)
+			})
+		}
 	}
 
 	function makeCreateForm(){
@@ -154,12 +166,39 @@
 				current.saleoffprice = $(this).data('saleoffprice')
 				current.weight = $(this).data('weight')
 				current.classified = $(this).data('classified')
-				current.images_collection = $('.img-collection[data-id='+current.id+']').html()
-				current.images = [];
-				$('.img-collection[data-id='+current.id+']').children('li').map((key , liElement)=>{
-					current.images.push($(liElement).children()[0].getAttribute('href'));
-				})
+
+
+				// current.images_collection = $('.img-collection[data-id='+current.id+']').html()
+				// $('.img-collection[data-id='+current.id+']').children('li').map((key , liElement)=>{
+				// 	current.images.push($(liElement).children()[0].getAttribute('href'));
+				// })
 				
+				// get product images and parse them to edit form
+				$.ajax({
+					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+					type: 'get',
+					url: '{{ URL::to('/admin/product/images') }}/'+current.id,
+					success:function(obj){
+						let r = JSON.parse(obj)
+						if(r.status == 1){
+							current.images = r.content.substring(2,r.content.length-2).split("\",\"");
+							imageURLs = current.images;
+							let itera = 0;
+							current.images.map((link)=>{
+								$('[for="input-images"]').append(`<li data-imgid="${itera}" class="uk-active"><img src="http://127.0.0.1:8000/storage/images/no-image.png"  style="object-fit: contain; height: 200px;" alt=""></li>`);
+								$('#myImg').append(`<li data-imgid="${itera}" class="uk-active"><img src="http://127.0.0.1:8000/storage/images/no-image.png" style="width:100px; height:100px; object-fit:cover" alt=""></li>`);
+								$('#urlimage-list').append(`<div data-imgid="${itera}" class="uk-width-1-1 uk-match uk-flex"><button role="deleteimg" class="uk-button uk-button-default" type="button">xóa</button><input oninput="updateImagePreview(${itera})" class="uk-input" name="imageurl" id="uploaded-image-url-${itera}" type="text" placeholder="Đường dẫn của ảnh" value="${link}"><button type="button" class="uk-button uk-button-default" onclick="openUploadImageModal(${itera})">upload</button></div>`);
+								$('#uploaded-image-url-'+itera++).trigger('input')
+								createDeleteButtonEvent();
+							});
+						} else {
+							current.images = null;
+							UIkit.notification(r.content);
+						}
+					}
+				});
+				
+				// get product detail
 				$.ajax({
 					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 					type: 'get',
@@ -175,6 +214,7 @@
 				});
 				current.detail = $('[name=detail]').html();
 
+				// get product option
 				$.ajax({
 					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 					type: 'get',
@@ -182,20 +222,14 @@
 					success:function(obj){
 						let r = JSON.parse(obj)
 						if(r.status == 1){
-							// create Options with Params
-							current.options = r.content
+							current.options = r.content;
 							showOption(current.options);
+						} else {
+							current.options = null;
+							UIkit.notification(r.content);
 						}
-						else UIkit.notification(r.content);
 					}
 				});
-				
-				// set form action route
-				current.formstatus = "EDIT";
-				$('[name="formstatus"]').val('EDIT');
-				$('#operate-form-opt').html('@method('put')')
-				document.getElementById('operate-form').setAttribute('action', '{{ URL::to("/admin/product") }}/'+current.id);
-				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/product") }}/'+current.id);
 
 				// detail side-bar
 				$('.input-id').text(current.id)
@@ -205,9 +239,18 @@
 				$('.input-saleoffprice').text(current.saleoffprice)
 				$('.input-stock').text(current.stock)
 				$('.input-sold').text(current.sold)
-				$('[for=input-images]').html(current.images_collection)
 
-				// Fill Edit-form
+				// set #operate-form action and method
+				current.formstatus = "EDIT";
+				$('[name="formstatus"]').val('EDIT');
+				$('#operate-form-opt').html('@method('put')')
+				document.getElementById('operate-form').setAttribute('action', '{{ URL::to("/admin/product") }}/'+current.id);
+
+				
+				$('[for=input-images]').html(current.images_collection)
+				
+				
+				// Fill #operate-form
 				if(current.status === 1) 
 					document.getElementById('status').setAttribute('checked', 'checked');
 				else 
@@ -216,31 +259,14 @@
 				$('#name').val(current.name);
 				$('option[value="'+current.categoryid+'"]').attr('selected', 'selected');
 				$('#weight').val(current.weight);
+				$('#weight').trigger('change');
 				$('#stock').val(current.stock);
 				$('#price').val(current.price);
 				$('#saleoffprice').val(current.saleoffprice);
 				$('.fr-view').html(current.detail);
+				
+				
 
-				itera = 0;
-				current.images.map((link)=>{
-					$('#myImg').append(`<li data-imgid="${itera}" class="uk-active"><img src="http://127.0.0.1:8000/storage/images/no-image.png" style="width:100px; height:100px; object-fit:cover" alt=""></li>`);
-					$('#urlimage-list').append(`<div data-imgid="${itera}" class="uk-width-1-1 uk-match uk-flex"><button role="deleteimg" class="uk-button uk-button-default" type="button">xóa</button><input oninput="updateImagePreview(${itera})" class="uk-input" name="imageurl" id="uploaded-image-url-${itera}" type="text" placeholder="Đường dẫn của ảnh" value="${link}"><button type="button" class="uk-button uk-button-default" onclick="openUploadImageModal(${itera})">upload</button></div>`);
-					$('#uploaded-image-url-'+itera++).trigger('input')
-					createDeleteButtonEvent();
-				});
-
-				$.ajax({
-					headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-					type: 'get',
-					url: '{{ URL::to('/admin/product/options') }}/'+current.id,
-					success:function(obj){
-						let r = JSON.parse(obj)
-						if(r.status == 1){
-							current.options = r.content;
-						}
-						else UIkit.notification('@lang('admin.product.message.errorgetoptions'): '+r.content);
-					}
-				});
 				
 				// establishValidity();
 				$('#preview').css('width', '25%');
@@ -317,7 +343,6 @@
 	$('#saleoffprice').on('input', function () {
 		if ($('#saleoffprice').val().length > 0) {
 			$('#price').css('text-decoration-line', 'line-through')
-			console.log(typeof ($('#saleoffprice').val().length));
 		} else {
 			$('#price').css('text-decoration-line', 'none')
 		}
@@ -356,7 +381,6 @@
 			$(li).hide()
 
 			imageURLs = delEle(imgid, imageURLs)
-			console.log(imageURLs);
 		})
 	}
 
@@ -386,13 +410,7 @@
 	}
 	
 	function delEle(id, arr) {
-
-		console.log("delEle");
-		console.log("    before:"+arr)
-		console.log("    type:"+typeof(arr))
-
 		arr.splice(id, 1);
-		console.log("    after:"+arr)
 		return arr;
 	}
 
@@ -437,7 +455,7 @@
 							</div>
 						</div>
 						@foreach ($collection as $row)
-						<div class="row getdetailable" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-categoryid="{{ $row->category_id }}" data-categoryname="{{ $row->category_name }}" data-price="{{ $row->price }}" data-saleoffprice="{{ $row->saleoff_price }}" data-stock="{{ $row->stock }}" data-sold="{{ $row->sold }}" data-classified="{{ $row->classified }}" data-status="{{ $row->status }}">
+						<div class="row getdetailable" data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-categoryid="{{ $row->category_id }}" data-categoryname="{{ $row->category_name }}" data-price="{{ $row->price }}" data-saleoffprice="{{ $row->saleoff_price }}" data-stock="{{ $row->stock }}" data-sold="{{ $row->sold }}" data-classified="{{ $row->classified }}" data-status="{{ $row->status }}" data-weight="{{ $row->weight }}">
 							<div class="cell">
 								{{ $row->id }}
 							</div>
@@ -618,7 +636,6 @@
 									<div class="uk-form-controls">
 										<div>
 										<button class="uk-button uk-width-expand uk-button-default vi-button-dash" type="button" id="addNewOptGrpBtn">@lang('admin.product.button.addnewoptiongroup')</button>
-										
 											<input type="hidden" value="@error('any') {{ old('options') }} @enderror" name="options" id="options">
 										</div>
 									</div>
@@ -854,7 +871,6 @@
 						processData: false,
 						contentType: false,
 						success:function(obj){
-							console.log("Successfully upload image to server:"+obj.status);
 							$('#uploaded-image-url-'+current.image_cur_index).val(obj.url);
 							$('#uploaded-image-url-'+current.image_cur_index).trigger('oninput');
 		

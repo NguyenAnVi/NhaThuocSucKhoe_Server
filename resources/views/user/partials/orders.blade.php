@@ -35,7 +35,7 @@
   </script>
 @else
   <div class="uk-text-center uk-width-1-1 uk-padding-large" >
-    Không có đơn hàng nào
+    @lang('general.msg.noorder')
   </div>
 @endif
   

@@ -49,6 +49,7 @@ class CheckoutController extends Controller
     $odata['shipping_method'] = $shipping_method;
     $odata['shipping_fee'] = ShippingMethod::fromString($shipping_method);
     $odata['payment_method'] = $payment_method;
+    $odata['total_discount'] = $request->totaldiscount;
     $odata['subtotal'] = Cart::total(0,"","");
     $odata['total'] = intval($odata['subtotal']) + intval($odata['shipping_fee']);
     $odata['status'] = 'PENDING';
@@ -64,7 +65,8 @@ class CheckoutController extends Controller
       $oidata['product_id'] = $cartContent->id;
       $oidata['product_name'] = $cartContent->name;
       $oidata['price'] = $cartContent->price;
-      $oidata['qty'] = $cartContent->qty;
+      $oidata['quantity'] = $cartContent->qty;
+      $oidata['discount'] = 0;
       DB::table('orderitems')->insert($oidata);
     }
 
@@ -73,7 +75,7 @@ class CheckoutController extends Controller
 
 
     return redirect()->route('home')->withErrors([
-      'success' => 'Đặt hàng thành công'
+      'success' => trans('order.message.placeordersuccess')
     ]);
   }
 
@@ -112,6 +114,23 @@ class CheckoutController extends Controller
       if($user){
         Cart::restore($uid);
         $output = (string)Cart::total(0,"","");
+        Cart::store($uid);
+      } else {
+        $output = "An error occured when find user";
+      }
+      error_log($output);
+      return Response(($output));
+    }
+  }
+  public function getDiscount(Request $request){
+    
+    if($request->ajax()!==NULL){
+      $uid = strtoupper($request->user_id);
+      if($uid == NULL) return Response('Đang cập nhật...');
+      $user = User::find($uid);
+      if($user){
+        Cart::restore($uid);
+        $output = (string)Cart::discount(0,"","");
         Cart::store($uid);
       } else {
         $output = "An error occured when find user";

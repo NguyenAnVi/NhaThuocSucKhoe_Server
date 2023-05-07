@@ -42,13 +42,14 @@ class AdminOrderController extends Controller
 	{
 		if ($request->ajax()!== NULL) {
 			$orders = $this->getAll();
-			sleep(1);
+			// sleep(3);
 			return Response(json_encode($orders));
 		}
 	}
 
 	public function pending(Request $request){
 		if ($request->ajax()!== NULL) {
+			sleep(3);
 			$orders = $this->getAllWithStatus('PENDING');
 			return Response(json_encode($orders));
 		}
@@ -76,21 +77,22 @@ class AdminOrderController extends Controller
 		$pro = new AdminProductController();
 		$items = OrderItem::where('order_id', $order->id)->get();
 		$newStatus = $order->status;
+		$multiplier = 0;
 
-		if ($oldStatus == "PENDING" && ($newStatus == "PROCESSING" || 
-																		$newStatus == "DELIVERING" || 
-																		$newStatus == "DELIVERED"))
+		if ($oldStatus == "PENDING" && ($newStatus == "PROCESSING" || $newStatus == "DELIVERING" || $newStatus == "DELIVERED"))
 		{
 			$multiplier = -1;
 		} else if($newStatus == "CANCELED_BY_USER"){
 			$multiplier = 1;
 		} else {
+			$multiplier = 0;
 			error_log("nothing to change");
 			return;
 		}
 		
 		foreach ($items as $item){
-			$pro->restock($item->product_id, $item->qty, $multiplier);
+			error_log($item->product_id . ':' . $item->quantity . ':' . $multiplier);
+			$pro->updatestock($item->product_id, $item->quantity, $multiplier);
 		}
 		return;
 	}

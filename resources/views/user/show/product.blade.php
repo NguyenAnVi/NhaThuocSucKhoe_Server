@@ -43,12 +43,12 @@
         </ul>
         <h2 class=""><a class="uk-link-reset" href="">{{$item->name}}</a></h2>
         <div class="uk-width-1-1 uk-flex uk-flex-between">
-          <p class="uk-article-meta">Đã bán {{intval($item->sold)}}</p>
-          <a href="" class="uk-article-meta">Report <span uk-icon="warning"></span></a>
+          <p class="uk-article-meta">@lang('general.sold') : {{intval($item->sold)}}</p>
+          <a href="" class="uk-article-meta">@lang('general.report')<span uk-icon="warning"></span></a>
         </div>
-        <h2 id="price" class="uk-margin-remove uk-alert uk-padding-small uk-width-1-1 uk-text-bold">
-          {{toCurrency($item->price)}}<sup>đ</sup>
-        </h2>
+        <div class="uk-width-1-1 uk-margin-remove uk-alert uk-padding-small uk-width-1-1 uk-text-bold">
+          <span style="font-size: 2rem; color:red" id="price" data-saleoffprice="{{$item->saleoff_price}}" data-price="{{$item->price}}" ></span>
+        </div>
 
         {{-- buttons and select number add to cart --}}
         <form action="@if (Auth::check()){{ route('addCart') }}@endif" method="post" class="uk-form-horizontal uk-margin-small">
@@ -101,22 +101,21 @@
               });
             </script>
           </div>
-            @endif
+          @endif
           <div class="uk-margin">
             <div class="uk-width-1-1 uk-flex uk-flex-left uk-flex-middle" uk-grid>
               <div class="uk-width-1-4">
-                <label class="uk-padding-small uk-padding-remove-horizontal">Số lượng</label>
+                <label class="uk-padding-small uk-padding-remove-horizontal">@lang('general.quantity') :</label>
               </div>
               <div class="uk-width-3-4">
                 <input type="text" name="user_id" value="{{Auth::id()}}" hidden>
                 <input type="text" name="product_id" value="{{ $item->id }}" hidden>
                 <input type="number" value="1" min="1" max="{{intval($item->stock)}}" class="uk-input uk-width-small" name="quantity" id="amount">
-                (Kho: <span id="stock">{{intval($item->stock)}}</span>)
+                (@lang('general.stock'): <span id="stock">{{intval($item->stock)}}</span>)
               </div>
-              <div class="uk-div-1-4"><label class="uk-padding-small uk-padding-remove-horizontal">Vận chuyển</label></div>
+              <div class="uk-div-1-4"><label class="uk-padding-small uk-padding-remove-horizontal">@lang('general.shipping')</label></div>
               <div class="uk-div-3-4">
-                <img src="{{asset('storage/images/logo/freeship.png')}}" alt="" width="30" height="30"> Miễn phí giao hàng
-
+                <img src="{{asset('storage/images/logo/freeship.png')}}" alt="" width="30" height="30"> @lang('general.freeshipping')
               </div>
             </div>
           </div>
@@ -124,12 +123,12 @@
           <div class="">
             @if ($item->stock > 0)
               @if (Auth::check())
-              <button type="submit" class="uk-button-large uk-button uk-button-secondary" href="#">Thêm vào giỏ hàng <span uk-icon="cart"></span> </button>
+              <button type="submit" class="uk-button-large uk-button uk-button-secondary" href="#">@lang('general.addtocart')<span uk-icon="cart"></span> </button>
               @else
-                <button type="button" onclick="alert('Bạn phải đăng nhập')" class="uk-button-large uk-button uk-button-secondary" href="#">Thêm vào giỏ hàng <span uk-icon="cart"></span> </button>
+                <button type="button" onclick="alert('Bạn phải đăng nhập')" class="uk-button-large uk-button uk-button-secondary" href="#">@lang('general.addtocart')<span uk-icon="cart"></span> </button>
               @endif
             @else
-              <button type="button" class="uk-button-large uk-button uk-button-secondary uk-disabled" href="#">Tạm hết hàng</button>
+              <button type="button" class="uk-button-large uk-button uk-button-secondary uk-disabled" href="#">@lang('general.outofstock')</button>
             @endif
               
             </div>
@@ -152,11 +151,12 @@
     <div class="uk-width-1-1 uk-width-2-3@m uk-padding">
       {{-- detail content --}}
       <div>
-        <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right">CHI TIET SAN PHAM</h3>
-        <p>Danh muc: {{--insert breadcrumb --}}</p>
+        <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right uk-text-uppercase">@lang('general.productinformation')</h3>
+        <p>@lang('general.categories'): <span class="uk-text-bold">{{ $category_name }}</span></p>
+        <p>@lang('general.stock'): <span class="uk-text-bold">{{ $item->stock }}</span></p>
       </div>
       <div>
-        <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right">MO TA SAN PHAM</h3>
+        <h3 class="uk-alert uk-alert-primary uk-padding-small uk-border-rounded uk-padding-remove-right uk-text-uppercase">@lang('general.productdescription')</h3>
         {!!$item->detail!!}
       </div>
     </div>
@@ -164,28 +164,21 @@
     <div class="uk-width-1-1 uk-width-expand@m uk-padding">
       {{-- other products --}}
       <div class="uk-width-1-1">
-        <h3 class="uk-alert uk-padding-small uk-border-rounded uk-padding-remove-right">Sản phẩm cùng danh mục</h3>
+        <h3 class="uk-alert uk-padding-small uk-border-rounded uk-padding-remove-right">@lang('general.samecategory')</h3>
         {{-- show thís category --}}
         <div class="uk-flex uk-flex-wrap uk-child-width-1-1">
           @each ('user.partials.product_card_horizontal',$sameCat,'item', 'user.partials.feature_updating')
         </div>
       </div>
-      <div class="uk-width-1-1">
+      {{-- <div class="uk-width-1-1">
         <h3 class="uk-alert uk-padding-small uk-border-rounded uk-padding-remove-right">Sản phẩm tương tự</h3>
-        {{-- show thís search --}}
-      </div>
+      </div> --}}
     </div>
   </div>
 </div>
 @section('js')
 <script>
-let dong = Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-});
-function currency(num){
-  return dong.format(parseInt(num));
-}
+
 function minPrice(arr){
   arr1 = arr.map(function(element){
     return element.price;
@@ -198,7 +191,16 @@ function maxPrice(arr){
   })
   return Math.max.apply(null,arr1);
 }
+
+
+
+
 $(document).ready(function(){
+  if($('#price').data('saleoffprice')!="0")
+    $('#price').html(currency($('#price').data('saleoffprice'))+`    <span style="color:black; font-size:1rem; font-weight:500; text-decoration-line:line-through">${currency($('#price').data('price'))}</span>`)
+  else
+    $('#price').html(currency($('#price').data('price')))
+  
   $('[data-type=product]').click(function (){
     let type = $(this).data('type');
     let id = $(this).data('id');

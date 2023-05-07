@@ -15,6 +15,7 @@ class CategoryController extends Controller
 		else
 			return Category::paginate($num);
 	}
+	
 	public static function getCategory($id=NULL){
 		if($id)
 			if(CategoryController::hasCategory($id)){
@@ -22,9 +23,41 @@ class CategoryController extends Controller
 			}
 			else return NULL;
 	}
-	public static function getWithName($name){
+
+	public static function getSaleoffableCategories(){
+		$saleoffable_products = ProductController::getSaleoffableProducts();
+
+		$saleoffable_products_categoryid = [];
+		foreach($saleoffable_products as $item){
+			if(!in_array($item->category_id, $saleoffable_products_categoryid)){
+				$saleoffable_products_categoryid = array_merge($saleoffable_products_categoryid , [$item->category_id]);
+			}
+		}
+		
+		$saleoffable_categories = [];
+		foreach ($saleoffable_products_categoryid as $item) {
+			$saleoffable_categories = array_merge($saleoffable_categories, [Category::find($item)]);
+		}
+		return $saleoffable_categories;
+	}
+
+	public static function getLeafs(){
+
+		// SELECT leaf.node_id
+		// FROM tree AS leaf
+		// LEFT OUTER JOIN tree AS child on child.parent = leaf.node_id
+		// WHERE child.node_id IS NULL
+
+		return DB::table('categories as leaf')
+			->select('leaf.*')
+			->leftJoin('categories as child','child.parent_id', '=', 'leaf.id')
+			->whereNull('child.id')
+			->get();
+	}
+
+	public static function getAllIdWithName($name){
 		if($name){
-			return Category::where('name','LIKE','%'.$name.'%')->get();
+			return Category::where('name','LIKE','%'.$name.'%')->get('id');
 		} else {
 			return NULL;
 		};

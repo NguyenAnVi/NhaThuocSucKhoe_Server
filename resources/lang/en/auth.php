@@ -16,21 +16,22 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'login' => 'Login',
-    'login_required' => 'Login required',
+    'login_required' => 'Login needed',
     'logout' => 'Logout',
     'register' => 'Register',
     'confirm' => 'Confirm',
     'error' => 'Error occurred',
+    'verification_code' => 'OTP code',
     
     'msg' => [
-        'alreadyhaveaccount' => 'Already have account? ',
-        'donthaveaccount' => 'Dont have account? ',
+        'alreadyhaveaccount' => 'Already have account ',
+        'donthaveaccount' => 'Don\'t have account',
         'loginsuccess' => 'Login successfully',  
-        'type_phone' => 'Type phone number',
-        'type_name' => 'Type name',
-        'type_password' => 'Type password',
-        'type_newpassword' => 'Type new password',
-        'type_newpasswordconfirm' => 'Confirm your new password',
-        
+        'type_phone' => 'Phone',
+        'type_name' => 'Name',
+        'type_password' => 'old Password',
+        'type_newpassword' => 'New Password',
+        'type_newpasswordconfirm' => 'Confirm password',
+        'login_required' => 'Login needed'
     ],
 ];

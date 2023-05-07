@@ -9,9 +9,9 @@ class CreateAvailableShippingMethodsTable extends Migration
     {
         Schema::create('productshippingmethods', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
             $table->unsignedBigInteger('shipping_id');
-            $table->foreign('shipping_id')->references('id')->on('shipping');
+            $table->foreign('shipping_id')->references('id')->on('shipping')->cascadeOnDelete();
             $table->primary(['product_id','shipping_id']);
             $table->integer('voucher')->nullable();
 

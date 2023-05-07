@@ -35,11 +35,24 @@ class ProductController extends Controller
 		else return NULL;
 	}
 
+	public static function getWithCategory($categoryid_list){
+		$result = [];
+		foreach ($categoryid_list as $id) {
+			$products = Product::where('category_id',$id->id)->get();
+			foreach($products as $product){
+				$result = array_merge($result,[$product]);
+			}
+		}
+		return $result;
+	}
+
 	public static function hasProduct($id){
 		return (Product::find($id)!=NULL);
 	}
 
-
+	public static function getSaleoffableProducts(){
+		return Product::where('saleoff_price','!=',"0")->get();
+	}
 
 	public function search(Request $request)
 	{

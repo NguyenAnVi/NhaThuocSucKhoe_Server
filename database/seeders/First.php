@@ -19,7 +19,17 @@ class First extends Seeder
         ]);
 
         try{
+            rrmdir(storage_path('app/public/banners'));
+        } catch (\Exception $e){
+            error_log('cantnotdeletefolder'.$e->getMessage());
+        }
+        try{
             rrmdir(storage_path('app/public/products'));
+        } catch (\Exception $e){
+            error_log('cantnotdeletefolder'.$e->getMessage());
+        }
+        try{
+            rrmdir(storage_path('app/public/categories'));
         } catch (\Exception $e){
             error_log('cantnotdeletefolder'.$e->getMessage());
         }

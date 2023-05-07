@@ -15,6 +15,11 @@ class ProductClassifyController extends Controller
 		else
 			return Product::paginate($num);
 	}
+
+	public static function findWithProductAndValue($pid, $v){
+		return ProductClassify::where('product_id', $pid)->andWhere('value','$v')->first();
+	}
+	
 	public static function getProduct($id=NULL){
 		if($id)
 			if(ProductController::hasProduct($id)){

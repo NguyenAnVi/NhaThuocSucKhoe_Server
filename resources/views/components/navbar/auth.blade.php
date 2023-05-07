@@ -13,11 +13,11 @@
     <li class="uk-nav-divider"></li>
     <li>
       <a href="{{ route('orders') }}">
-        @lang('button.myorders')
+        @lang('general.myorders')
       </a>
       <a href="{{ route('logout') }}"
           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        @lang('general.auth.logout')
+        @lang('auth.logout')
       </a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf

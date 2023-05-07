@@ -39,6 +39,7 @@ Route::middleware('auth:web')->group(function(){
   Route::match(['get'], '/getshippingfee', [CheckoutController::class, 'getShippingFee'])->name('getshippingfee');
   //checkout_ajax_total_calculate
   Route::match(['get'], '/getsubtotal', [CheckoutController::class, 'getTotal'])->name('getSubTotal');
+  Route::match(['get'], '/gettotaldiscount', [CheckoutController::class, 'getDiscount'])->name('getTotalDiscount');
 
   //Orders
   Route::match(['get'], '/orders', [OrderController::class, 'index'])->name('orders');

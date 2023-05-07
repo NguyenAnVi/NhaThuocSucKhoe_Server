@@ -50,6 +50,18 @@ return [
       'successfuldeletebanner' => 'Đã xóa thành công.',
     ],
   ],
+  'dashboard' =>[
+    'analytics' => 'Thống kê hôm nay',
+    'lastsync' => 'Cập nhật lần cuối', 
+    'orders' => 'Đơn hàng',
+    'revenue' => 'Doanh thu',
+    'views' => 'Lượt truy cập trang web',
+    'tracker' => 'Bảng theo dõi theo thời gian',
+
+    'time' => [
+      'yesterday' => 'hôm qua'
+    ],
+  ],
   'image' => [
     'image' => 'hình ảnh',
     'imagelist' => 'Danh sách :type',

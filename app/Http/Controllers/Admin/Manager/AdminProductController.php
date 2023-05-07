@@ -70,13 +70,15 @@ class AdminProductController extends Controller
 
 		// Classify Product here
 		$options = [];
-		error_log("ssssssssssssssssssssssssss".$request->options);
-		if($request->options != "") {
+		if(strlen($request->options) > 2) {
 			try {
+				$product->stock = 0;
 				$options_arr = json_decode($request->options);
 				foreach((array)$options_arr as $option){
 					$options_name = $option->name;
 					foreach($option->values as $item){
+						$product->price = ($product->price < $item->price)?($product->price):($item->price);
+						$product->stock += $item->stock;
 						array_push($options , [
 							'product_id' => $product->id,
 							'name' => $options_name,
@@ -88,8 +90,6 @@ class AdminProductController extends Controller
 				}
 				DB::table('productclassifications')->insert($options);
 				$product->classified = 1;
-				$product->stock = 0;
-				$product->price = 0;
 				$product->saleoff_price = 0;
 				$product->save();
 			} catch (\Error $e) {
@@ -131,91 +131,61 @@ class AdminProductController extends Controller
 		//affect count
 		$prop = 0;
 
-		if($request->has('name_check')){
+		if($request->name != $product->name){
 			// validate NAME
 			$this->validate($request, [
-				'name' => 'required|string',
+				'name' => 'required|string:255',
 			]);
 			$product->name = $request->name;
 			$prop ++;
 		}
 
-		if($request->has('price_check')){
+		if($request->price != $product->price){
 			$this->validate($request, [
-				'price' => 'required',
+				'price' => 'required|min:0',
 			]);
-			if($request->price > 0){
-				$product->price = $request->price;
-				$prop ++;
-			} else {
-				return back()->withErrors([
-					'price' => 'Giá bán phải lớn hơn 0đ',
-				]);
-			}
+			$product->price = $request->price;
+			$prop ++;
 		}
 
-		if($request->has('detail_check')){
+		if($request->detail != $product->detail){
 			$this->validate($request, [
-				'detail', 'string|max:5000',
+				'detail', 'string|max:2000000000',
 			]);
 			$product->detail = $request->detail;
 			$prop ++;
 		}
-
-		if($request->has('saleoff_check')){
-			if($request->saleoff > 0){
-				$product->saleoff_id = $request->saleoff;
-				$prop ++;
-			} else {
-				return back()->withErrors([
-					'saleoff' => 'Saleoff không hợp lệ',
-				]);
-			}
+		
+		if($request->has('status')){
+			$prop ++;
+			$product->status = 'ACTIVE';
+		} else {
+			$prop ++;
+			$product->status = 'INACTIVE';
 		}
 
-		if($request->has('images_check')){
-			// 1. delete old images
-			if($product->images != ""){
-				$files = array_filter(
-					glob(
-						storage_path(
-							'app/public/products/'.$product->id.'/*'
-						)
-					),
-					"is_file"
-				);
-				foreach($files as $file) unlink($file); // delete files
-				try{
-					rmdir(storage_path(
-						'app/public/products/'.$product->id
-					));
-				} catch (\Exception $e) {
-					echo '';
-				};
-			}
-
-			// 2. add new images
-			if($request->has('images')){
-				$count = 1;
-				$files = [];
-				foreach($request->file('images') as $file)
-				{
-					$name = $count.preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $product->name)) . '-' . time() . '.' . $file->extension();
-					$file->storeAs('public/products/'.$product->id.'/', $name);
-					$name = asset('storage/products/'.$product->id).'/'.$name;
-					$files[] = $name;
-					$count++;
-				}
-				
-				$product->images = $files;
-			}else {
-				// make imageurl null if there's no banner
-				$product->images = "";
-			}
-			
-			
-			$prop++;
+		if($request->saleoffprice != $product->saleoff_price){
+			$product->saleoff_price = $request->saleoffprice;
+			$prop ++;
 		}
+		
+		if($request->weight != $product->weight){
+			$product->weight = $request->weight;
+			$prop ++;
+		}
+
+		if($request->stock != $product->stock){
+			$product->stock = $request->stock;
+			$prop ++;
+		}
+		
+		error_log($request->images . ">>" . $product->images);
+		if($request->images!=$product->images){
+			$product->images =$request->images;
+			$prop ++;
+		} 
+
+
 		if($prop)$product->save();
 		return redirect()->route('admin.product')->withErrors(['success' => $prop.' thuộc tính đã thay đổi.']);
 	}
@@ -295,6 +265,18 @@ class AdminProductController extends Controller
 				->where('product_id','=',$product_id)
 				->get();
 				return Response(json_encode(['status'=>1,'content' => $options]));
+			} catch (Exception $e) {
+				return Response(json_encode(['status'=>0,'content' => $e->getMessage()]));
+			}
+		}
+		return Response(json_encode(['status'=>0,'content' => "NotAjax"]));
+
+	}
+	public function getImages(Request $request, $product_id){
+		if($request->ajax() !== NULL) {
+			try {
+				$product = Product::find($product_id);
+				return Response(json_encode(['status'=>1,'content' => $product->images]));
 			} catch (Exception $e) {
 				return Response(json_encode(['status'=>0,'content' => $e->getMessage()]));
 			}

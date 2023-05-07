@@ -21,6 +21,7 @@ return [
     'register' => 'Đăng ký',
     'confirm' => 'Xác nhận',
     'error' => 'Có lỗi xảy ra',
+    'verification_code' => 'Mã OTP',
     
     'msg' => [
         'alreadyhaveaccount' => 'Đã có tài khoản? ',
@@ -31,6 +32,6 @@ return [
         'type_password' => 'Nhập mật khẩu',
         'type_newpassword' => 'Nhập mật khẩu mới',
         'type_newpasswordconfirm' => 'Nhập lại mật khẩu',
-        
+        'login_required' => 'Bạn cần phải đăng nhập để thực hiện chức năng này'
     ],
 ];

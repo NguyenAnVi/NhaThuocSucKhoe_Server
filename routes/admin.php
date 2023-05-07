@@ -77,6 +77,7 @@ Route::middleware('auth:admin')->group(function () {
             'destroy' => 'admin.product.destroy'
         ]);
         Route::get('product/search', [AdminProductController::class, 'search'])->name('admin.product.search');
+        Route::get('product/images/{id}', [AdminProductController::class, 'getImages']);
         Route::get('product/options/{id}', [AdminProductController::class, 'getOptions'])->name('admin.product.getoptions');
         Route::post('product/updatestock', [AdminProductController::class, 'updateStock'])->name('admin.product.updatestock');
         Route::get('product/detail/{id}', [AdminProductController::class, 'getDetail']);
