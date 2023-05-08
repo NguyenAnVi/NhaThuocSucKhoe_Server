@@ -15,7 +15,6 @@ class HomeController extends Controller
 				app()->setLocale($locale);
 		}
 		
-		error_log("00000000000000000000".gettype(CategoryController::getSaleoffableCategories()));
 
 		$data = ([
 			'banners' => BannerController::getActiveBanners(),

@@ -10,7 +10,6 @@ use App\FakeEnums\ShippingMethod;
 use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -75,7 +74,7 @@ class CheckoutController extends Controller
 
 
     return redirect()->route('home')->withErrors([
-      'success' => trans('order.message.placeordersuccess')
+      'success' => trans('general.msg.placeordersuccess')
     ]);
   }
 

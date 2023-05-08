@@ -29,7 +29,7 @@ return [
         'loginsuccess' => 'Login successfully',  
         'type_phone' => 'Phone',
         'type_name' => 'Name',
-        'type_password' => 'old Password',
+        'type_password' => 'Password',
         'type_newpassword' => 'New Password',
         'type_newpasswordconfirm' => 'Confirm password',
         'login_required' => 'Login needed'

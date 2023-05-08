@@ -12,7 +12,8 @@ return [
         'phonenumberavailable' => 'Số điện thoại sẵn dùng',
         'phonenumberisused' => 'Số điện thoại đã được sử dụng',
         'noorder' => 'Không có đơn hàng nào',
-        'pagenotfound' => 'Không tìm thấy trang - err404'
+        'pagenotfound' => 'Không tìm thấy trang - err404',
+        'placeordersuccess' => 'Đặt hàng thành công',
     ],
     'time' => [
         'second' => 'giây'

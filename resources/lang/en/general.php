@@ -12,7 +12,8 @@ return [
         'phonenumberavailable' => 'The phone number is available',
         'phonenumberisused' => 'The phone number has taken',
         'noorder' => 'There\'s no order here',
-        'pagenotfound' => 'Page not found - err404'
+        'pagenotfound' => 'Page not found - err404',
+        'placeordersuccess' => 'Ordered successfully',
     ],
     'time' => [
         'second' => 'sec'

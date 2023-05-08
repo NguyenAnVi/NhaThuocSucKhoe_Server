@@ -245,6 +245,7 @@
 				$('[name="formstatus"]').val('EDIT');
 				$('#operate-form-opt').html('@method('put')')
 				document.getElementById('operate-form').setAttribute('action', '{{ URL::to("/admin/product") }}/'+current.id);
+				document.getElementById('delete-form').setAttribute('action', '{{ URL::to("/admin/product") }}/'+current.id);
 
 				
 				$('[for=input-images]').html(current.images_collection)
@@ -428,12 +429,12 @@
 				<div class="search-field uk-width-expand">
 					<div class="uk-inline uk-width-expand">
 						<a class="uk-form-icon" uk-icon="icon: search"></a>
-						<input id="search" class="uk-input" autocomplete="off" type="text" placeholder="@lang('admin.product.button.search')">
+						<input disabled id="search" class="uk-input" autocomplete="off" type="text" placeholder="@lang('admin.product.button.search')">
 					</div>
 					<div id="search-results" class="uk-position-bottom-center-out uk-background-default uk-box-shadow-small uk-margin-remove uk-border-rounded-10" style="display: none"></div>
 				</div>
 				<div class="uk-flex uk-flex-right">
-					<a uk-toggle href="#stock-modal" class="uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button">@lang('admin.product.button.updatestock')</a>
+					<a uk-toggle href="#stock-modal" class="uk-button uk-button-primary uk-disabled" style="background-color: var(--foreground1);" type="button">@lang('admin.product.button.updatestock')</a>
 					<a uk-toggle href="#edit-modal" onclick="makeCreateForm()" class="uk-button uk-button-primary" style="background-color: var(--foreground1);" type="button">@lang('admin.product.button.addnew')</a>
 				</div>
 			</div>

@@ -97,7 +97,7 @@
 				<div class="search-field">
 					<div class="uk-inline">
 						<a class="uk-form-icon" uk-icon="icon: search"></a>
-						<input id="search" class="uk-input" autocomplete="off" type="text" placeholder="@lang('admin.category.button.search')">
+						<input disabled id="search" class="uk-input" autocomplete="off" type="text" placeholder="@lang('admin.category.button.search')">
 					</div>
 					<div id="search-results" class="uk-position-bottom-center-out uk-background-default uk-box-shadow-small uk-margin-remove uk-border-rounded-10" style="display: none"></div>
 				</div>
