@@ -36,7 +36,9 @@ php artisan storage:link
 ```
 php artisan serve
 ```
-
+Now we can open web with port 8000:
+- http://127.0.0.1:8000/
+- http://127.0.0.1:8000/admin
     
 ## Handle errors <a name="e"></a>
 
