@@ -13,7 +13,7 @@ class CreateProductsTable extends Migration
             $table->text('detail');
             $table->boolean('classified')->default(false);
             $table->string('price')->default("")->nullable();
-            $table->text('images')->default("");
+            $table->text('images')->nullable();
             $table->integer('weight')->default(1000);   // Can nang (don vi: gram)
             $table->integer('saleoff_price')->nullable();
             $table->unsignedBigInteger('category_id');
