@@ -15,3 +15,5 @@ v.bat
 /trash
 
 composer.lock
+
+public/storage
