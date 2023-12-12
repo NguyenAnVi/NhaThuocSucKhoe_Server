@@ -126,7 +126,7 @@ class AdminAccountController extends Controller
 				}
 
 				$admin->save();
-				return redirect()->route('admin.hr')->withErrors(([
+				return redirect()->route('admin.account')->withErrors(([
 					'success' => numToText($prop) . ' thuộc tính đã được cập nhật.'
 				]));
 			} else return back()->withErrors(['warning' => 'Không tìm thấy ID.']);
@@ -137,7 +137,7 @@ class AdminAccountController extends Controller
 
 	public function destroy($id)
 	{
-		$check = $this->checkRootUser($this->getCurrentUser());
+		$check = HomeController::checkRootUser(HomeController::getCurrentUser());
 		if ($check) {
 			unset($check);
 			//do something if the User is ROOT
@@ -161,7 +161,7 @@ class AdminAccountController extends Controller
 
 			// Thực hiện xóa contact...
 			$admin->delete();
-			return redirect()->route('admin.hr')->withErrors(([
+			return redirect()->route('admin.account')->withErrors(([
 				'success' => 'Đã xóa thành công ' . $admin->name . '.'
 			]));
 		} else {
