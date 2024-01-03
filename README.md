@@ -1,61 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# NhaThuocSucKhoe
+![Logo](./mdassets/LOGO.png)
 
-## About Laravel
+A SSR website application for _storing_ and _showing_ pharmacy products. Using PHP Laravel.
+- Cart managing
+- OTP Code Authorization Plugin Include
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirement
+- php 7.3 or higher _(To check version, run `php --version`)_
+- composer _(To check version, run `composer --version`)_
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation:
+ __NOTE:__ If some of commands below cause errors - Please check [Handle errors](#e)
+### 1. Install necessary packages:
+```
+composer install
+```
+Run with other php versions _(May cause some errors)_
+```
+composer install --ignore-platform-req
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Create database and table
+Create a new Database named __nhathuocsuckhoe__ on PhpMyAdmin, MySQL Workbench or any MySQL shell.
 
-## Learning Laravel
+On terminal, run command to create tables:
+```
+php artisan migrate
+php artisan db:seed --class=First
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+If you want to use *Test data* (No images), run this command:
+```
+php artisan db:seed --class=Testing
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Link storage folder to public URL
+```
+php artisan storage:link
+```
 
-## Laravel Sponsors
+### 4. Start server - __DONE__
+```
+php artisan serve
+```
+Now we can open web with port 8000:
+- http://127.0.0.1:8000/
+- http://127.0.0.1:8000/admin
+    
+## Handle errors <a name="e"></a>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 1. PDOException::("could not find driver")
+  ![err_PDOExeption_CouldNotFindDriver.png](mdassets/err_PDOExeption_CouldNotFindDriver.png)
+  here the solution:
+  ![err_PDOExeption_CouldNotFindDriver_Solution.png](mdassets/err_PDOExeption_CouldNotFindDriver_Solution.png)
+    
 
-### Premium Partners
+## Other repository related with this project:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+- [MusicPlayer-BackEnd](https://github.com/nguyenanvi/MusicPlayer-BackEnd.git) : Using Java Spring Boot
+- [MusicPlayer-FrontEnd](https://github.com/nguyenanvi/MusicPlayer-FrontEnd.git) : In progess... Maybe ReactJS
+- [MusicPlayer-FileStorage](https://github.com/nguyenanvi/MusicPlayer-FileStorage.git) : Using NodeJS
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Installation
 
-## Code of Conduct
+Install and run with npm
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+  npm install
+  npm run dev
+```
+## API Reference
 
-## Security Vulnerabilities
+#### Get item
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```http
+  GET /get/${fileName}
+```
 
-## License
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `fileName`      | `string` | **Required**. Name of item to fetch |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Save item
+
+```http
+  POST /save
+```
+```html
+  <form method="POST" action="http://localhost:8081/save" enctype="multipart/form-data">
+    <input type="file" name="file"/>
+    <button type="submit">Upload</button>
+  </form>
+```
+#### Get GUI to upload test file
+
+```http
+  GET http://localhost:8081/gui/upload
+```
+
+## Authors
+
+- [@nguyenanvi](https://www.github.com/nguyenanvi)
+
+
+## Features
+
+- Light/dark mode toggle
+- Live previews
+- Fullscreen mode
+- Cross platform
+
